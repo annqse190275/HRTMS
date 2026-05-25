@@ -1,0 +1,2385 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRTMS — Horse Racing Tournament Management System</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Three.js cho hiệu ứng nền 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        gold: { DEFAULT: '#C8A24E', light: '#D4AF37', dark: '#9A7B2E' },
+                        turf: { DEFAULT: '#1A5E3F', dark: '#0D3B2E' },
+                        saddle: { DEFAULT: '#5C2D00', dark: '#3D1F00' },
+                        crimson: { DEFAULT: '#C82333', dark: '#8B1A1A' },
+                        ivory: '#FAF3E0',
+                        night: { DEFAULT: '#0F1318', deep: '#080C14' },
+                        brand: {
+                            400: '#D4AF37',
+                            500: '#C8A24E',
+                            600: '#B8922F',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* ===== BASE ===== */
+        :root {
+            --gold: #C8A24E;
+            --gold-light: #D4AF37;
+            --turf: #1A5E3F;
+            --turf-dark: #0D3B2E;
+            --saddle: #5C2D00;
+            --crimson: #C82333;
+            --ivory: #FAF3E0;
+            --night: #0F1318;
+            --night-deep: #080C14;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(165deg, var(--night-deep) 0%, var(--night) 45%, #121a16 100%);
+            color: var(--ivory);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--night-deep);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--turf-dark);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gold);
+        }
+
+        /* ===== THEME — Racing patterns ===== */
+        .race-track-bg {
+            background-image:
+                repeating-linear-gradient(90deg, transparent, transparent 48px, rgba(200, 162, 78, 0.04) 48px, rgba(200, 162, 78, 0.04) 50px),
+                radial-gradient(ellipse at 50% 0%, rgba(26, 94, 63, 0.25) 0%, transparent 60%);
+        }
+
+        .finish-line-pattern {
+            background: repeating-linear-gradient(-45deg,
+                    var(--ivory) 0px, var(--ivory) 6px,
+                    var(--night-deep) 6px, var(--night-deep) 12px);
+            opacity: 0.12;
+        }
+
+        .starting-gate-stripe {
+            background: repeating-linear-gradient(0deg,
+                    var(--gold) 0px, var(--gold) 4px,
+                    var(--night-deep) 4px, var(--night-deep) 8px);
+        }
+
+        /* ===== COMPONENTS ===== */
+        .card-racing {
+            background: rgba(15, 19, 24, 0.85);
+            border: 1px solid rgba(200, 162, 78, 0.15);
+        }
+
+        .card-racing:hover {
+            border-color: rgba(212, 175, 55, 0.35);
+            box-shadow: 0 4px 24px rgba(200, 162, 78, 0.08);
+        }
+
+        .module-gate {
+            border-left: 3px solid var(--gold);
+        }
+
+        .glow-active {
+            filter: drop-shadow(0 0 18px rgba(212, 175, 55, 0.85));
+        }
+
+        .transition-all-300 {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .flow-line {
+            stroke-dasharray: 8;
+            animation: dash 12s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -400;
+            }
+        }
+
+        @keyframes gallop {
+            0% {
+                transform: translate(0, 0) rotate(0deg) scaleX(1);
+            }
+
+            15% {
+                transform: translate(2px, -6px) rotate(-2deg) scaleX(1.02);
+            }
+
+            30% {
+                transform: translate(4px, -2px) rotate(1deg) scaleX(0.98);
+            }
+
+            45% {
+                transform: translate(6px, -8px) rotate(-1deg) scaleX(1.01);
+            }
+
+            60% {
+                transform: translate(8px, -3px) rotate(2deg) scaleX(0.99);
+            }
+
+            75% {
+                transform: translate(10px, -7px) rotate(-1.5deg) scaleX(1.02);
+            }
+
+            100% {
+                transform: translate(12px, 0) rotate(0deg) scaleX(1);
+            }
+        }
+
+        .anim-gallop {
+            animation: gallop 0.55s infinite ease-in-out;
+        }
+
+        @keyframes leg-kick {
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(-18deg);
+            }
+        }
+
+        .horse-leg {
+            transform-origin: top center;
+            animation: leg-kick 0.55s infinite ease-in-out;
+        }
+
+        .horse-leg:nth-child(2) {
+            animation-delay: 0.14s;
+        }
+
+        .horse-leg:nth-child(3) {
+            animation-delay: 0.28s;
+        }
+
+        .horse-leg:nth-child(4) {
+            animation-delay: 0.42s;
+        }
+
+        @keyframes dust-puff {
+            0% {
+                opacity: 0.6;
+                transform: translateX(0) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateX(-12px) scale(1.8);
+            }
+        }
+
+        .dust-particle {
+            animation: dust-puff 0.5s infinite ease-out;
+        }
+
+        .dust-particle:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .dust-particle:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes race-start-flash {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.4;
+            }
+        }
+
+        .race-start-active .starting-gate-stripe {
+            animation: race-start-flash 0.4s ease 3;
+        }
+
+        .status-pulse {
+            position: relative;
+        }
+
+        .status-pulse::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: var(--gold-light);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse-glow 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse-glow {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(2.8);
+                opacity: 0;
+            }
+        }
+
+        /* Cyberpunk Glitch Image Effect */
+        .glitch-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+            transition: all 0.3s ease;
+            background: #000;
+        }
+
+        .glitch-container:hover {
+            border-color: rgba(176, 38, 255, 0.8);
+            box-shadow: 0 0 25px rgba(176, 38, 255, 0.4);
+            transform: scale(1.02) translateY(-5px);
+            z-index: 10;
+        }
+
+        .glitch-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .glitch-container:hover .glitch-img {
+            opacity: 1;
+            transform: scale(1.03);
+        }
+
+        @keyframes glitch-anim {
+            0% {
+                transform: translate(0)
+            }
+
+            20% {
+                transform: translate(-2px, 2px)
+            }
+
+            40% {
+                transform: translate(-2px, -2px)
+            }
+
+            60% {
+                transform: translate(2px, 2px)
+            }
+
+            80% {
+                transform: translate(2px, -2px)
+            }
+
+            100% {
+                transform: translate(0)
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-[#050B14] text-slate-200 h-screen overflow-hidden flex font-sans selection:bg-brand-500/30">
+
+    <!-- 3D Particle Background Canvas -->
+    <canvas id="bg-canvas" class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-60"></canvas>
+
+    <!-- App Wrapper -->
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- Sidebar Navigation -->
+        <aside class="w-80 flex flex-col flex-shrink-0 z-20 border-r border-[#C8A24E]/20"
+            style="background: linear-gradient(180deg, #0D3B2E 0%, #080C14 100%);">
+            <!-- Header/Logo Section -->
+            <div class="p-6 border-b border-[#C8A24E]/15 relative overflow-hidden">
+                <div class="absolute inset-0 starting-gate-stripe opacity-[0.06]"></div>
+                <div class="flex items-center gap-3 relative z-10">
+                    <div class="p-2.5 rounded-xl shadow-lg"
+                        style="background: linear-gradient(135deg, #D4AF37, #8B1A1A);">
+                        <i data-lucide="trophy" class="w-6 h-6 text-[#FAF3E0]"></i>
+                    </div>
+                    <div>
+                        <h1
+                            class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-[#D4AF37] to-[#FAF3E0] bg-clip-text text-transparent">
+                            HRTMS</h1>
+                        <p class="text-[10px] text-[#C8A24E]/80 font-medium tracking-widest uppercase">Horse Racing ·
+                            SU26SWP03</p>
+                    </div>
+                </div>
+                <div class="mt-4 rounded-xl p-3 border border-[#1A5E3F]/60 relative z-10"
+                    style="background: rgba(8,12,20,0.6);">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="text-[#FAF3E0]/60 font-medium flex items-center gap-1">
+                            <i data-lucide="flag" class="w-3.5 h-3.5 text-[#D4AF37]"></i>
+                            Giai đoạn:
+                        </span>
+                        <span class="px-2.5 py-0.5 font-bold rounded-full border text-[#1A5E3F]"
+                            style="background: #D4AF37; border-color: #C8A24E;">PHASE 1</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto">
+                <p class="px-3 text-[10px] font-bold text-[#C8A24E]/50 uppercase tracking-widest mb-2">Thuyết Trình
+                    Nghiệp Vụ</p>
+
+                <button onclick="switchTab('overview')" id="btn-overview"
+                    class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all-300 text-[#0D3B2E] shadow-lg"
+                    style="background: linear-gradient(90deg, #D4AF37, #C8A24E);">
+                    <span class="flex items-center gap-3">
+                        <i data-lucide="layout-dashboard" class="w-4.5 h-4.5"></i>
+                        <span>Tóm tắt dự án & Scope</span>
+                    </span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 opacity-70"></i>
+                </button>
+
+                <button onclick="switchTab('context')" id="btn-context"
+                    class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all-300 text-[#FAF3E0]/50 hover:text-[#FAF3E0] hover:bg-[#1A5E3F]/30">
+                    <span class="flex items-center gap-3">
+                        <i data-lucide="network" class="w-4.5 h-4.5"></i>
+                        <span>Sơ đồ ngữ cảnh (Context)</span>
+                    </span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 opacity-40"></i>
+                </button>
+
+                <button onclick="switchTab('swimlane')" id="btn-swimlane"
+                    class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all-300 text-[#FAF3E0]/50 hover:text-[#FAF3E0] hover:bg-[#1A5E3F]/30">
+                    <span class="flex items-center gap-3">
+                        <i data-lucide="route" class="w-4.5 h-4.5"></i>
+                        <span>Sơ đồ Swimlane (6 Pha)</span>
+                    </span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 opacity-40"></i>
+                </button>
+
+                <p class="pt-6 px-3 text-[10px] font-bold text-[#C8A24E]/50 uppercase tracking-widest mb-2">Công cụ mô
+                    phỏng</p>
+
+                <!-- Simulated Live Process Action -->
+                <div class="px-3 pb-2">
+                    <button onclick="triggerProcessSimulation()"
+                        class="w-full py-2.5 px-4 rounded-xl text-xs font-bold text-[#FAF3E0] flex items-center justify-center gap-2 transition-all duration-300 transform hover:-translate-y-0.5 shadow-md"
+                        style="background: linear-gradient(90deg, #1A5E3F, #0D3B2E); border: 1px solid #C8A24E/40;">
+                        <i data-lucide="play" class="w-4 h-4"></i>
+                        <span>Chạy thử Nghiệp vụ</span>
+                    </button>
+                </div>
+
+                <div class="p-3.5 rounded-xl border border-[#C8A24E]/15 space-y-3"
+                    style="background: rgba(8,12,20,0.7);">
+                    <div class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+                        <i data-lucide="calculator" class="w-3.5 h-3.5 text-blue-400"></i>
+                        Giả lập Form Score (SQL)
+                    </div>
+                    <div class="space-y-2 text-xs">
+                        <div>
+                            <div class="flex justify-between text-slate-400 mb-1">
+                                <span>Thành tích Ngựa (40%)</span>
+                                <span id="val-horse" class="font-bold text-slate-300">50%</span>
+                            </div>
+                            <input type="range" id="input-horse" min="0" max="100" value="50"
+                                oninput="calculateFormScore()"
+                                class="w-full h-1 rounded-lg appearance-none cursor-pointer"
+                                style="accent-color:#D4AF37;background:#0F1318;">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-400 mb-1">
+                                <span>Thành tích Jockey (35%)</span>
+                                <span id="val-jockey" class="font-bold text-slate-300">50%</span>
+                            </div>
+                            <input type="range" id="input-jockey" min="0" max="100" value="50"
+                                oninput="calculateFormScore()"
+                                class="w-full h-1 rounded-lg appearance-none cursor-pointer"
+                                style="accent-color:#1A5E3F;background:#0F1318;">
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-400 mb-1">
+                                <span>Kết quả Vòng Đua (25%)</span>
+                                <span id="val-round" class="font-bold text-slate-300">50%</span>
+                            </div>
+                            <input type="range" id="input-round" min="0" max="100" value="50"
+                                oninput="calculateFormScore()"
+                                class="w-full h-1 rounded-lg appearance-none cursor-pointer"
+                                style="accent-color:#C82333;background:#0F1318;">
+                        </div>
+                    </div>
+                    <div class="pt-2.5 border-t border-slate-800/80 flex justify-between items-center">
+                        <span class="text-xs font-bold text-slate-400">Form Score:</span>
+                        <span id="result-score" class="text-sm font-black px-2 py-0.5 rounded border"
+                            style="color:#D4AF37;background:rgba(200,162,78,0.12);border-color:rgba(212,175,55,0.35);">50.00</span>
+                    </div>
+                    <p class="text-[10px] text-slate-500 leading-normal italic">Cách tính quy tắc tĩnh (static
+                        rule-based) theo đặc tả, không sử dụng AI/ML.</p>
+                </div>
+            </nav>
+
+            <!-- Footer Section -->
+            <div class="p-4 border-t border-[#C8A24E]/15 text-xs text-center text-[#FAF3E0]/40">
+                <p class="font-medium text-[#C8A24E]/70">Hội đồng bảo vệ đồ án</p>
+                <p class="mt-0.5">Học kỳ Summer 2026</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Viewport -->
+        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto race-track-bg">
+            <!-- Top App Bar -->
+            <header
+                class="h-16 border-b border-[#C8A24E]/20 backdrop-blur px-6 flex items-center justify-between sticky top-0 z-30"
+                style="background: rgba(8,12,20,0.92);">
+                <div class="flex items-center gap-3">
+                    <span id="current-tab-badge"
+                        class="px-2.5 py-1 text-xs font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-lg">Tổng
+                        quan</span>
+                    <h2 id="current-tab-title" class="text-sm font-semibold text-slate-200">Phạm vi nghiệp vụ giải đấu
+                        HRTMS</h2>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <!-- Global Process Simulator Mini Notification Panel -->
+                    <div id="simulation-toast"
+                        class="hidden max-w-sm px-4 py-2 rounded-xl flex items-center gap-2.5 text-xs shadow-xl border"
+                        style="background:rgba(8,12,20,0.95);border-color:rgba(212,175,55,0.4);">
+                        <div class="w-2 h-2 rounded-full status-pulse" style="background:#D4AF37;"></div>
+                        <span id="simulation-toast-text" class="font-medium truncate" style="color:#D4AF37;">Đang chạy
+                            mô phỏng quy trình...</span>
+                    </div>
+
+                    <div
+                        class="text-xs text-slate-400 flex items-center gap-1.5 bg-slate-900/50 px-3 py-1.5 border border-slate-800 rounded-lg">
+                        <i data-lucide="calendar" class="w-4 h-4 text-slate-500"></i>
+                        <span>Cập nhật mới nhất:</span>
+                        <span class="font-medium text-slate-200">22/05/2026 07:40 SA</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Tab Container -->
+            <div class="p-6 w-full flex-1 flex flex-col overflow-hidden">
+
+                <!-- TAB 1: OVERVIEW -->
+                <section id="tab-overview" class="tab-content space-y-6 max-w-7xl mx-auto w-full overflow-y-auto pb-10">
+                    <!-- Hero/Header Visual Section -->
+                    <div class="rounded-3xl p-6 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 border border-[#C8A24E]/25"
+                        style="background: linear-gradient(120deg, #0D3B2E 0%, #080C14 50%, #3D1F00 100%);">
+                        <!-- Curved race track SVG (header decoration) -->
+                        <svg class="absolute bottom-0 left-0 w-full h-16 opacity-30 pointer-events-none"
+                            viewBox="0 0 800 60" preserveAspectRatio="none">
+                            <path d="M0 45 Q200 10 400 35 T800 25" fill="none" stroke="#C8A24E" stroke-width="2"
+                                stroke-dasharray="8 6" />
+                            <path d="M0 52 Q200 18 400 42 T800 32" fill="none" stroke="#1A5E3F" stroke-width="3" />
+                        </svg>
+                        <div class="space-y-3 z-10">
+                            <span
+                                class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border text-[#D4AF37]"
+                                style="background: rgba(200,162,78,0.12); border-color: rgba(212,175,55,0.35);">
+                                <i data-lucide="medal" class="w-3 h-3 inline -mt-0.5 mr-1"></i> Giải Đua Ngựa · Phase 1
+                            </span>
+                            <h2 class="text-2xl md:text-3xl font-extrabold text-[#FAF3E0] leading-tight">Horse Racing
+                                Tournament Management System</h2>
+                            <p class="text-[#FAF3E0]/65 text-xs md:text-sm max-w-xl leading-relaxed">
+                                Nền tảng web tự động hóa toàn bộ quy trình vận hành giải đua ngựa — từ đăng ký, lập
+                                lịch, ghi nhận kết quả đến công bố chính thức và trả thưởng — cho Admin, Chủ ngựa, Nài
+                                ngựa, Trọng tài và Khán giả.
+                            </p>
+                        </div>
+                        <!-- Galloping horse + dust -->
+                        <div class="w-44 h-32 relative flex-shrink-0 flex items-center justify-center z-10">
+                            <span
+                                class="dust-particle absolute left-2 bottom-4 w-2 h-2 rounded-full bg-[#C8A24E]/40"></span>
+                            <span
+                                class="dust-particle absolute left-6 bottom-3 w-1.5 h-1.5 rounded-full bg-[#5C2D00]/50"></span>
+                            <span
+                                class="dust-particle absolute left-10 bottom-5 w-2.5 h-2.5 rounded-full bg-[#FAF3E0]/20"></span>
+                            <svg class="w-full h-full anim-gallop" viewBox="0 0 120 80" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M8 42C18 28 32 32 42 36C48 24 58 30 68 34C78 22 88 26 98 18C96 32 88 44 72 46C58 48 52 40 44 44C34 50 22 48 8 42Z"
+                                    fill="#5C2D00" stroke="#D4AF37" stroke-width="1.5" stroke-linejoin="round" />
+                                <path class="horse-leg" d="M22 46L18 68" stroke="#3D1F00" stroke-width="2.5"
+                                    stroke-linecap="round" />
+                                <path class="horse-leg" d="M38 44L42 70" stroke="#3D1F00" stroke-width="2.5"
+                                    stroke-linecap="round" />
+                                <path class="horse-leg" d="M54 44L50 66" stroke="#3D1F00" stroke-width="2.5"
+                                    stroke-linecap="round" />
+                                <path class="horse-leg" d="M70 44L76 64" stroke="#3D1F00" stroke-width="2.5"
+                                    stroke-linecap="round" />
+                                <circle cx="36" cy="34" r="3" fill="#080C14" />
+                                <circle cx="37" cy="33" r="1" fill="#FAF3E0" />
+                                <path d="M12 38L4 32" stroke="#C82333" stroke-width="2" stroke-linecap="round" />
+                                <rect x="78" y="14" width="14" height="10" rx="1" fill="#D4AF37" opacity="0.9" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Project Stats Dashboard -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div
+                            class="p-5 card-racing rounded-2xl relative overflow-hidden group transition-all duration-300">
+                            <div
+                                class="absolute right-4 top-4 text-[#D4AF37] opacity-20 group-hover:opacity-40 transition-opacity">
+                                <i data-lucide="clock" class="w-12 h-12"></i>
+                            </div>
+                            <span class="text-xs text-[#FAF3E0]/50 font-medium uppercase tracking-wider">Thời gian vận
+                                hành giải</span>
+                            <h3 class="text-2xl font-black text-[#FAF3E0] mt-2">Rút ngắn &ge; 70%</h3>
+                            <p class="text-xs text-[#1A5E3F] mt-1 flex items-center gap-1 font-medium"
+                                style="color: #6ee7b7;"><i data-lucide="trending-down" class="w-3.5 h-3.5"></i> Từ 4–6
+                                tuần xuống 1–2 tuần</p>
+                        </div>
+                        <div
+                            class="p-5 card-racing rounded-2xl relative overflow-hidden group transition-all duration-300">
+                            <div
+                                class="absolute right-4 top-4 text-[#1A5E3F] opacity-30 group-hover:opacity-50 transition-opacity">
+                                <i data-lucide="check-circle" class="w-12 h-12"></i>
+                            </div>
+                            <span class="text-xs text-[#FAF3E0]/50 font-medium uppercase tracking-wider">Độ chính xác dữ
+                                liệu</span>
+                            <h3 class="text-2xl font-black text-[#FAF3E0] mt-2">Đạt &ge; 99%</h3>
+                            <p class="text-xs text-[#FAF3E0]/55 mt-1">Giảm sai sót từ ~15% xuống &lt;1%</p>
+                        </div>
+                        <div
+                            class="p-5 card-racing rounded-2xl relative overflow-hidden group transition-all duration-300">
+                            <div
+                                class="absolute right-4 top-4 text-[#C8A24E] opacity-25 group-hover:opacity-45 transition-opacity">
+                                <i data-lucide="flag" class="w-12 h-12"></i>
+                            </div>
+                            <span class="text-xs text-[#FAF3E0]/50 font-medium uppercase tracking-wider">Công bố kết
+                                quả</span>
+                            <h3 class="text-2xl font-black text-[#FAF3E0] mt-2">&le; 30 Phút</h3>
+                            <p class="text-xs text-[#D4AF37] mt-1">Sau khi Trọng tài xác nhận (Unofficial)</p>
+                        </div>
+                        <div
+                            class="p-5 card-racing rounded-2xl relative overflow-hidden group transition-all duration-300">
+                            <div
+                                class="absolute right-4 top-4 text-[#C82333] opacity-20 group-hover:opacity-35 transition-opacity">
+                                <i data-lucide="users" class="w-12 h-12"></i>
+                            </div>
+                            <span class="text-xs text-[#FAF3E0]/50 font-medium uppercase tracking-wider">Tương tác đồng
+                                thời</span>
+                            <h3 class="text-2xl font-black text-[#FAF3E0] mt-2">&ge; 200 Users</h3>
+                            <p class="text-xs text-[#FAF3E0]/55 mt-1">Phản hồi &le; 3 giây (Polling 30s)</p>
+                        </div>
+                    </div>
+
+                    <!-- Real Racing Track Image Gallery -->
+
+                    <!-- Race Lifecycle Timeline -->
+                    <div class="card-racing rounded-2xl p-5 space-y-3 relative overflow-hidden">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <div class="flex items-center gap-2">
+                                <div class="p-1.5 rounded-lg" style="background:rgba(26,94,63,0.35);color:#D4AF37;">
+                                    <i data-lucide="git-branch" class="w-4 h-4"></i>
+                                </div>
+                                <h3 class="font-bold text-[#FAF3E0] text-sm">Vòng đời Cuộc đua (Race Lifecycle)</h3>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="switchTab('context')"
+                                    class="px-3 py-1.5 rounded-lg text-[10px] font-bold border transition-all hover:-translate-y-0.5"
+                                    style="background:rgba(26,94,63,0.2);border-color:rgba(26,94,63,0.4);color:#6ee7b7;">
+                                    <i data-lucide="network" class="w-3 h-3 inline -mt-0.5 mr-0.5"></i> Context Diagram
+                                    →
+                                </button>
+                                <button onclick="switchTab('swimlane')"
+                                    class="px-3 py-1.5 rounded-lg text-[10px] font-bold border transition-all hover:-translate-y-0.5"
+                                    style="background:rgba(200,162,78,0.1);border-color:rgba(200,162,78,0.3);color:#D4AF37;">
+                                    <i data-lucide="route" class="w-3 h-3 inline -mt-0.5 mr-0.5"></i> Swimlane 6 Pha →
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-center overflow-x-auto pb-2 gap-1" style="scrollbar-width:none;">
+                            <div class="flex flex-col items-center min-w-[95px] flex-shrink-0 cursor-pointer group"
+                                onclick="switchTab('swimlane');setTimeout(()=>selectPhase(1),200);">
+                                <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-black border-2 transition-all group-hover:scale-110 group-hover:shadow-lg"
+                                    style="background:#D4AF3720;border-color:#D4AF37;color:#D4AF37;">①</div>
+                                <span class="text-[10px] font-bold text-[#FAF3E0]/80 mt-1.5 whitespace-nowrap">Tạo
+                                    Giải</span>
+                                <span class="text-[9px] text-[#D4AF37]/50 font-mono">B</span>
+                            </div>
+                            <div class="w-6 h-0.5 rounded flex-shrink-0"
+                                style="background:linear-gradient(90deg,#D4AF37,#22c55e);"></div>
+                            <div class="flex flex-col items-center min-w-[95px] flex-shrink-0 cursor-pointer group"
+                                onclick="switchTab('swimlane');setTimeout(()=>selectPhase(2),200);">
+                                <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-black border-2 transition-all group-hover:scale-110 group-hover:shadow-lg"
+                                    style="background:#22c55e20;border-color:#22c55e;color:#22c55e;">②</div>
+                                <span class="text-[10px] font-bold text-[#FAF3E0]/80 mt-1.5 whitespace-nowrap">Đăng
+                                    Ký</span>
+                                <span class="text-[9px] text-[#22c55e]/50 font-mono">C · D</span>
+                            </div>
+                            <div class="w-6 h-0.5 rounded flex-shrink-0"
+                                style="background:linear-gradient(90deg,#22c55e,#3b82f6);"></div>
+                            <div class="flex flex-col items-center min-w-[95px] flex-shrink-0 cursor-pointer group"
+                                onclick="switchTab('swimlane');setTimeout(()=>selectPhase(3),200);">
+                                <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-black border-2 transition-all group-hover:scale-110 group-hover:shadow-lg"
+                                    style="background:#3b82f620;border-color:#3b82f6;color:#3b82f6;">③</div>
+                                <span class="text-[10px] font-bold text-[#FAF3E0]/80 mt-1.5 whitespace-nowrap">Lập
+                                    Lịch</span>
+                                <span class="text-[9px] text-[#3b82f6]/50 font-mono">E · F · N</span>
+                            </div>
+                            <div class="w-6 h-0.5 rounded flex-shrink-0"
+                                style="background:linear-gradient(90deg,#3b82f6,#f59e0b);"></div>
+                            <div class="flex flex-col items-center min-w-[95px] flex-shrink-0 cursor-pointer group"
+                                onclick="switchTab('swimlane');setTimeout(()=>selectPhase(4),200);">
+                                <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-black border-2 transition-all group-hover:scale-110 group-hover:shadow-lg"
+                                    style="background:#f59e0b20;border-color:#f59e0b;color:#f59e0b;">④</div>
+                                <span
+                                    class="text-[10px] font-bold text-[#FAF3E0]/80 mt-1.5 whitespace-nowrap">Pre-race</span>
+                                <span class="text-[9px] text-[#f59e0b]/50 font-mono">G</span>
+                            </div>
+                            <div class="w-6 h-0.5 rounded flex-shrink-0"
+                                style="background:linear-gradient(90deg,#f59e0b,#ef4444);"></div>
+                            <div class="flex flex-col items-center min-w-[95px] flex-shrink-0 cursor-pointer group"
+                                onclick="switchTab('swimlane');setTimeout(()=>selectPhase(5),200);">
+                                <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-black border-2 transition-all group-hover:scale-110 group-hover:shadow-lg"
+                                    style="background:#ef444420;border-color:#ef4444;color:#ef4444;">⑤</div>
+                                <span
+                                    class="text-[10px] font-bold text-[#FAF3E0]/80 mt-1.5 whitespace-nowrap">LIVE</span>
+                                <span class="text-[9px] text-[#ef4444]/50 font-mono">H · I</span>
+                            </div>
+                            <div class="w-6 h-0.5 rounded flex-shrink-0"
+                                style="background:linear-gradient(90deg,#ef4444,#8b5cf6);"></div>
+                            <div class="flex flex-col items-center min-w-[95px] flex-shrink-0 cursor-pointer group"
+                                onclick="switchTab('swimlane');setTimeout(()=>selectPhase(6),200);">
+                                <div class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-black border-2 transition-all group-hover:scale-110 group-hover:shadow-lg"
+                                    style="background:#8b5cf620;border-color:#8b5cf6;color:#8b5cf6;">⑥</div>
+                                <span class="text-[10px] font-bold text-[#FAF3E0]/80 mt-1.5 whitespace-nowrap">Công
+                                    bố</span>
+                                <span class="text-[9px] text-[#8b5cf6]/50 font-mono">J · K · L · M · P</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- In Scope vs Out of Scope Columns -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <!-- Left Column: In Scope (Phase 1) — Starting Gate visual -->
+                        <div class="lg:col-span-7 card-racing rounded-2xl p-6 space-y-4 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 right-0 h-1 starting-gate-stripe opacity-40"></div>
+                            <div class="flex items-center justify-between border-b border-[#C8A24E]/20 pb-4">
+                                <div class="flex items-center gap-2">
+                                    <div class="p-2 rounded-lg"
+                                        style="background: rgba(26,94,63,0.35); color: #D4AF37;">
+                                        <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-[#FAF3E0]">Hạng mục In-Scope (Phase 1)</h3>
+                                        <p class="text-xs text-[#FAF3E0]/50">15 modules A–O — đồng bộ
+                                            INTRODUCTION_20260522</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded border text-[#0D3B2E]"
+                                    style="background: #D4AF37; border-color: #C8A24E;">15 Modules (A–O)</span>
+                            </div>
+
+                            <div id="in-scope-modules" class="space-y-5 max-h-[700px] overflow-y-auto pr-2"></div>
+                        </div>
+
+                        <!-- Right Column: Out of Scope — Finish line visual -->
+                        <div class="lg:col-span-5 card-racing rounded-2xl p-6 space-y-4 relative overflow-hidden">
+                            <div class="absolute bottom-0 left-0 right-0 h-2 finish-line-pattern"></div>
+                            <div class="flex items-center justify-between border-b border-[#C82333]/25 pb-4">
+                                <div class="flex items-center gap-2">
+                                    <div class="p-2 rounded-lg"
+                                        style="background: rgba(139,26,26,0.25); color: #C82333;">
+                                        <i data-lucide="ban" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-[#FAF3E0]">Hạng mục Out-of-Scope</h3>
+                                        <p class="text-xs text-[#FAF3E0]/50">12 mục — Phase 2+ hoặc hệ thống ngoài
+                                        </p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded border text-[#FAF3E0]/80"
+                                    style="background: rgba(139,26,26,0.2); border-color: rgba(200,35,51,0.4);">12
+                                    Mục</span>
+                            </div>
+
+                            <div id="out-scope-items" class="space-y-3 max-h-[620px] overflow-y-auto pr-2"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: INTERACTIVE CONTEXT DIAGRAM -->
+                <section id="tab-context" class="tab-content hidden h-full flex-col gap-4 w-full">
+                    <!-- Full Width Interactive Diagram Canvas -->
+                    <div
+                        class="w-full flex-1 bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col min-h-0">
+                        <div class="w-full flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                            <div>
+                                <h3 class="font-bold text-slate-100 flex items-center gap-2">
+                                    <i data-lucide="network" class="w-5 h-5 text-brand-400"></i>
+                                    Sơ đồ ngữ cảnh hệ thống (Context Diagram)
+                                </h3>
+                                <p class="text-xs text-slate-400">Chọn chế độ xem tương tác hoặc đối chiếu trực tiếp bản
+                                    vẽ gốc của hệ thống</p>
+                            </div>
+
+                            <!-- Toggle view mode buttons -->
+                            <div class="flex bg-slate-950 p-1 border border-slate-800 rounded-xl">
+                                <button onclick="setContextViewMode('interactive')" id="btn-view-interactive"
+                                    class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-600 text-white transition-all">
+                                    Tương tác Động
+                                </button>
+                                <button onclick="setContextViewMode('blueprint')" id="btn-view-blueprint"
+                                    class="px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-400 hover:text-slate-200 transition-all">
+                                    Bản vẽ Gốc
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Interactive SVG Diagram container -->
+                        <div id="interactive-svg-container"
+                            class="relative w-full flex-1 min-h-0 bg-slate-950 rounded-xl border border-slate-800 overflow-hidden flex items-center justify-center">
+                            <svg id="context-svg" viewBox="0 0 1000 700" class="w-full h-full">
+                                <!-- Background Click Catcher -->
+                                <rect width="100%" height="100%" fill="transparent" onclick="resetSelectedActor()" />
+                                <!-- Define defs for glowing effects & patterns -->
+                                <defs>
+                                    <filter id="glow" x="-25%" y="-25%" width="150%" height="150%">
+                                        <feGaussianBlur stdDeviation="7" result="blur" />
+                                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                    </filter>
+                                    <marker id="arrow" viewBox="0 0 10 10" refX="28" refY="5" markerWidth="6"
+                                        markerHeight="6" orient="auto-start-reverse">
+                                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a5c52" />
+                                    </marker>
+                                    <marker id="arrow-active" viewBox="0 0 10 10" refX="28" refY="5" markerWidth="7"
+                                        markerHeight="7" orient="auto-start-reverse">
+                                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#D4AF37" />
+                                    </marker>
+                                </defs>
+
+                                <g id="svg-viewport"
+                                    style="transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); transform-origin: 500px 350px;">
+                                    <!-- Dynamic Connections Layer (Curved Arrows & Texts) -->
+                                    <g id="dynamic-connections"></g>
+
+                                    <!-- Central Core Node: HRTMS System -->
+                                    <g id="node-system" class="cursor-pointer" onclick="resetSelectedActor()">
+                                        <circle cx="500" cy="350" r="95" fill="#0D3B2E" stroke="#C8A24E"
+                                            stroke-width="4" filter="url(#glow)"></circle>
+                                        <text x="500" y="340" fill="#FAF3E0" font-family="Inter" font-size="16"
+                                            font-weight="900" text-anchor="middle">HRTMS SYSTEM</text>
+                                        <text x="500" y="360" fill="#D4AF37" font-family="Inter" font-size="11"
+                                            font-weight="700" letter-spacing="2" text-anchor="middle">SU26SWP03</text>
+                                        <text x="500" y="375" fill="#6ee7b7" font-family="Inter" font-size="10"
+                                            font-weight="500" text-anchor="middle">Lõi xử lý trung tâm</text>
+                                    </g>
+
+                                    <!-- Flow lines with detailed curves and dasharray animation -->
+                                    <!-- 1. Admin (Top) -->
+                                    <path id="line-admin" d="M 500 350 L 500 60" fill="none" class="data-line"
+                                        stroke="#2a3d35" stroke-width="2.5" marker-end="url(#arrow)" />
+                                    <path id="line-admin-rev" d="M 500 60 L 500 350" fill="none" class="data-line"
+                                        stroke="#2a3d35" stroke-width="1.5" stroke-dasharray="5 5" />
+
+                                    <path id="line-jockey" d="M 500 350 L 820 250" fill="none" class="data-line"
+                                        stroke="#2a3d35" stroke-width="2.5" marker-end="url(#arrow)" />
+                                    <path id="line-jockey-rev" d="M 820 250 L 500 350" fill="none" class="data-line"
+                                        stroke="#2a3d35" stroke-width="1.5" stroke-dasharray="5 5" />
+
+                                    <path id="line-referee" d="M 500 350 L 730 540" fill="none" class="data-line"
+                                        stroke="#2a3d35" stroke-width="2.5" marker-end="url(#arrow)" />
+                                    <path id="line-referee-rev" d="M 730 540 L 500 350" fill="none" class="data-line"
+                                        stroke="#2a3d35" stroke-width="1.5" stroke-dasharray="5 5" />
+
+                                    <path id="line-spectator" d="M 500 350 L 270 540" fill="none" class="data-line"
+                                        stroke="#2a3d35" stroke-width="2.5" marker-end="url(#arrow)" />
+                                    <path id="line-spectator-rev" d="M 270 540 L 500 350" fill="none" class="data-line"
+                                        stroke="#2a3d35" stroke-width="1.5" stroke-dasharray="5 5" />
+
+                                    <path id="line-owner" d="M 500 350 L 180 250" fill="none" class="data-line"
+                                        stroke="#2a3d35" stroke-width="2.5" marker-end="url(#arrow)" />
+                                    <path id="line-owner-rev" d="M 180 250 L 500 350" fill="none" class="data-line"
+                                        stroke="#2a3d35" stroke-width="1.5" stroke-dasharray="5 5" />
+
+                                    <!-- Actor Nodes -->
+                                    <!-- 1. Admin -->
+                                    <g id="node-admin" onclick="selectActor('admin')"
+                                        class="cursor-pointer group svg-actor-node"
+                                        style="transition: opacity 0.5s ease;">
+                                        <circle cx="500" cy="60" r="42" fill="#0F1318" stroke="#4a5c52" stroke-width="2"
+                                            class="group-hover:stroke-[#D4AF37] transition-all"></circle>
+                                        <text x="500" y="64" font-family="Inter" font-size="12" fill="#ffffff"
+                                            font-weight="800" text-anchor="middle">ADMIN</text>
+                                    </g>
+
+                                    <!-- 2. Jockey -->
+                                    <g id="node-jockey" onclick="selectActor('jockey')"
+                                        class="cursor-pointer group svg-actor-node"
+                                        style="transition: opacity 0.5s ease;">
+                                        <circle cx="820" cy="250" r="42" fill="#0F1318" stroke="#4a5c52"
+                                            stroke-width="2" class="group-hover:stroke-[#D4AF37] transition-all">
+                                        </circle>
+                                        <text x="820" y="254" font-family="Inter" font-size="12" fill="#ffffff"
+                                            font-weight="800" text-anchor="middle">JOCKEY</text>
+                                    </g>
+
+                                    <!-- 3. Referee -->
+                                    <g id="node-referee" onclick="selectActor('referee')"
+                                        class="cursor-pointer group svg-actor-node"
+                                        style="transition: opacity 0.5s ease;">
+                                        <circle cx="730" cy="540" r="42" fill="#0F1318" stroke="#4a5c52"
+                                            stroke-width="2" class="group-hover:stroke-[#D4AF37] transition-all">
+                                        </circle>
+                                        <text x="730" y="544" font-family="Inter" font-size="12" fill="#ffffff"
+                                            font-weight="800" text-anchor="middle">REFEREE</text>
+                                    </g>
+
+                                    <!-- 4. Spectator -->
+                                    <g id="node-spectator" onclick="selectActor('spectator')"
+                                        class="cursor-pointer group svg-actor-node"
+                                        style="transition: opacity 0.5s ease;">
+                                        <circle cx="270" cy="540" r="42" fill="#0F1318" stroke="#4a5c52"
+                                            stroke-width="2" class="group-hover:stroke-[#D4AF37] transition-all">
+                                        </circle>
+                                        <text x="270" y="544" font-family="Inter" font-size="12" fill="#ffffff"
+                                            font-weight="800" text-anchor="middle">SPECTATOR</text>
+                                    </g>
+
+                                    <!-- 5. Horse Owner -->
+                                    <g id="node-owner" onclick="selectActor('owner')"
+                                        class="cursor-pointer group svg-actor-node"
+                                        style="transition: opacity 0.5s ease;">
+                                        <circle cx="180" cy="250" r="42" fill="#0F1318" stroke="#4a5c52"
+                                            stroke-width="2" class="group-hover:stroke-[#D4AF37] transition-all">
+                                        </circle>
+                                        <text x="180" y="254" font-family="Inter" font-size="12" fill="#ffffff"
+                                            font-weight="800" text-anchor="middle">OWNER</text>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <!-- Blueprint View (Fulfills showing the overall diagram image visually with Local path) -->
+                        <div id="blueprint-view-container"
+                            class="hidden w-full bg-slate-950 rounded-xl border border-slate-800 p-4 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Bản vẽ thiết kế
+                                    hệ thống gốc (System Context Blueprint)</span>
+                                <span
+                                    class="text-xs px-2.5 py-1 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded font-semibold">Tệp:
+                                    HRTMS_ContextDiagram.png</span>
+                            </div>
+
+                            <!-- Detailed visual trying to load local PNG first, falling back to clean high-fi interactive blueprint -->
+                            <div
+                                class="w-full bg-slate-900/40 rounded-xl border border-slate-800 p-2 flex flex-col items-center justify-center">
+                                <img src="images/HRTMS_ContextDiagram.png" alt="Sơ đồ ngữ cảnh gốc HRTMS"
+                                    class="max-w-full max-h-[calc(100vh-260px)] w-auto object-contain rounded-lg shadow-2xl border border-slate-700/50"
+                                    onerror="this.style.display='none'; document.getElementById('diagram-img-fallback').classList.remove('hidden');" />
+
+                                <div id="diagram-img-fallback" class="hidden w-full text-center py-10 px-4 space-y-4">
+                                    <div
+                                        class="inline-flex p-3.5 bg-brand-500/10 border border-brand-500/20 text-brand-400 rounded-full mb-2">
+                                        <i data-lucide="image" class="w-8 h-8"></i>
+                                    </div>
+                                    <h4 class="font-bold text-slate-100 text-sm">Bản vẽ thiết kế hệ thống gốc</h4>
+                                    <p class="text-xs text-slate-400 max-w-lg mx-auto leading-relaxed">
+                                        Hệ thống đã chuẩn bị thẻ nạp ảnh liên kết trực tiếp tới file <code
+                                            class="px-1.5 py-0.5 bg-slate-950 text-emerald-400 rounded">HRTMS_ContextDiagram.png</code>
+                                        trên thư mục VS Code cục bộ của bạn.
+                                    </p>
+                                    <div
+                                        class="p-3 bg-slate-950/60 rounded-xl max-w-md mx-auto border border-slate-800 text-[11px] text-slate-400 text-left space-y-2">
+                                        <p class="font-bold text-slate-300">💡 Để hiển thị sơ đồ thô chính xác trên máy
+                                            tính:</p>
+                                        <ol class="list-decimal pl-4 space-y-1 text-slate-400">
+                                            <li>Đặt tệp ảnh <code class="text-slate-300">HRTMS_ContextDiagram.png</code>
+                                                vào cùng một thư mục với file <code
+                                                    class="text-slate-300">index.html</code> này.</li>
+                                            <li>Chạy dự án bằng extension <strong class="text-slate-300">Live
+                                                    Server</strong> trên VS Code.</li>
+                                            <li>Tải lại trang và ảnh gốc sẽ hiển thị trực quan ở đây thay cho thông báo
+                                                này!</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+            </section>
+
+            <!-- TAB 3: INTERACTIVE SWIMLANE & WORKFLOW -->
+            <section id="tab-swimlane" class="tab-content hidden space-y-6">
+                <!-- Workflow View Switcher -->
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <div>
+                        <h3 class="font-extrabold text-slate-100 flex items-center gap-2">
+                            <i data-lucide="route" class="w-5 h-5 text-brand-400"></i>
+                            Sơ đồ dòng chảy quy trình phối hợp (Swimlane Workflow)
+                        </h3>
+                        <p class="text-xs text-slate-400">Xem phân đoạn hoạt động theo pha hoặc nghiên cứu trực tiếp ma
+                            trận bản vẽ đầy đủ của dự án</p>
+                    </div>
+
+                    <!-- Toggle Swimlane ViewMode -->
+                    <div class="flex bg-slate-950 p-1 border border-slate-800 rounded-xl">
+                        <button onclick="setSwimlaneViewMode('interactive')" id="btn-swim-interactive"
+                            class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-brand-600 text-white transition-all">
+                            Phân đoạn Từng Pha
+                        </button>
+                        <button onclick="setSwimlaneViewMode('matrix')" id="btn-swim-matrix"
+                            class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-400 hover:text-slate-200 transition-all">
+                            Ma trận Swimlane Toàn cảnh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- INTERACTIVE PHASE WORKFLOW VIEW (Subtab 1) -->
+                <div id="swim-interactive-container" class="space-y-6">
+                    <!-- Phases Horizontal Timeline (6 stages) -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
+                            <button onclick="selectPhase(1)" id="phase-btn-1"
+                                class="phase-btn p-3 border border-[#D4AF37]/50 text-[#0D3B2E] rounded-xl text-left transition-all duration-300"
+                                style="background:linear-gradient(90deg,#D4AF37,#C8A24E);">
+                                <span class="text-[10px] font-bold text-[#0D3B2E]/70 block">Pha 1</span>
+                                <span class="text-xs font-bold block truncate">① Khởi tạo giải đấu</span>
+                            </button>
+                            <button onclick="selectPhase(2)" id="phase-btn-2"
+                                class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
+                                <span class="text-[10px] font-bold text-slate-500 block">Pha 2</span>
+                                <span class="text-xs font-bold block truncate">② Đăng ký tham gia</span>
+                            </button>
+                            <button onclick="selectPhase(3)" id="phase-btn-3"
+                                class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
+                                <span class="text-[10px] font-bold text-slate-500 block">Pha 3</span>
+                                <span class="text-xs font-bold block truncate">③ Chuẩn bị cuộc đua</span>
+                            </button>
+                            <button onclick="selectPhase(4)" id="phase-btn-4"
+                                class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
+                                <span class="text-[10px] font-bold text-slate-500 block">Pha 4</span>
+                                <span class="text-xs font-bold block truncate">④ Trước giờ đua</span>
+                            </button>
+                            <button onclick="selectPhase(5)" id="phase-btn-5"
+                                class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
+                                <span class="text-[10px] font-bold text-slate-500 block">Pha 5</span>
+                                <span class="text-xs font-bold block truncate">⑤ Diễn biến (Live)</span>
+                            </button>
+                            <button onclick="selectPhase(6)" id="phase-btn-6"
+                                class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
+                                <span class="text-[10px] font-bold text-slate-500 block">Pha 6</span>
+                                <span class="text-xs font-bold block truncate">⑥ Chốt & Trả thưởng</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Workflow Swimlane visualizer + Business Sandbox Simulator split layout -->
+                    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+                        <!-- Left: Swimlanes per Actor -->
+                        <div class="xl:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
+                            <h3
+                                class="font-bold text-slate-100 flex items-center gap-2 text-sm border-b border-slate-800 pb-3">
+                                <i data-lucide="layers" class="w-4.5 h-4.5 text-brand-400"></i>
+                                Phân công hành động chi tiết của Pha đang chọn
+                            </h3>
+
+                            <!-- Lane matrix -->
+                            <div class="space-y-3" id="swimlane-matrix">
+                                <!-- Admin Lane -->
+                                <div
+                                    class="p-3 bg-slate-950/50 rounded-xl border border-slate-800/60 flex flex-col sm:flex-row gap-3 items-start">
+                                    <div
+                                        class="w-24 flex-shrink-0 flex items-center gap-2 text-brand-400 font-bold text-xs uppercase pt-1">
+                                        <div class="w-1.5 h-6 bg-brand-500 rounded"></div>
+                                        Admin
+                                    </div>
+                                    <div id="swim-admin-actions" class="flex-1 flex flex-wrap gap-2"></div>
+                                </div>
+                                <!-- Horse Owner Lane -->
+                                <div
+                                    class="p-3 bg-slate-950/50 rounded-xl border border-slate-800/60 flex flex-col sm:flex-row gap-3 items-start">
+                                    <div
+                                        class="w-24 flex-shrink-0 flex items-center gap-2 text-emerald-400 font-bold text-xs uppercase pt-1">
+                                        <div class="w-1.5 h-6 bg-emerald-500 rounded"></div>
+                                        Owner
+                                    </div>
+                                    <div id="swim-owner-actions" class="flex-1 flex flex-wrap gap-2"></div>
+                                </div>
+                                <!-- Jockey Lane -->
+                                <div
+                                    class="p-3 bg-slate-950/50 rounded-xl border border-slate-800/60 flex flex-col sm:flex-row gap-3 items-start">
+                                    <div
+                                        class="w-24 flex-shrink-0 flex items-center gap-2 text-amber-400 font-bold text-xs uppercase pt-1">
+                                        <div class="w-1.5 h-6 bg-amber-500 rounded"></div>
+                                        Jockey
+                                    </div>
+                                    <div id="swim-jockey-actions" class="flex-1 flex flex-wrap gap-2"></div>
+                                </div>
+                                <!-- Referee Lane -->
+                                <div
+                                    class="p-3 bg-slate-950/50 rounded-xl border border-slate-800/60 flex flex-col sm:flex-row gap-3 items-start">
+                                    <div
+                                        class="w-24 flex-shrink-0 flex items-center gap-2 text-rose-400 font-bold text-xs uppercase pt-1">
+                                        <div class="w-1.5 h-6 bg-rose-500 rounded"></div>
+                                        Referee
+                                    </div>
+                                    <div id="swim-referee-actions" class="flex-1 flex flex-wrap gap-2"></div>
+                                </div>
+                                <!-- Spectator Lane -->
+                                <div
+                                    class="p-3 bg-slate-950/50 rounded-xl border border-slate-800/60 flex flex-col sm:flex-row gap-3 items-start">
+                                    <div
+                                        class="w-24 flex-shrink-0 flex items-center gap-2 text-indigo-400 font-bold text-xs uppercase pt-1">
+                                        <div class="w-1.5 h-6 bg-indigo-500 rounded"></div>
+                                        Spectator
+                                    </div>
+                                    <div id="swim-spectator-actions" class="flex-1 flex flex-wrap gap-2"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Business Sandbox Simulator Terminal Panel -->
+                        <div class="xl:col-span-5 flex flex-col gap-4">
+                            <!-- Simulator Sandbox Console Panel -->
+                            <div
+                                class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between space-y-4">
+                                <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="terminal" class="w-4.5 h-4.5 text-emerald-400"></i>
+                                        <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Console
+                                            Sandbox Nghiệp Vụ</h4>
+                                    </div>
+                                    <span
+                                        class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-[10px] font-bold">Simulator
+                                        Active</span>
+                                </div>
+
+                                <!-- Virtual Virtual State Card -->
+                                <div
+                                    class="grid grid-cols-2 gap-2 text-[11px] bg-slate-950/80 p-3 rounded-xl border border-slate-800/60">
+                                    <div>
+                                        <span class="text-slate-500 block">Trạng thái Giải Đua:</span>
+                                        <strong id="sim-state-tournament" class="text-blue-400 font-bold">Chưa
+                                            tạo</strong>
+                                    </div>
+                                    <div>
+                                        <span class="text-slate-500 block">Cổng dự đoán:</span>
+                                        <strong id="sim-state-gate" class="text-slate-400">Đóng</strong>
+                                    </div>
+                                    <div>
+                                        <span class="text-slate-500 block">Conflict-of-Interest:</span>
+                                        <strong id="sim-state-coi" class="text-slate-400">Chưa kiểm tra</strong>
+                                    </div>
+                                    <div>
+                                        <span class="text-slate-500 block">Jockey Independence:</span>
+                                        <strong id="sim-state-jockey" class="text-slate-400">Chưa kiểm tra</strong>
+                                    </div>
+                                </div>
+
+                                <!-- Terminal Log Area -->
+                                <div class="bg-slate-950 border border-slate-850 p-3 rounded-xl h-[160px] overflow-y-auto font-mono text-[11px] space-y-1 text-slate-300 leading-normal"
+                                    id="sim-terminal">
+                                    <p class="text-slate-500">[SYSTEM] Nhấp nút "Chạy thử Nghiệp vụ" ở thanh bên hoặc
+                                        chuyển các Pha để kích hoạt giả lập hệ thống.</p>
+                                </div>
+
+                                <!-- In-app simulated notifications pushing area -->
+                                <div class="space-y-1.5" id="sim-noti-area">
+                                    <span
+                                        class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Luồng
+                                        đẩy Notification ảo:</span>
+                                    <div
+                                        class="p-2.5 bg-slate-950/40 rounded-xl border border-slate-800/50 text-[10px] text-slate-500 italic">
+                                        Chưa có sự kiện thông báo nào được tạo...
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dynamic Phase Rules Card -->
+                            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3 flex-1">
+                                <div class="flex items-center gap-2 border-b border-slate-800 pb-2">
+                                    <i data-lucide="info" class="w-4.5 h-4.5 text-blue-400"></i>
+                                    <span class="text-xs font-bold text-slate-200">Định hướng thiết kế kỹ thuật</span>
+                                </div>
+                                <p id="phase-design-recom" class="text-[11px] text-slate-400 leading-relaxed"></p>
+                                <div id="phase-rules-container" class="space-y-2 max-h-[140px] overflow-y-auto pr-1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMPLETE MA TRẬN SWIMLANE VIEW (Subtab 2 - Built on hrtms_swimlane_workflow.html) -->
+                <div id="swim-matrix-container"
+                    class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-6">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2.5 bg-brand-500/10 text-brand-400 rounded-xl">
+                                <i data-lucide="grid" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-100">Bản vẽ Swimlane Toàn diện & Đồng bộ</h3>
+                                <p class="text-xs text-slate-400">Lưu vết liên lạc nghiệp vụ từ Giai đoạn ① đến ⑥ (Bản
+                                    đầy đủ thay thế ảnh thô)</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-slate-400 font-medium">Định dạng bảng ma trận chuẩn hóa</span>
+                    </div>
+
+                    <!-- Complete swimlane table inside responsive view -->
+                    <div class="w-full overflow-x-auto rounded-xl border border-slate-800">
+                        <table class="w-full text-left border-collapse min-w-[1000px]">
+                            <thead>
+                                <tr
+                                    class="bg-slate-950 text-slate-300 border-b border-slate-800 text-xs font-bold uppercase tracking-wider">
+                                    <th
+                                        class="p-4 border-r border-slate-800 w-[14%] bg-slate-950/90 sticky left-0 z-10">
+                                        Giai đoạn</th>
+                                    <th class="p-4 border-r border-slate-800 w-[17%]">Admin (Ban tổ chức)</th>
+                                    <th class="p-4 border-r border-slate-800 w-[17%]">Horse Owner (Chủ ngựa)</th>
+                                    <th class="p-4 border-r border-slate-800 w-[17%]">Jockey (Nài ngựa)</th>
+                                    <th class="p-4 border-r border-slate-800 w-[17%]">Race Referee (Trọng tài)</th>
+                                    <th class="p-4 w-[18%]">Spectator (Khán giả)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-xs text-slate-300 divide-y divide-slate-800/60">
+                                <!-- Phase 1 Row -->
+                                <tr class="hover:bg-slate-950/20">
+                                    <td
+                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai đoạn
+                                            1</span>
+                                        ① Khởi tạo giải
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Tạo giải đấu (tên, quy mô, loại hình)</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Lập cấu trúc các vòng đua</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Cấu hình Quỹ tiền thưởng (Purse)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
+                                        đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
+                                        đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
+                                        đoạn</td>
+                                    <td class="p-3 space-y-2">
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Xem thông tin giải mới được công bố</div>
+                                    </td>
+                                </tr>
+
+                                <!-- Phase 2 Row -->
+                                <tr class="hover:bg-slate-950/20">
+                                    <td
+                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai đoạn
+                                            2</span>
+                                        ② Đăng ký tham gia
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Kiểm duyệt hồ sơ ngựa thi đấu</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Gửi lý do từ chối nếu không duyệt</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
+                                            Đăng ký tài khoản, nộp hồ sơ ngựa</div>
+                                        <div
+                                            class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
+                                            Tìm Jockey & Gửi lời mời thuê</div>
+                                        <div
+                                            class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
+                                            Chờ duyệt đăng ký ngựa vào giải</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg">
+                                            Đăng ký tài khoản & khai chứng chỉ</div>
+                                        <div
+                                            class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg">
+                                            Nhận và xử lý (Duyệt/Từ chối) lời mời</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
+                                        đoạn</td>
+                                    <td class="p-3 text-slate-500 italic">Nằm ngoài giai đoạn</td>
+                                </tr>
+
+                                <!-- Phase 3 Row -->
+                                <tr class="hover:bg-slate-950/20">
+                                    <td
+                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai đoạn
+                                            3</span>
+                                        ③ Chuẩn bị giải đua
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Phân bổ ngựa đã duyệt vào các Race</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Bốc thăm vị trí xuất phát công khai</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Phân công Lead/Assistant Referees</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Cấu hình cổng dự đoán</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
+                                            Xem lịch đua & Xác nhận tham gia</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg">
+                                            Xem thông tin cuộc đua & ngựa lái</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            Nhận thông báo được phân công & danh sách</div>
+                                    </td>
+                                    <td class="p-3 space-y-2">
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Xem danh sách ngựa & vị trí xuất phát</div>
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Gửi dự đoán kết quả (Cổng Open)</div>
+                                    </td>
+                                </tr>
+
+                                <!-- Phase 4 Row -->
+                                <tr class="hover:bg-slate-950/20">
+                                    <td
+                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai đoạn
+                                            4</span>
+                                        ④ Trước giờ đua
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
+                                        đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
+                                        đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
+                                        đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            Xác minh danh tính ngựa trực tiếp</div>
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            Ghi nhận trạng thái kiểm tra sức khỏe</div>
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            Loại ngựa không đủ điều kiện</div>
+                                    </td>
+                                    <td class="p-3 space-y-2">
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Xem lại dự đoán (Cổng Locked)</div>
+                                    </td>
+                                </tr>
+
+                                <!-- Phase 5 Row -->
+                                <tr class="hover:bg-slate-950/20">
+                                    <td
+                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai đoạn
+                                            5</span>
+                                        ⑤ Diễn biến (Live)
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
+                                        đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
+                                        đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
+                                        đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            Chuyển trạng thái sang Live & khóa cổng cược</div>
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            Ghi vi phạm qua dropdown mã lỗi</div>
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            Xác nhận kết quả sơ bộ, lập biên bản</div>
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            Chuyển cuộc đua sang Unofficial</div>
+                                    </td>
+                                    <td class="p-3 space-y-2">
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Theo dõi trạng thái đua thay đổi trực tiếp</div>
+                                    </td>
+                                </tr>
+
+                                <!-- Phase 6 Row -->
+                                <tr class="hover:bg-slate-950/20">
+                                    <td
+                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai đoạn
+                                            6</span>
+                                        ⑥ Công bố & Trả thưởng
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Duyệt biên bản & Chốt 'Official'</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Cập nhật trạng thái thanh toán giải thưởng</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Ghi nhận thông tin vào Audit Log</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
+                                            Nhận thông báo kết quả & chia tiền thưởng</div>
+                                        <div
+                                            class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
+                                            Xem bảng xếp hạng Leaderboard ngựa mới</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg">
+                                            Nhận thông báo tiền thưởng & BXH Jockey</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            Biên bản bị khóa cứng điện tử vĩnh viễn</div>
+                                    </td>
+                                    <td class="p-3 space-y-2">
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Nhận thông báo đối chiếu dự đoán</div>
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Cộng điểm thưởng ảo hoặc nhận Voucher</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+    </div>
+    </main>
+    </div>
+
+    <!-- Script Block containing all logic -->
+    <script>
+        /* ============================================================
+           THEME — Racing color tokens (Context Diagram, UI highlights)
+           ============================================================ */
+        const THEME = {
+            gold: '#D4AF37',
+            goldDim: '#C8A24E',
+            turf: '#1A5E3F',
+            lineIdle: '#2a3d35',
+            lineActive: '#D4AF37',
+            lineRev: '#6ee7b7',
+            nodeStroke: '#4a5c52',
+            nodeActive: '#D4AF37',
+            coreStroke: '#C8A24E',
+            coreFill: '#0D3B2E'
+        };
+
+        /* ============================================================
+           OVERVIEW — In-Scope (A–O) & Out-of-Scope (12 mục) per INTRODUCTION_20260522
+           ============================================================ */
+        const CATEGORIES = [
+            { id: 'platform', emoji: '🏗️', title: 'Nền tảng Hệ thống', color: '#6366f1', border: 'rgba(99,102,241,0.3)' },
+            { id: 'tournament', emoji: '🏆', title: 'Quản lý Giải đấu', color: '#D4AF37', border: 'rgba(212,175,55,0.3)' },
+            { id: 'registration', emoji: '🐎', title: 'Đăng ký & Ghép cặp', color: '#22c55e', border: 'rgba(34,197,94,0.3)' },
+            { id: 'racing', emoji: '🏁', title: 'Thi đấu Trực tiếp', color: '#ef4444', border: 'rgba(239,68,68,0.3)' },
+            { id: 'results', emoji: '🥇', title: 'Kết quả & Giải thưởng', color: '#f59e0b', border: 'rgba(245,158,11,0.3)' },
+            { id: 'prediction', emoji: '🎯', title: 'Dự đoán Tương tác', color: '#8b5cf6', border: 'rgba(139,92,246,0.3)' },
+            { id: 'support', emoji: '📢', title: 'Hỗ trợ & Vận hành', color: '#06b6d4', border: 'rgba(6,182,212,0.3)' }
+        ];
+
+        const MODULE_CAT_MAP = {
+            A: 'platform', B: 'tournament', C: 'registration', D: 'registration',
+            E: 'tournament', F: 'tournament', G: 'racing', H: 'racing', I: 'racing',
+            J: 'results', K: 'results', L: 'prediction', M: 'prediction',
+            N: 'support', O: 'support'
+        };
+
+        const IN_SCOPE_MODULES = [
+            { id: 'A', title: 'Quản Lý Tài Khoản và Phân Quyền', icon: 'shield-check', desc: 'Horse Owner, Jockey, Race Referee, Spectator tự đăng ký. Admin quản lý tài khoản theo role. Xác thực username/password. Phân quyền RBAC. Tuân thủ OWASP Top 10 và ISO 27001.' },
+            { id: 'B', title: 'Quản Lý Giải Đấu', icon: 'trophy', desc: 'Admin tạo giải (tên, thời gian, quy mô, loại hình đua). Cấu hình cấu trúc vòng đua (vòng loại → bán kết → chung kết). Quản lý và cập nhật thông tin giải sau khi tạo.' },
+            { id: 'C', title: 'Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ', icon: 'file-plus-2', desc: 'Horse Owner đăng ký ngựa (tên, tuổi, giới tính, huyết thống, trọng lượng, đặc điểm). Admin duyệt/từ chối kèm lý do. F1: bước duyệt không kiểm tra chứng chỉ Jockey. F3: sức khỏe ngựa ghi nhận thủ công.' },
+            { id: 'D', title: 'Quản Lý Jockey', icon: 'user-plus', desc: 'Jockey đăng ký tài khoản với chứng chỉ hành nghề. Horse Owner tìm kiếm, gửi lời mời. Jockey xác nhận/từ chối. Horse Owner chốt ghép cặp ngựa–Jockey chính thức.' },
+            { id: 'E', title: 'Lập Lịch Thi Đấu, Bốc Thăm và Sắp Xếp Cuộc Đua', icon: 'calendar-days', desc: 'Admin phân bổ ngựa đã duyệt, xác định ngày giờ, bốc thăm Post Position ngẫu nhiên công khai. Sinh lịch tự động. Horse Owner xác nhận tham gia để đưa ngựa vào danh sách xuất phát.' },
+            { id: 'F', title: 'Phân Công Trọng Tài và Referee COI Check', icon: 'user-cog', desc: 'Admin phân công Lead + Assistant Referees. Referee COI Check: không có quan hệ gia đình trực hệ với Horse Owner. Thông báo phân công. Lưu trữ lịch sử ≥5 ngày trước đua.' },
+            { id: 'G', title: 'Kiểm Tra Trước Thi Đấu (Pre-race Preparation)', icon: 'stethoscope', desc: 'Race Referee xác minh danh tính ngựa, ghi nhận sức khỏe thủ công. Jockey Independence Check: chứng chỉ hợp lệ, không quan hệ gia đình với Horse Owner trong cùng cuộc đua. Tách biệt khỏi bước duyệt hồ sơ (Module C).' },
+            { id: 'H', title: 'Theo Dõi Diễn Biến Cuộc Đua và Xử Lý Vi Phạm', icon: 'eye', desc: 'Race Referee quản lý trạng thái: Upcoming → Live → Unofficial. Tự động khóa cổng dự đoán khi Live. Ghi nhận vi phạm bằng dropdown mã lỗi. Admin chuyển Unofficial → Official.' },
+            { id: 'I', title: 'Xử Lý Khiếu Nại (Protest/Complaint Handling)', icon: 'scale', desc: 'Race Referee tiếp nhận khiếu nại từ Horse Owner/Jockey sau khi đua kết thúc nhưng trước khi công bố chính thức. Kết quả xử lý được thông báo ngược lại qua Notification (closed-loop feedback bắt buộc).' },
+            { id: 'J', title: 'Xác Nhận Kết Quả và Công Bố Chính Thức (Admin)', icon: 'award', desc: 'Admin công bố kết quả (Unofficial → Official). Cập nhật BXH Ngựa (Points/Earnings) và BXH Jockey (Wins, Win Rate, Earnings). Hiển thị qua Polling 30s, không dùng WebSockets.' },
+            { id: 'K', title: 'Tính Toán và Phân Bổ Tiền Thưởng', icon: 'coins', desc: 'Tính toán phân bổ tiền thưởng theo quy tắc cấu hình. Admin cập nhật trạng thái thanh toán + audit log. Thanh toán tiền thật (payment disbursement) nằm ngoài hệ thống (F5).' },
+            { id: 'L', title: 'Quản Lý Dự Đoán và Prediction Gate', icon: 'target', desc: 'Admin cấu hình dự đoán, phần thưởng, kiểm soát cổng. F4: cổng chỉ mở sau Post Position Draw. F6: Phase 1 chỉ hỗ trợ Win và Place. Form Score = SQL tĩnh 40/35/25 (F7).' },
+            { id: 'M', title: 'Đối Chiếu Dự Đoán và Trả Thưởng (Spectator)', icon: 'check-square', desc: 'Tự động đối chiếu dự đoán sau Official. Hiển thị chi tiết kết quả. Cộng điểm ảo/voucher. Thông báo tự động qua In-app và Email. Xem lịch sử dự đoán cá nhân và tổng điểm tích lũy.' },
+            { id: 'N', title: 'Hệ Thống Thông Báo (Notification)', icon: 'bell', desc: 'In-app và Email: từ chối hồ sơ, lời mời Jockey, phân công Referee, kết quả khiếu nại, kết quả đua, tiền thưởng, dự đoán. SMS qua third-party gateway là Out-of-scope Phase 1 (F5).' },
+            { id: 'O', title: 'Báo Cáo và Xuất Dữ Liệu', icon: 'printer', desc: 'Xuất người dùng theo role, ngựa, Jockey, kết quả, BXH, dự đoán, tiền thưởng — định dạng CSV, PDF hoặc in trực tiếp.' }
+        ];
+
+        const OUT_SCOPE_ITEMS = [
+            { id: '1', title: 'Thanh Toán Tiền Thưởng Thực Tế (Payment Disbursement)', tag: 'Finance', desc: 'Hệ thống chỉ ghi nhận số liệu phân bổ; giao dịch thanh toán tiền thật do đơn vị tổ chức xử lý độc lập bên ngoài (F5).' },
+            { id: '2', title: 'WebSockets / Server-Sent Events (SSE)', tag: 'Realtime', desc: 'BXH và kết quả cập nhật qua Polling 30s hoặc F5. Không dùng WebSockets hay SSE trong Phase 1 (F5).' },
+            { id: '3', title: 'Thông Báo Qua SMS (Third-party Gateway)', tag: 'SMS', desc: 'Không tích hợp nhà cung cấp SMS bên thứ ba. Thông báo chỉ qua In-app và Email (F5).' },
+            { id: '4', title: 'Dự Đoán Tổ Hợp Phức Tạp (Exotic Wager)', tag: 'Prediction', desc: 'Không hỗ trợ Exacta, Trifecta, Quinella, Superfecta. Phase 1 chỉ Win và Place (F6).' },
+            { id: '5', title: 'AI / Machine Learning Trong Dự Đoán', tag: 'Analytics', desc: 'Không sử dụng AI/ML. Form Score = phép tính quy tắc tĩnh bằng SQL 40/35/25 (F7).' },
+            { id: '6', title: 'Tích Hợp Hệ Thống Thú Y Bên Ngoài', tag: 'Veterinary', desc: 'Không kết nối hệ thống quản lý bệnh viện thú y. Sức khỏe ngựa ghi nhận thủ công (F3).' },
+            { id: '7', title: 'Tích Hợp Phần Cứng Thời Gian Thực', tag: 'Hardware', desc: 'Không camera vạch đích, thiết bị bấm giờ, GPS, đọc vi mạch. Kết quả cuộc đua do Trọng tài nhập thủ công.' },
+            { id: '8', title: 'Cá Cược Bằng Tiền Thật', tag: 'Gambling', desc: 'Không Payment Gateway, nạp/rút tiền, ví điện tử, Odds/Parimutuel. Dự đoán tương tác phi tài chính.' },
+            { id: '9', title: 'Tích Hợp Mạng Xã Hội và Đăng Nhập Bên Thứ Ba', tag: 'Social', desc: 'Không chia sẻ kết quả lên mạng xã hội. Không đăng nhập Google/Facebook.' },
+            { id: '10', title: 'Quản Lý Huấn Luyện Viên (Trainer Management)', tag: 'Trainer', desc: 'Không phát triển module tài khoản riêng. Vai trò phối hợp qua Horse Owner nếu cần.' },
+            { id: '11', title: 'Livestream và Phát Sóng Video Cuộc Đua', tag: 'Media', desc: 'Không live streaming, bình luận trực tiếp hay phát sóng đa camera. Thuộc phạm vi đối tác phát sóng chuyên biệt.' },
+            { id: '12', title: 'Quản Lý Tài Chính và Kế Toán Toàn Diện', tag: 'Finance', desc: 'Không tích hợp phần mềm kế toán (QuickBooks, Xero). Không báo cáo tài chính chi tiết ngoài phân bổ tiền thưởng.' }
+        ];
+
+        function renderScopeModules() {
+            const inEl = document.getElementById('in-scope-modules');
+            const outEl = document.getElementById('out-scope-items');
+            if (inEl) {
+                inEl.innerHTML = (() => {
+                    const grouped = {};
+                    CATEGORIES.forEach(c => grouped[c.id] = []);
+                    IN_SCOPE_MODULES.forEach(m => {
+                        const catId = MODULE_CAT_MAP[m.id];
+                        if (catId && grouped[catId]) grouped[catId].push(m);
+                    });
+                    return CATEGORIES.map(cat => {
+                        const mods = grouped[cat.id];
+                        if (!mods.length) return '';
+                        return `<div class="space-y-3">
+                            <div class="flex items-center gap-2 px-1">
+                                <span class="text-sm">${cat.emoji}</span>
+                                <span class="text-xs font-bold uppercase tracking-wider" style="color:${cat.color}">${cat.title}</span>
+                                <span class="text-[10px] text-[#FAF3E0]/30 font-medium">${mods.length} modules</span>
+                                <div class="flex-1 border-t" style="border-color:${cat.border}"></div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">${mods.map(m => `
+                                <div class="p-3.5 rounded-xl border module-gate card-racing transition-colors" style="background:rgba(8,12,20,0.5);border-left-color:${cat.color};">
+                                    <div class="flex items-center gap-2.5 mb-1 text-[#FAF3E0]">
+                                        <span class="w-5 h-5 flex items-center justify-center text-[10px] font-black rounded" style="background:${cat.color}20;color:${cat.color};">${m.id}</span>
+                                        <i data-lucide="${m.icon}" class="w-4 h-4" style="color:${cat.color};"></i>
+                                        <span class="text-xs font-bold">${m.id}. ${m.title}</span>
+                                    </div>
+                                    <p class="text-[11px] text-[#FAF3E0]/55 leading-normal pl-7">${m.desc}</p>
+                                </div>`).join('')}
+                            </div>
+                        </div>`;
+                    }).join('');
+                })();
+            }
+            if (outEl) {
+                outEl.innerHTML = OUT_SCOPE_ITEMS.map(m => `
+                    <div class="p-3 rounded-xl border text-xs" style="background: rgba(139,26,26,0.08); border-color: rgba(200,35,51,0.2);">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-[#C82333]">${m.id}. ${m.title}</span>
+                            <span class="text-[10px] text-[#FAF3E0]/35 uppercase">${m.tag}</span>
+                        </div>
+                        <p class="text-[11px] text-[#FAF3E0]/50 leading-normal">${m.desc}</p>
+                    </div>
+                `).join('');
+            }
+            lucide.createIcons();
+        }
+
+        /* ============================================================
+           DATA — Context Diagram actors & Swimlane phases
+           ============================================================ */
+        const actorData = {
+            admin: {
+                title: "ADMIN (Quản trị viên)",
+                icon: "user-cog",
+                color: "indigo",
+                desc: "Ban tổ chức/Điều hành hệ thống. Là người chịu trách nhiệm khởi tạo cấu trúc giải đấu, duyệt ngựa tham gia và chính thức chốt/công bố kết quả cuộc đua.",
+                inputs: [
+                    { key: "API", val: "Tạo giải đấu & cấu hình vòng đua thô" },
+                    { key: "Duyệt", val: "Kiểm duyệt hồ sơ đăng ký ngựa của Chủ ngựa" },
+                    { key: "Lịch", val: "Sắp xếp và lập lịch các cuộc đua, ngày giờ tổ chức" },
+                    { key: "Bốc thăm", val: "Tiến hành bốc thăm Post Position ngẫu nhiên và công khai" },
+                    { key: "Phân công", val: "Chỉ định ban Trọng tài cho cuộc đua" },
+                    { key: "Cổng dự đoán", val: "Cấu hình tùy chọn & thiết lập phần thưởng" },
+                    { key: "Xác nhận", val: "Lệnh chuyển trạng thái kết quả từ Unofficial sang Official" }
+                ],
+                outputs: [
+                    { key: "Hệ thống", val: "Bảng điều khiển tổng hợp (Dashboard) trạng thái" },
+                    { key: "Thông tin", val: "Lịch thi đấu chính thức và danh sách ngựa đã duyệt" },
+                    { key: "Tiền thưởng", val: "Báo cáo quỹ giải thưởng (Purse) & chi trả thực tế" },
+                    { key: "Báo cáo", val: "Báo cáo hệ thống định dạng CSV, PDF và in trực tiếp" }
+                ]
+            },
+            owner: {
+                title: "HORSE OWNER (Chủ ngựa)",
+                icon: "user",
+                color: "emerald",
+                desc: "Chủ sở hữu hợp pháp của các chú ngựa tham gia. Chủ ngựa chịu trách nhiệm nộp hồ sơ, tìm kiếm & thỏa thuận với Jockey để ghép cặp thi đấu chính thức.",
+                inputs: [
+                    { key: "Hồ sơ", val: "Đăng ký thông tin chi tiết ngựa (Tên, tuổi, huyết thống, đặc điểm)" },
+                    { key: "Thuê Jockey", val: "Tìm kiếm danh sách và gửi lời mời đến Jockey khả dụng" },
+                    { key: "Xác nhận", val: "Hoàn tất ghép cặp sau khi Jockey chấp nhận lời mời" },
+                    { key: "Lịch thi đấu", val: "Xác nhận cho ngựa tham gia theo lịch thi đấu được Admin gán" },
+                    { key: "Khiếu nại", val: "Nộp đơn khiếu nại vi phạm (Protest) khi kết thúc đua sơ bộ" }
+                ],
+                outputs: [
+                    { key: "Thông báo", val: "Kết quả duyệt ngựa từ Admin (kèm lý do nếu bị từ chối)" },
+                    { key: "Thông báo", val: "Phản hồi lời mời (Xác nhận/Từ chối) từ phía Jockey" },
+                    { key: "Thông báo", val: "Lịch thi đấu chính thức và các cập nhật thay đổi" },
+                    { key: "Dữ liệu", val: "Kết quả thi đấu, thứ hạng ngựa, tổng tiền thưởng tích lũy" },
+                    { key: "Khiếu nại", val: "Kết quả xử lý khiếu nại (đóng vòng đóng kín)" }
+                ]
+            },
+            jockey: {
+                title: "JOCKEY (Nài ngựa)",
+                icon: "user-check",
+                color: "amber",
+                desc: "Nài ngựa điều khiển trực tiếp ngựa thi đấu trên sân. Phải có chứng chỉ hành nghề hợp lệ và vượt qua các bước kiểm tra tính độc lập khắt khe trước giờ đua.",
+                inputs: [
+                    { key: "Đăng ký", val: "Tạo tài khoản, khai báo chứng chỉ hành nghề và thông tin liên lạc" },
+                    { key: "Lời mời", val: "Phản hồi (Xác nhận hoặc từ chối) lời mời thuê từ phía các Chủ ngựa" }
+                ],
+                outputs: [
+                    { key: "Thông báo", val: "Lời mời thuê lái ngựa mới gửi đến từ phía Chủ ngựa" },
+                    { key: "Lịch đua", val: "Lịch thi đấu chi tiết các cuộc đua được phân công & ghép cặp" },
+                    { key: "Thông tin", val: "Thông tin chi tiết ngựa sẽ trực tiếp điều khiển" },
+                    { key: "Thống kê", val: "Lịch sử thi đấu cá nhân, BXH Jockey, tổng thu nhập tích lũy" }
+                ]
+            },
+            referee: {
+                title: "RACE REFEREE (Trọng tài)",
+                icon: "scale",
+                color: "rose",
+                desc: "Lực lượng giám sát tính công bằng và thực thi quy chế giải đấu. Gồm 1 Trọng tài chính (Lead) và các Trọng tài phụ (Assistant). Có quyền chuyển trạng thái cuộc đua, bắt lỗi vi phạm và giải quyết khiếu nại.",
+                inputs: [
+                    { key: "Trước đua", val: "Xác minh danh tính ngựa tại sân bằng mã số, đặc điểm nhận dạng" },
+                    { key: "Sức khỏe", val: "Ghi nhận trạng thái kiểm tra sức khỏe thủ công từ kết luận bác sĩ thú y" },
+                    { key: "Vận hành", val: "Đổi trạng thái cuộc đua (Upcoming &rarr; Live &rarr; Unofficial)" },
+                    { key: "Vi phạm", val: "Ghi nhận vi phạm trên sân bằng cách chọn mã lỗi dropdown" },
+                    { key: "Xử lý", val: "Tiếp nhận khiếu nại của Owner/Jockey, quyết định hình phạt thích đáng" },
+                    { key: "Chốt", val: "Xác nhận kết quả sơ bộ và lập Biên bản thi đấu điện tử" }
+                ],
+                outputs: [
+                    { key: "Phân công", val: "Thông báo chỉ định Trọng tài chính/phụ trước ít nhất 5 ngày" },
+                    { key: "Hệ thống", val: "Danh sách ngựa đua, thông tin Jockey ghép cặp & lịch thi đấu" },
+                    { key: "Khiếu nại", val: "Danh sách đơn khiếu nại phát sinh từ cuộc đua vừa kết thúc" },
+                    { key: "Biên bản", val: "Biên bản thi đấu điện tử (đã khóa, không thể xóa sau khi lưu)" }
+                ]
+            },
+            spectator: {
+                title: "SPECTATOR (Khán giả)",
+                icon: "users",
+                color: "indigo",
+                desc: "Khán giả theo dõi giải đấu trên giao diện Web. Tham gia dự đoán tương tác tích lũy điểm ảo/voucher đổi thưởng, tuyệt đối không cá cược bằng tiền thật.",
+                inputs: [
+                    { key: "Tài khoản", val: "Đăng ký và quản lý thông tin tài khoản Spectator" },
+                    { key: "Dự đoán", val: "Gửi dự đoán kết quả (Win hoặc Place) trước khi cuộc đua chuyển sang Live" }
+                ],
+                outputs: [
+                    { key: "Thông tin", val: "Thông tin giải, lịch thi đấu, danh sách ngựa đua, vị trí xuất phát" },
+                    { key: "Tra cứu", val: "Leaderboard ngựa và bảng xếp hạng Jockey Standings thời gian thực (Polling 30s)" },
+                    { key: "Dự đoán", val: "Xem trạng thái cổng dự đoán (Open / Locked / Unofficial / Official)" },
+                    { key: "Phần thưởng", val: "Điểm thưởng ảo hoặc voucher tích lũy nếu dự đoán đúng" },
+                    { key: "Thông báo", val: "Thông báo kết quả dự đoán và trả thưởng tự động" }
+                ]
+            }
+        };
+
+        const phaseData = {
+            1: {
+                title: "① Khởi tạo giải đấu",
+                actions: {
+                    admin: ["Tạo giải đấu với thông tin thô (thời gian, quy mô, loại hình)", "Lập cấu trúc các vòng đua (Vòng loại &rarr; Bán kết &rarr; Chung kết)", "Cấu hình Quỹ tiền thưởng (Purse) tương ứng từng cuộc đua"],
+                    owner: [],
+                    jockey: [],
+                    referee: [],
+                    spectator: ["Xem thông tin giải đấu mới được tạo và cấu trúc vòng đua công khai"]
+                },
+                rules: [
+                    "<strong>Quỹ tiền thưởng:</strong> Quỹ tiền thưởng (Purse) được thiết lập bằng VND làm căn cứ để tính toán và hiển thị tỷ lệ chia thưởng, không thực hiện giao dịch thanh toán trong Phase 1.",
+                    "<strong>Sự kiện:</strong> Ngay sau khi cấu trúc giải được Admin lưu, hệ thống sẽ tự động chuyển trạng thái giải đấu sang 'Đang Đăng Ký' và thông báo công khai trên web."
+                ],
+                design: "Thiết kế thực thể cơ sở dữ liệu `Tournament` và `Race` liên kết 1-nhiều. Hệ thống hiển thị sơ đồ cây các vòng đua trực quan trên Admin Dashboard.",
+                simState: {
+                    tournament: "Đã Khởi Tạo",
+                    gate: "Đóng",
+                    coi: "Chưa kiểm tra",
+                    jockey: "Chưa kiểm tra"
+                },
+                terminalLogs: [
+                    "[SYSTEM] Khởi chạy Giai đoạn 1: Thiết lập cơ cấu giải đua mới...",
+                    "[DB] INSERT INTO Tournaments (Id, Name, StartDate, Status) VALUES ('SU26SWP03', 'Horse Racing Championship', '2026-06-01', 'Draft')",
+                    "[DB] INSERT INTO Races (TournamentId, Type, Purse) VALUES ('SU26SWP03', 'Sprint', 50000000)",
+                    "[SYSTEM] Tạo giải đấu và phân quỹ Purse 50.000.000 VND thành công!"
+                ],
+                simNoti: {
+                    role: "Spectator",
+                    text: "🔔 Giải đấu SU26SWP03 mới đã được ban tổ chức công bố công khai trên hệ thống!"
+                }
+            },
+            2: {
+                title: "② Đăng ký tham gia",
+                actions: {
+                    admin: ["Kiểm duyệt hồ sơ ngựa thi đấu dựa trên tiêu chuẩn hợp lệ cấu hình sẵn", "Từ chối và điền lý do từ chối để hệ thống tự động gửi thông báo cho Chủ ngựa"],
+                    owner: ["Khai báo hồ sơ ngựa (Tên, mã số, tuổi, huyết thống, đặc điểm)", "Tìm kiếm Jockey khả dụng", "Gửi lời mời và chốt ghép cặp với Jockey chấp thuận", "Nộp hồ sơ ngựa ứng tuyển vào giải đấu"],
+                    jockey: ["Khai báo chứng chỉ hành nghề khi tạo tài khoản", "Xem danh sách lời mời chờ duyệt", "Xác nhận/Từ chối từng lời mời thuê từ phía các Chủ ngựa"],
+                    referee: [],
+                    spectator: []
+                },
+                rules: [
+                    "<strong>Tách Luồng Phê Duyệt (F1):</strong> Bước duyệt hồ sơ ngựa của Admin tại module này hoàn toàn KHÔNG bao gồm việc kiểm tra chứng chỉ của Jockey. Sự độc lập của Jockey chỉ được kiểm tra tại giai đoạn Pre-race.",
+                    "<strong>Y tế thủ công (F3):</strong> Toàn bộ dữ liệu sức khỏe của ngựa được cập nhật thủ công bởi người dùng có thẩm quyền dựa trên biên bản giấy của bác sĩ thú y; không liên kết API thú y ngoài."
+                ],
+                design: "Duy trì trạng thái hồ sơ ngựa qua các enum: `Pending`, `Approved`, `Rejected`. Khi ở trạng thái `Rejected`, bắt buộc giao diện hiển thị trường nhập chuỗi `reason` gửi trực tiếp vào bảng Notification.",
+                simState: {
+                    tournament: "Đăng ký",
+                    gate: "Đóng",
+                    coi: "Chưa kiểm tra",
+                    jockey: "Chưa kiểm tra"
+                },
+                terminalLogs: [
+                    "[SYSTEM] Giai đoạn 2: Cổng đăng ký mở dành cho Horse Owner và Jockey.",
+                    "[DB] UPDATE Tournaments SET Status='OpenForRegistration' WHERE Id='SU26SWP03'",
+                    "[API] POST /api/horses -> Đăng ký ngựa 'Thần Phong' (Mã: H-09)",
+                    "[API] POST /api/jockeys/invite -> Gửi lời mời đến Jockey 'Nguyễn Văn A' (Chứng chỉ: JC-992)",
+                    "[DB] INSERT INTO Pairings (HorseId, JockeyId, Status) VALUES ('H-09', 'JC-992', 'Accepted')"
+                ],
+                simNoti: {
+                    role: "Horse Owner",
+                    text: "🔔 Jockey 'Nguyễn Văn A' đã chấp thuận lời mời điều khiển ngựa 'Thần Phong' của bạn!"
+                }
+            },
+            3: {
+                title: "③ Chuẩn bị cuộc đua",
+                actions: {
+                    admin: ["Phân bổ ngựa đã duyệt vào các cuộc đua", "Xác định ngày giờ tổ chức cụ thể từng cuộc đua", "Tiến hành bốc thăm vị trí xuất phát (Post Position) ngẫu nhiên công khai", "Sinh lịch thi đấu chính thức", "Phân công ban Trọng tài cho cuộc đua", "Cấu hình tùy chọn dự đoán cho cuộc đua"],
+                    owner: ["Xem lịch thi đấu phân công", "Xác nhận cho ngựa tham gia theo lịch thi đấu (bắt buộc để đưa ngựa vào danh sách xuất phát chính thức)"],
+                    jockey: ["Xem lịch thi đấu và thông tin ngựa ghép cặp điều khiển"],
+                    referee: ["Nhận thông báo phân công và xem danh sách ngựa/Jockey của trận đấu"],
+                    spectator: ["Xem lịch thi đấu, danh sách ngựa và Post Position của từng ngựa", "Tiến hành gửi dự đoán Win hoặc Place lên hệ thống (Cổng dự đoán Open)"]
+                },
+                rules: [
+                    "<strong>Phân công Trọng tài (F2):</strong> Phải phân công ban trọng tài ít nhất 5 ngày làm việc trước ngày đua. Hệ thống tự động kiểm tra Referee Conflict-of-Interest (không được là người thân trực hệ của Horse Owner có ngựa tham gia cuộc đua đó).",
+                    "<strong>Mở cổng dự đoán (F4):</strong> Cổng dự đoán chỉ được phép mở cho Spectator sau khi Admin đã hoàn tất và xác nhận bốc thăm vị trí xuất phát (Post Position Draw)."
+                ],
+                design: "Cần xây dựng logic bốc thăm ngẫu nhiên ở Backend thông qua thuật toán bốc thăm ngẫu nhiên công khai (mô phỏng shuffle mảng ngựa). Triển khai validator cứng cấm mở cổng dự đoán nếu cờ `isPostPositionDrawn` của cuộc đua chưa bằng true.",
+                simState: {
+                    tournament: "Chuẩn Bị",
+                    gate: "MỞ (Open)",
+                    coi: "Đã kiểm tra (Hợp lệ)",
+                    jockey: "Chưa kiểm tra"
+                },
+                terminalLogs: [
+                    "[SYSTEM] Giai đoạn 3: Phân bổ ngựa và phân công ban Trọng tài.",
+                    "[DB] UPDATE Races SET PostPositionDrawn=1, GateStatus='Open' WHERE Id='R-01'",
+                    "[COI-CHECK] Thực hiện đối chiếu quan hệ thân nhân gia đình trực hệ của Trọng tài...",
+                    "[COI-CHECK] OK: Trọng tài chính Trần Văn B không có xung đột với Chủ ngựa nào.",
+                    "[SYSTEM] Phân công ban Trọng tài thành công trước 5 ngày làm việc. Cổng dự đoán Win/Place mở."
+                ],
+                simNoti: {
+                    role: "Race Referee",
+                    text: "🔔 Ban tổ chức chỉ định bạn làm Trọng tài chính cuộc đua R-01 vào lúc 15:00 ngày 01/06/2026!"
+                }
+            },
+            4: {
+                title: "④ Trước giờ đua (Pre-race)",
+                actions: {
+                    admin: [],
+                    owner: [],
+                    jockey: [],
+                    referee: ["Kiểm tra thực tế và xác minh danh tính ngựa", "Ghi nhận trạng thái kiểm tra sức khỏe thủ công từ bác sĩ thú y", "Cập nhật và đánh dấu ngựa hợp lệ hoặc bị loại trước giờ xuất phát"],
+                    spectator: ["Xem lại dự đoán cá nhân (Cổng dự đoán ở trạng thái Locked - chỉ xem, không thể sửa/xóa)"]
+                },
+                rules: [
+                    "<strong>Kiểm tra Jockey Independence Check:</strong> Thực hiện ngay trước trận đấu. Jockey điều khiển phải có chứng chỉ hợp lệ và không có quan hệ gia đình (vợ, chồng, bố, mẹ, anh, chị, em ruột) với bất kỳ Horse Owner nào có ngựa tham gia trong cuộc đua đó.",
+                    "<strong>Trạng thái:</strong> Nếu ngựa hoặc Jockey bị loại ở bước này, hệ thống sẽ tự động cập nhật danh sách xuất phát, rút tên ngựa khỏi cuộc đua và ghi nhận lý do."
+                ],
+                design: "Xây dựng màn hình kiểm tra trực quan (Pre-race Check-in) dành riêng cho Trọng tài hiển thị trên thiết bị tablet, cho phép check-box từng tiêu chí danh tính ngựa, sức khỏe và tính độc lập của Jockey.",
+                simState: {
+                    tournament: "Xác Minh",
+                    gate: "Khóa (Locked)",
+                    coi: "Hợp lệ",
+                    jockey: "Đã kiểm tra (Hợp lệ)"
+                },
+                terminalLogs: [
+                    "[SYSTEM] Giai đoạn 4: Trọng tài kiểm soát trực tiếp tại đường chạy chuẩn bị...",
+                    "[API] POST /api/pre-race/verify-horse -> Xác nhận mã số 'H-09'",
+                    "[JOCKEY-INDEPENDENCE] Kiểm tra quan hệ gia đình giữa Nguyễn Văn A và các Owner...",
+                    "[JOCKEY-INDEPENDENCE] Kết quả: Đạt chuẩn độc lập (No Relation).",
+                    "[SYSTEM] Trạng thái sức khỏe ngựa được Trọng tài nhập thủ công theo biên bản thú y tại chỗ."
+                ],
+                simNoti: {
+                    role: "Spectator",
+                    text: "🔔 Cổng dự đoán cuộc đua R-01 đã khóa tự động ngay trước thời điểm xuất phát."
+                }
+            },
+            5: {
+                title: "⑤ Diễn biến cuộc đua (Live)",
+                actions: {
+                    admin: [],
+                    owner: [],
+                    jockey: [],
+                    referee: ["Bấm lệnh chuyển trạng thái cuộc đua sang 'Live' (Upcoming &rarr; Live)", "Theo dõi cuộc đua, phát hiện và ghi nhận lỗi vi phạm bằng dropdown danh sách mã lỗi", "Tiếp nhận khiếu nại (Protest) từ Owner/Jockey gửi đến", "Điều tra và xử lý vi phạm bằng hình thức phạt (disqualify / place behind)", "Xác nhận kết quả sơ bộ, chốt Biên bản thi đấu và chuyển trạng thái cuộc đua sang 'Unofficial'"],
+                    spectator: ["Theo dõi trạng thái cuộc đua thay đổi theo thời gian thực (Live) trên Web"]
+                },
+                rules: [
+                    "<strong>Khóa cổng dự đoán tự động:</strong> Khi Trọng tài đổi trạng thái cuộc đua sang 'Live', hệ thống tự động khóa cổng dự đoán của Spectator ngay lập tức (Off Time).",
+                    "<strong>Ghi nhận vi phạm:</strong> Trọng tài bắt buộc chọn vi phạm từ dropdown danh sách mã lỗi đã cấu hình. Chỉ được sửa hoặc xóa lỗi vi phạm trước khi xác nhận kết quả sơ bộ.",
+                    "<strong>Khiếu nại hai chiều đóng vòng (Module I):</strong> Trọng tài tiếp nhận khiếu nại của Owner/Jockey sau khi kết thúc đua sơ bộ. Quyết định xử lý (chấp thuận/bác bỏ) phải được thông báo ngược lại qua Notification đóng vòng."
+                ],
+                design: "Phần mềm sử dụng cơ chế an toàn: khóa cứng chức năng gửi API dự đoán ở Backend bằng trạng thái cuộc đua. Triển khai danh sách mã lỗi bằng một bảng danh mục (Error Codes Metadata) để Trọng tài dễ dàng thao tác dropdown nhanh trên di động.",
+                simState: {
+                    tournament: "LIVE",
+                    gate: "Khóa cứng",
+                    coi: "Hợp lệ",
+                    jockey: "Hợp lệ"
+                },
+                terminalLogs: [
+                    "[SYSTEM] Giai đoạn 5: Cuộc đua đang diễn ra trực tiếp trên sân!",
+                    "[DB] UPDATE Races SET Status='Live' WHERE Id='R-01'",
+                    "[API] POST /api/referee/violation -> Ghi nhận lỗi 'Chèn ép đường đua' (Mã lỗi: E-02) cho ngựa H-03",
+                    "[API] POST /api/complaints -> Tiếp nhận đơn khiếu nại từ Horse Owner của ngựa H-03",
+                    "[SYSTEM] Trọng tài bác bỏ khiếu nại, áp dụng hình phạt Place Behind cho H-03."
+                ],
+                simNoti: {
+                    role: "Jockey",
+                    text: "🔔 Trọng tài ghi nhận biên bản vi phạm lỗi chèn ép (E-02) đối với ngựa số H-03 trong cuộc đua."
+                }
+            },
+            6: {
+                title: "⑥ Công bố kết quả & Trả thưởng",
+                actions: {
+                    admin: ["Xem Biên bản thi đấu điện tử do Trọng tài nộp", "Bấm nút công bố kết quả chính thức, đổi trạng thái cuộc đua sang 'Official'", "Đánh dấu trạng thái thanh toán giải thưởng thủ công sau khi chuyển tiền mặt bên ngoài (ghi Audit Log)"],
+                    owner: ["Nhận thông báo kết quả cuộc đua & phân bổ tiền thưởng", "Xem BXH ngựa, lịch sử nhận tiền thưởng"],
+                    jockey: ["Nhận thông báo kết quả cuộc đua & tiền thưởng", "Xem BXH Jockey Standings và thu nhập cá nhân"],
+                    referee: ["Xem biên bản thi đấu điện tử đã lưu trữ (lưu trữ cố định, không thể sửa hay xóa sau khi Official)"],
+                    spectator: ["Nhận thông báo kết quả dự đoán (Thắng/Thua)", "Hệ thống tự động cộng điểm ảo/voucher vào ví Spectator", "Xem lịch sử dự đoán cá nhân và BXH"]
+                },
+                rules: [
+                    "<strong>Bảng xếp hạng (Module J):</strong> Cập nhật BXH Ngựa & Jockey hoàn toàn tự động dựa trên kết quả thi đấu. BXH hiển thị trên Web qua cơ chế Polling định kỳ tối thiểu 30 giây hoặc F5, tuyệt đối không dùng WebSockets.",
+                    "<strong>Thanh toán tiền thật (Payment Disbursement):</strong> Là Out-of-scope trong Phase 1. Giao dịch thực tế diễn ra bên ngoài. Admin chỉ ghi nhận trạng thái thanh toán (Đã/Chưa thanh toán) vào hệ thống để phục vụ đối chiếu và lưu vết kiểm toán (Audit Log)."
+                ],
+                design: "Tập trung hóa toàn bộ logic cập nhật Leaderboard và đối chiếu dự đoán trong một transaction cơ sở dữ liệu duy nhất khi Admin nhấn nút 'Official' nhằm bảo đảm tính toàn vẹn dữ liệu.",
+                simState: {
+                    tournament: "OFFICIAL",
+                    gate: "Khóa cứng",
+                    coi: "Hợp lệ",
+                    jockey: "Hợp lệ"
+                },
+                terminalLogs: [
+                    "[SYSTEM] Giai đoạn 6: Admin công bố kết quả và tiến hành trả thưởng.",
+                    "[DB] UPDATE Races SET Status='Official' WHERE Id='R-01'",
+                    "[LEADERBOARD-CALC] Bắt đầu gom điểm: Ngựa Thần Phong (H-09) về nhất nhận 10 điểm",
+                    "[SPECTATOR-DISBURSE] Tự động đối chiếu dự đoán. Cộng 200 điểm ảo và voucher giảm giá cho Spectator dự đoán đúng.",
+                    "[AUDIT-LOG] Admin Nguyen Quoc An cập nhật trạng thái thanh toán Purse cuộc đua R-01 sang 'Paid' (Thanh toán ngoại tuyến)."
+                ],
+                simNoti: {
+                    role: "Spectator",
+                    text: "🔔 Chúc mừng! Dự đoán của bạn cho ngựa 'Thần Phong' đã chính xác. Hệ thống vừa cộng 200 Điểm ảo vào tài khoản!"
+                }
+            }
+        };
+
+        /* ============================================================
+           INIT
+           ============================================================ */
+        window.onload = function () {
+            lucide.createIcons();
+            renderScopeModules();
+            resetSelectedActor();
+            selectPhase(1);
+            calculateFormScore();
+        };
+
+        /* ============================================================
+           TAB NAVIGATION
+           ============================================================ */
+        const TAB_ACTIVE = "tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all-300 text-[#0D3B2E] shadow-lg";
+        const TAB_ACTIVE_STYLE = "background: linear-gradient(90deg, #D4AF37, #C8A24E);";
+        const TAB_IDLE = "tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all-300 text-[#FAF3E0]/50 hover:text-[#FAF3E0] hover:bg-[#1A5E3F]/30";
+
+        function switchTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            // Show target tab
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = TAB_IDLE;
+                btn.removeAttribute('style');
+                const chev = btn.querySelector('i[data-lucide="chevron-right"]');
+                if (chev) chev.className = "w-4 h-4 opacity-40";
+            });
+            const activeBtn = document.getElementById(`btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.className = TAB_ACTIVE;
+                activeBtn.setAttribute('style', TAB_ACTIVE_STYLE);
+                const chev = activeBtn.querySelector('i[data-lucide="chevron-right"]');
+                if (chev) chev.className = "w-4 h-4 opacity-90";
+            }
+
+            // Update Header Title
+            const tabTitle = document.getElementById('current-tab-title');
+            const tabBadge = document.getElementById('current-tab-badge');
+            if (tabId === 'overview') {
+                tabTitle.innerText = "Phạm vi nghiệp vụ giải đấu HRTMS";
+                tabBadge.innerText = "Tổng quan";
+            } else if (tabId === 'context') {
+                tabTitle.innerText = "Sơ đồ luồng thông tin hệ thống";
+                tabBadge.innerText = "Context Diagram";
+                // Trigger default view mode setup
+                setContextViewMode('interactive');
+            } else if (tabId === 'swimlane') {
+                tabTitle.innerText = "Phân vai và phối hợp 6 giai đoạn vận hành";
+                tabBadge.innerText = "Swimlane Workflow";
+                // Trigger default view mode setup
+                setSwimlaneViewMode('interactive');
+            }
+        }
+
+        /* ============================================================
+           CONTEXT DIAGRAM
+           ============================================================ */
+        function setContextViewMode(mode) {
+            const interactiveContainer = document.getElementById('interactive-svg-container');
+            const blueprintContainer = document.getElementById('blueprint-view-container');
+            const btnInteractive = document.getElementById('btn-view-interactive');
+            const btnBlueprint = document.getElementById('btn-view-blueprint');
+
+            if (mode === 'interactive') {
+                interactiveContainer.classList.remove('hidden');
+                blueprintContainer.classList.add('hidden');
+                btnInteractive.className = "px-3 py-1.5 text-xs font-semibold rounded-lg text-[#0D3B2E] transition-all";
+                btnInteractive.style.background = 'linear-gradient(90deg,#D4AF37,#C8A24E)';
+                btnBlueprint.className = "px-3 py-1.5 text-xs font-semibold rounded-lg text-[#FAF3E0]/50 hover:text-[#FAF3E0] transition-all";
+                btnBlueprint.removeAttribute('style');
+                resetSelectedActor();
+            } else {
+                interactiveContainer.classList.add('hidden');
+                blueprintContainer.classList.remove('hidden');
+                btnInteractive.className = "px-3 py-1.5 text-xs font-semibold rounded-lg text-[#FAF3E0]/50 hover:text-[#FAF3E0] transition-all";
+                btnInteractive.removeAttribute('style');
+                btnBlueprint.className = "px-3 py-1.5 text-xs font-semibold rounded-lg text-[#0D3B2E] transition-all";
+                btnBlueprint.style.background = 'linear-gradient(90deg,#D4AF37,#C8A24E)';
+                resetSelectedActor();
+            }
+        }
+
+        /* ============================================================
+           SWIMLANE
+           ============================================================ */
+        function setSwimlaneViewMode(mode) {
+            const interactiveContainer = document.getElementById('swim-interactive-container');
+            const matrixContainer = document.getElementById('swim-matrix-container');
+            const btnInteractive = document.getElementById('btn-swim-interactive');
+            const btnMatrix = document.getElementById('btn-swim-matrix');
+
+            if (mode === 'interactive') {
+                interactiveContainer.classList.remove('hidden');
+                matrixContainer.classList.add('hidden');
+                btnInteractive.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg text-[#0D3B2E] transition-all";
+                btnInteractive.style.background = 'linear-gradient(90deg,#D4AF37,#C8A24E)';
+                btnMatrix.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg text-[#FAF3E0]/50 transition-all";
+                btnMatrix.removeAttribute('style');
+                selectPhase(1);
+            } else {
+                interactiveContainer.classList.add('hidden');
+                matrixContainer.classList.remove('hidden');
+                btnInteractive.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg text-[#FAF3E0]/50 transition-all";
+                btnInteractive.removeAttribute('style');
+                btnMatrix.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg text-[#0D3B2E] transition-all";
+                btnMatrix.style.background = 'linear-gradient(90deg,#D4AF37,#C8A24E)';
+            }
+        }
+
+        /* ============================================================
+           UTILITIES — Form Score Calculator (40/35/25 static rule)
+           ============================================================ */
+        function calculateFormScore() {
+            const horseVal = parseFloat(document.getElementById('input-horse').value);
+            const jockeyVal = parseFloat(document.getElementById('input-jockey').value);
+            const roundVal = parseFloat(document.getElementById('input-round').value);
+
+            document.getElementById('val-horse').innerText = horseVal + "%";
+            document.getElementById('val-jockey').innerText = jockeyVal + "%";
+            document.getElementById('val-round').innerText = roundVal + "%";
+
+            // Static formula: 40% Horse performance + 35% Jockey performance + 25% Round results
+            const score = (horseVal * 0.4) + (jockeyVal * 0.35) + (roundVal * 0.25);
+            document.getElementById('result-score').innerText = score.toFixed(2);
+        }
+
+        const ACTOR_COORDS = {
+            admin: { x: 500, y: 60 },
+            jockey: { x: 820, y: 250 },
+            referee: { x: 730, y: 540 },
+            spectator: { x: 270, y: 540 },
+            owner: { x: 180, y: 250 }
+        };
+
+        function selectActor(actorId) {
+            const data = actorData[actorId];
+            if (!data) return;
+
+            // 1. Highlight Node
+            document.querySelectorAll('#context-svg circle').forEach(circle => {
+                circle.setAttribute('stroke', THEME.nodeStroke);
+                circle.setAttribute('stroke-width', '2');
+            });
+            const selectedCircle = document.querySelector(`#node-${actorId} circle`);
+            if (selectedCircle) {
+                selectedCircle.setAttribute('stroke', THEME.nodeActive);
+                selectedCircle.setAttribute('stroke-width', '4');
+            }
+
+            // 2. Dim other actors
+            document.querySelectorAll('.svg-actor-node').forEach(node => {
+                if (node.id === `node-${actorId}`) {
+                    node.style.opacity = '1';
+                } else {
+                    node.style.opacity = '0.15';
+                }
+            });
+
+            // Hide original straight lines
+            document.querySelectorAll('.data-line').forEach(line => {
+                line.style.display = 'none';
+            });
+
+            // 3. Zoom & Pan Camera (Viewport)
+            const coords = ACTOR_COORDS[actorId];
+            const sysX = 500, sysY = 350;
+            const midX = (coords.x + sysX) / 2;
+            const midY = (coords.y + sysY) / 2;
+
+            const dx = sysX - midX;
+            const dy = sysY - midY;
+            const viewport = document.getElementById('svg-viewport');
+            // Scale up and translate so midpoint becomes center (500,350)
+            viewport.style.transform = `translate(${dx}px, ${dy}px) scale(1.65)`;
+
+            // 4. Draw Dynamic Curves with Text
+            const dynConns = document.getElementById('dynamic-connections');
+            dynConns.innerHTML = ''; // clear old
+
+            // Generate Input HTML List
+            const inHtmlList = data.inputs.map(i => `<li class="flex items-start gap-1"><span class="text-[#00F3FF] font-bold shrink-0">[${i.key}]</span><span class="text-slate-200">${i.val}</span></li>`).join('');
+            const inHtml = `
+                <div xmlns="http://www.w3.org/1999/xhtml" class="w-full h-full p-2.5 bg-slate-950/80 backdrop-blur-md border border-[#00F3FF]/40 rounded-xl text-[9.5px] shadow-2xl overflow-y-auto">
+                    <div class="text-[#00F3FF] font-black text-[10px] tracking-wider uppercase mb-1.5 border-b border-[#00F3FF]/30 pb-1">Input (Tới Hệ thống)</div>
+                    <ul class="space-y-1.5 leading-snug">${inHtmlList}</ul>
+                </div>
+            `;
+
+            // Generate Output HTML List
+            const outHtmlList = data.outputs.map(i => `<li class="flex items-start gap-1"><span class="text-[#B026FF] font-bold shrink-0">[${i.key}]</span><span class="text-slate-200">${i.val}</span></li>`).join('');
+            const outHtml = `
+                <div xmlns="http://www.w3.org/1999/xhtml" class="w-full h-full p-2.5 bg-slate-950/80 backdrop-blur-md border border-[#B026FF]/40 rounded-xl text-[9.5px] shadow-2xl overflow-y-auto">
+                    <div class="text-[#B026FF] font-black text-[10px] tracking-wider uppercase mb-1.5 border-b border-[#B026FF]/30 pb-1">Output (Từ Hệ thống)</div>
+                    <ul class="space-y-1.5 leading-snug">${outHtmlList}</ul>
+                </div>
+            `;
+
+            // Calculate bezier control points for curved arrows
+            const angle = Math.atan2(sysY - coords.y, sysX - coords.x);
+            const dist = Math.hypot(sysX - coords.x, sysY - coords.y);
+            const curveOffset = dist * 0.28; // slightly wider curve to fit boxes
+
+            // Input Curve (Actor -> System)
+            const cpInX = midX - Math.sin(angle) * curveOffset;
+            const cpInY = midY + Math.cos(angle) * curveOffset;
+            const pathIn = `M ${coords.x} ${coords.y} Q ${cpInX} ${cpInY} ${sysX} ${sysY}`;
+
+            // Output Curve (System -> Actor)
+            const cpOutX = midX + Math.sin(angle) * curveOffset;
+            const cpOutY = midY - Math.cos(angle) * curveOffset;
+            const pathOut = `M ${sysX} ${sysY} Q ${cpOutX} ${cpOutY} ${coords.x} ${coords.y}`;
+
+            // Positioning for foreignObjects (Text Boxes)
+            const boxW = 210;
+            const boxH = 130;
+
+            // Push the boxes away from the center line perpendicularly
+            const pushDist = 150;
+            const inBoxX = midX - Math.sin(angle) * pushDist - boxW / 2;
+            const inBoxY = midY + Math.cos(angle) * pushDist - boxH / 2;
+
+            const outBoxX = midX + Math.sin(angle) * pushDist - boxW / 2;
+            const outBoxY = midY - Math.cos(angle) * pushDist - boxH / 2;
+
+            dynConns.innerHTML = `
+                <!-- Paths -->
+                <path id="dyn-curve-in" d="${pathIn}" fill="none" stroke="${THEME.lineActive}" stroke-width="2.5" stroke-dasharray="6" marker-end="url(#arrow-active)">
+                    <animate attributeName="stroke-dashoffset" from="100" to="0" dur="1.5s" repeatCount="indefinite" />
+                </path>
+                <path id="dyn-curve-out" d="${pathOut}" fill="none" stroke="${THEME.lineRev}" stroke-width="2.5" stroke-dasharray="6" marker-end="url(#arrow-active)">
+                    <animate attributeName="stroke-dashoffset" from="100" to="0" dur="1.5s" repeatCount="indefinite" />
+                </path>
+                
+                <!-- Floating HTML Text Boxes -->
+                <foreignObject x="${inBoxX}" y="${inBoxY}" width="${boxW}" height="${boxH}">
+                    ${inHtml}
+                </foreignObject>
+                
+                <foreignObject x="${outBoxX}" y="${outBoxY}" width="${boxW}" height="${boxH}">
+                    ${outHtml}
+                </foreignObject>
+            `;
+        }
+
+        function resetSelectedActor() {
+            // Restore original styles
+            document.querySelectorAll('#context-svg circle').forEach(circle => {
+                circle.setAttribute('stroke', THEME.nodeStroke);
+                circle.setAttribute('stroke-width', '2');
+            });
+            document.querySelectorAll('.svg-actor-node').forEach(node => {
+                node.style.opacity = '1';
+            });
+            document.querySelectorAll('.data-line').forEach(line => {
+                line.style.display = 'block';
+                line.setAttribute('stroke', THEME.lineIdle);
+                line.setAttribute('stroke-width', '1.5');
+                line.classList.remove('flow-line', 'glow-active');
+            });
+
+            // Reset viewport transform
+            const viewport = document.getElementById('svg-viewport');
+            viewport.style.transform = `translate(0px, 0px) scale(1)`;
+
+            // Clear dynamic connections
+            document.getElementById('dynamic-connections').innerHTML = '';
+        }
+
+        function selectPhase(phaseId) {
+            const data = phaseData[phaseId];
+            if (!data) return;
+
+            // Highlight phase button
+            document.querySelectorAll('.phase-btn').forEach(btn => {
+                btn.className = "phase-btn p-3 border border-[#C8A24E]/15 text-[#FAF3E0]/50 hover:text-[#FAF3E0] rounded-xl text-left transition-all duration-300";
+                btn.style.background = 'rgba(8,12,20,0.5)';
+            });
+            const activePhaseBtn = document.getElementById(`phase-btn-${phaseId}`);
+            if (activePhaseBtn) {
+                activePhaseBtn.className = "phase-btn p-3 border border-[#D4AF37]/50 text-[#0D3B2E] rounded-xl text-left transition-all duration-300 font-semibold";
+                activePhaseBtn.style.background = 'linear-gradient(90deg, #D4AF37, #C8A24E)';
+            }
+
+            // Populate Swimlane lists
+            const roles = ['admin', 'owner', 'jockey', 'referee', 'spectator'];
+            roles.forEach(role => {
+                const container = document.getElementById(`swim-${role}-actions`);
+                container.innerHTML = "";
+                const actions = data.actions[role];
+
+                if (actions && actions.length > 0) {
+                    actions.forEach(action => {
+                        const card = document.createElement('div');
+                        card.className = `px-3 py-1.5 rounded-lg text-xs font-medium border text-slate-300 bg-slate-950 border-slate-800/80 hover:border-slate-700 transition-all`;
+                        card.innerHTML = action;
+                        container.appendChild(card);
+                    });
+                } else {
+                    const emptyCard = document.createElement('div');
+                    emptyCard.className = "text-xs text-slate-600 italic py-1.5 pl-2";
+                    emptyCard.innerText = "Không có hoạt động trong pha này";
+                    container.appendChild(emptyCard);
+                }
+            });
+
+            // Populate rules
+            const rulesContainer = document.getElementById('phase-rules-container');
+            rulesContainer.innerHTML = "";
+            data.rules.forEach(rule => {
+                const ruleCard = document.createElement('div');
+                ruleCard.className = "p-3 bg-slate-950 rounded-xl border border-slate-800/80 text-xs text-slate-300 space-y-1";
+                ruleCard.innerHTML = `
+                    <p class="text-[11px] leading-relaxed text-slate-400">${rule}</p>
+                `;
+                rulesContainer.appendChild(ruleCard);
+            });
+
+            // Populate Design recommendation
+            document.getElementById('phase-design-recom').innerText = data.design;
+
+            // Synchronize Virtual State Card and Terminal Logs
+            if (data.simState) {
+                document.getElementById('sim-state-tournament').innerText = data.simState.tournament;
+                document.getElementById('sim-state-gate').innerText = data.simState.gate;
+                document.getElementById('sim-state-coi').innerText = data.simState.coi;
+                document.getElementById('sim-state-jockey').innerText = data.simState.jockey;
+
+                // Color overrides
+                document.getElementById('sim-state-tournament').className = data.simState.tournament === "LIVE" ? "text-rose-500 font-bold" : "text-blue-400 font-bold";
+                document.getElementById('sim-state-gate').className = data.simState.gate.includes("MỞ") ? "text-emerald-400 font-bold" : "text-slate-400";
+            }
+
+            // Write logs to Simulated Terminal
+            const terminal = document.getElementById('sim-terminal');
+            terminal.innerHTML = "";
+            data.terminalLogs.forEach(log => {
+                const logLine = document.createElement('p');
+                if (log.includes("[SYSTEM]")) {
+                    logLine.className = "text-blue-400";
+                } else if (log.includes("[DB]")) {
+                    logLine.className = "text-slate-400 font-mono";
+                } else if (log.includes("[COI-CHECK]") || log.includes("[JOCKEY-INDEPENDENCE]")) {
+                    logLine.className = "text-amber-400 font-semibold";
+                } else {
+                    logLine.className = "text-emerald-400";
+                }
+                logLine.innerText = log;
+                terminal.appendChild(logLine);
+            });
+            terminal.scrollTop = terminal.scrollHeight;
+
+            // Push Notification Toast inside the Simulator UI Area
+            const notiArea = document.getElementById('sim-noti-area');
+            notiArea.innerHTML = "";
+            const notiBadge = document.createElement('div');
+            notiBadge.className = "p-3 bg-slate-950 border border-slate-800/80 rounded-xl space-y-1 transition-all duration-300 transform scale-100";
+            notiBadge.innerHTML = `
+                <div class="flex items-center gap-1.5">
+                    <span class="px-2 py-0.5 bg-brand-500/10 text-brand-400 rounded text-[9px] uppercase font-extrabold">${data.simNoti.role} Channel</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-400 status-pulse"></span>
+                </div>
+                <p class="text-xs text-slate-300 leading-normal font-medium">${data.simNoti.text}</p>
+            `;
+            notiArea.appendChild(notiBadge);
+        }
+
+        /* ============================================================
+           SIMULATOR — Automated business flow (race-start effect)
+           ============================================================ */
+        function triggerProcessSimulation() {
+            document.body.classList.add('race-start-active');
+            setTimeout(() => document.body.classList.remove('race-start-active'), 1500);
+
+            const steps = [
+                { text: "Pha 1: Admin cấu hình thô giải đấu & thiết lập quỹ giải thưởng (Purse)...", phase: 1 },
+                { text: "Pha 2: Owner điền hồ sơ đăng ký 'Thần Phong' và chốt ghép cặp với Jockey...", phase: 2 },
+                { text: "Pha 2: Admin kiểm duyệt hồ sơ ngựa thi đấu và cấp phép trạng thái thành công...", phase: 2 },
+                { text: "Pha 3: Admin bốc thăm Post Position ngẫu nhiên và kiểm tra Conflict-of-interest...", phase: 3 },
+                { text: "Pha 3: Hệ thống mở Prediction Gate cho Spectator tham gia dự đoán Win/Place...", phase: 3 },
+                { text: "Pha 4: Trọng tài check-in tại sân, tiến hành Jockey Independence Check...", phase: 4 },
+                { text: "Pha 5: Trọng tài chuyển sang 'Live' & Khóa cổng cược của Spectator tự động...", phase: 5 },
+                { text: "Pha 5: Trọng tài bắt lỗi vi phạm và tiếp nhận đơn khiếu nại (Protest)...", phase: 5 },
+                { text: "Pha 6: Admin công bố Official, cập nhật Leaderboards & phân phối điểm thưởng...", phase: 6 }
+            ];
+
+            const toast = document.getElementById('simulation-toast');
+            const toastText = document.getElementById('simulation-toast-text');
+            toast.classList.remove('hidden');
+
+            // Switch to Swimlane tab to visualize easily
+            switchTab('swimlane');
+            setSwimlaneViewMode('interactive');
+
+            let index = 0;
+            function runNextStep() {
+                if (index < steps.length) {
+                    const step = steps[index];
+                    toastText.innerText = step.text;
+                    selectPhase(step.phase);
+
+                    // Highlight timeline button dynamically
+                    const btn = document.getElementById(`phase-btn-${step.phase}`);
+                    if (btn) {
+                        btn.classList.add('glow-active');
+                        setTimeout(() => { btn.classList.remove('glow-active'); }, 1400);
+                    }
+
+                    index++;
+                    setTimeout(runNextStep, 2600);
+                } else {
+                    toastText.innerText = "Mô phỏng quy trình nghiệp vụ SU26SWP03 thành công!";
+                    setTimeout(() => {
+                        toast.classList.add('hidden');
+                    }, 3000);
+                }
+            }
+
+            runNextStep();
+        }
+
+        /* ============================================================
+           3D BACKGROUND (THREE.JS)
+           ============================================================ */
+        function initThreeJSBackground() {
+            const canvas = document.getElementById('bg-canvas');
+            const scene = new THREE.Scene();
+
+            // Camera
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 50;
+            camera.position.y = 10;
+
+            // Renderer
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            // Particles (Wave)
+            const particlesGeometry = new THREE.BufferGeometry();
+            const count = 3000;
+            const positions = new Float32Array(count * 3);
+            const colors = new Float32Array(count * 3);
+
+            const color1 = new THREE.Color("#00F3FF"); // Cyan
+            const color2 = new THREE.Color("#B026FF"); // Purple
+
+            for (let i = 0; i < count; i++) {
+                // X, Z grid
+                const x = (Math.random() - 0.5) * 200;
+                const z = (Math.random() - 0.5) * 200;
+                // Y will be updated in animation
+                const y = 0;
+
+                positions[i * 3] = x;
+                positions[i * 3 + 1] = y;
+                positions[i * 3 + 2] = z;
+
+                const mixRatio = Math.random();
+                const mixedColor = color1.clone().lerp(color2, mixRatio);
+                colors[i * 3] = mixedColor.r;
+                colors[i * 3 + 1] = mixedColor.g;
+                colors[i * 3 + 2] = mixedColor.b;
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            // Material
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.3,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending
+            });
+
+            // Mesh
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+
+            // Mouse interaction
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetX = 0;
+            let targetY = 0;
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
+
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - windowHalfX);
+                mouseY = (event.clientY - windowHalfY);
+            });
+
+            // Animation Loop
+            const clock = new THREE.Clock();
+
+            function animate() {
+                requestAnimationFrame(animate);
+                const elapsedTime = clock.getElapsedTime();
+
+                // Wave effect
+                const positions = particlesGeometry.attributes.position.array;
+                for (let i = 0; i < count; i++) {
+                    const i3 = i * 3;
+                    const x = positions[i3];
+                    const z = positions[i3 + 2];
+                    positions[i3 + 1] = Math.sin(elapsedTime * 0.5 + x * 0.05) * 3 + Math.cos(elapsedTime * 0.3 + z * 0.05) * 3 - 20;
+                }
+                particlesGeometry.attributes.position.needsUpdate = true;
+
+                // Mouse parallax
+                targetX = mouseX * 0.001;
+                targetY = mouseY * 0.001;
+
+                particlesMesh.rotation.y += 0.001;
+                particlesMesh.rotation.x += 0.0005;
+
+                camera.position.x += (mouseX * 0.05 - camera.position.x) * 0.05;
+                camera.position.y += (-mouseY * 0.05 - camera.position.y) * 0.05;
+                camera.lookAt(scene.position);
+
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // Resize handling
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        // Initialize Three.js on load
+        const originalOnload = window.onload;
+        window.onload = function () {
+            if (originalOnload) originalOnload();
+            initThreeJSBackground();
+        };
+    </script>
+</body>
+
+</html>
