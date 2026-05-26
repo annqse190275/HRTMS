@@ -1,0 +1,267 @@
+﻿                        <table class="w-full text-left border-collapse min-w-[1000px]">
+                            <thead>
+                                <tr
+                                    class="bg-slate-950 text-slate-300 border-b border-slate-800 text-xs font-bold uppercase tracking-wider">
+                                    <th
+                                        class="p-4 border-r border-slate-800 w-[12%] bg-slate-950/90 sticky left-0 z-10">
+                                        Giai Ä‘oáº¡n</th>
+                                    <th class="p-4 border-r border-slate-800 w-[14%]">Admin (Ban tá»• chá»©c)</th>
+                                    <th class="p-4 border-r border-slate-800 w-[14%]">Horse Owner (Chá»§ ngá»±a)</th>
+                                    <th class="p-4 border-r border-slate-800 w-[14%]">Jockey (NÃ i ngá»±a)</th>
+                                    <th class="p-4 border-r border-slate-800 w-[14%]">Doctor (BÃ¡c sÄ© thÃº y)</th>
+                                    <th class="p-4 border-r border-slate-800 w-[14%]">Race Referee (Trá»ng tÃ i)</th>
+                                    <th class="p-4 w-[18%]">Spectator (KhÃ¡n giáº£)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-xs text-slate-300 divide-y divide-slate-800/60">
+                                <!-- Phase 1 Row -->
+                                <tr class="hover:bg-slate-950/20">
+                                    <td
+                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai Ä‘oáº¡n
+                                            1</span>
+                                        â‘  Khá»Ÿi táº¡o giáº£i
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Táº¡o giáº£i Ä‘áº¥u (tÃªn, quy mÃ´, loáº¡i hÃ¬nh)</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Láº­p cáº¥u trÃºc cÃ¡c vÃ²ng Ä‘ua</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Cáº¥u hÃ¬nh Quá»¹ tiá»n thÆ°á»Ÿng (Purse)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Náº±m ngoÃ i giai Ä‘oáº¡n</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Náº±m ngoÃ i giai Ä‘oáº¡n</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Náº±m ngoÃ i giai Ä‘oáº¡n</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Náº±m ngoÃ i giai Ä‘oáº¡n</td>
+                                    <td class="p-3 space-y-2">
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Xem thÃ´ng tin giáº£i má»›i Ä‘Æ°á»£c cÃ´ng bá»‘</div>
+                                    </td>
+                                </tr>
+
+                                <!-- Phase 2 Row -->
+                                <tr class="hover:bg-slate-950/20">
+                                    <td
+                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai Ä‘oáº¡n
+                                            2</span>
+                                        â‘¡ ÄÄƒng kÃ½ tham gia
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Kiá»ƒm duyá»‡t há»“ sÆ¡ ngá»±a thi Ä‘áº¥u</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Gá»­i lÃ½ do tá»« chá»‘i náº¿u khÃ´ng duyá»‡t</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
+                                            ÄÄƒng kÃ½ tÃ i khoáº£n, ná»™p há»“ sÆ¡ ngá»±a</div>
+                                        <div
+                                            class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
+                                            TÃ¬m Jockey & Gá»­i lá»i má»i thuÃª</div>
+                                        <div
+                                            class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
+                                            Chá» duyá»‡t Ä‘Äƒng kÃ½ ngá»±a vÃ o giáº£i</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg">
+                                            ÄÄƒng kÃ½ tÃ i khoáº£n & khai chá»©ng chá»‰</div>
+                                        <div
+                                            class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg">
+                                            Nháº­n vÃ  xá»­ lÃ½ (Duyá»‡t/Tá»« chá»‘i) lá»i má»i</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            Duyá»‡t y táº¿ Jockey (2.1-MD)</div>
+                                        <div
+                                            class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            Duyá»‡t y táº¿ Ngá»±a (2.2-MD)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Náº±m ngoÃ i giai Ä‘oáº¡n</td>
+                                    <td class="p-3 text-slate-500 italic">Náº±m ngoÃ i giai Ä‘oáº¡n</td>
+                                </tr>
+
+                                <!-- Phase 3 Row -->
+                                <tr class="hover:bg-slate-950/20">
+                                    <td
+                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai Ä‘oáº¡n
+                                            3</span>
+                                        â‘¢ Chuáº©n bá»‹ giáº£i Ä‘ua
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            PhÃ¢n bá»™ ngá»±a Ä‘Ã£ duyá»‡t vÃ o cÃ¡c Race</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Bá»‘c thÄƒm vá»‹ trÃ­ xuáº¥t phÃ¡t cÃ´ng khai</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            PhÃ¢n cÃ´ng Lead/Assistant Referees</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Cáº¥u hÃ¬nh cá»•ng dá»± Ä‘oÃ¡n</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
+                                            Xem lá»‹ch Ä‘ua & XÃ¡c nháº­n tham gia</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg">
+                                            Xem thÃ´ng tin cuá»™c Ä‘ua & ngá»±a lÃ¡i</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Náº±m ngoÃ i giai Ä‘oáº¡n</td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            Nháº­n thÃ´ng bÃ¡o Ä‘Æ°á»£c phÃ¢n cÃ´ng & danh sÃ¡ch</div>
+                                    </td>
+                                    <td class="p-3 space-y-2">
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Xem danh sÃ¡ch ngá»±a & vá»‹ trÃ­ xuáº¥t phÃ¡t</div>
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Gá»­i dá»± Ä‘oÃ¡n káº¿t quáº£ (Cá»•ng Open)</div>
+                                    </td>
+                                </tr>
+
+                                <!-- Phase 4 Row -->
+                                <tr class="hover:bg-slate-950/20">
+                                    <td
+                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai Ä‘oáº¡n
+                                            4</span>
+                                        â‘£ TrÆ°á»›c giá» Ä‘ua
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Náº±m ngoÃ i giai Ä‘oáº¡n</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Náº±m ngoÃ i giai Ä‘oáº¡n</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Náº±m ngoÃ i giai Ä‘oáº¡n</td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            CÃ¢n Jockey trÆ°á»›c Ä‘ua Weighing Out (4.1-MD)</div>
+                                        <div
+                                            class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            Khá»›p danh tÃ­nh táº¡i Paddock (4.2)</div>
+                                        <div
+                                            class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            KhÃ¡m y táº¿ Paddock lÃ¢m sÃ ng (4.3)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            XÃ¡c nháº­n danh sÃ¡ch cháº¡y chÃ­nh thá»©c (4.5)</div>
+                                    </td>
+                                    <td class="p-3 space-y-2">
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Xem láº¡i dá»± Ä‘oÃ¡n (Cá»•ng Locked)</div>
+                                    </td>
+                                </tr>
+
+                                <!-- Phase 5 Row -->
+                                <tr class="hover:bg-slate-950/20">
+                                    <td
+                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai Ä‘oáº¡n
+                                            5</span>
+                                        â‘¤ Diá»…n biáº¿n (Live)
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Náº±m ngoÃ i giai Ä‘oáº¡n</td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
+                                            Ná»™p Ä‘Æ¡n khiáº¿u náº¡i Protest (5.4)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg">
+                                            Ná»™p Ä‘Æ¡n khiáº¿u náº¡i Protest (5.4)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Náº±m ngoÃ i giai Ä‘oáº¡n</td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            Chuyá»ƒn Live & khÃ³a cá»•ng cÆ°á»£c (5.1)</div>
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            Ghi vi pháº¡m qua dropdown mÃ£ lá»—i (5.3)</div>
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            Giáº£i quyáº¿t Protest (5.5) & Chá»‘t Unofficial (5.6)</div>
+                                    </td>
+                                    <td class="p-3 space-y-2">
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Theo dÃµi Live Simulation (5.2)</div>
+                                    </td>
+                                </tr>
+
+                                <!-- Phase 6 Row -->
+                                <tr class="hover:bg-slate-950/20">
+                                    <td
+                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai Ä‘oáº¡n
+                                            6</span>
+                                        â‘¥ CÃ´ng bá»‘ & Tráº£ thÆ°á»Ÿng
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Duyá»‡t biÃªn báº£n & Chá»‘t 'Official' (6.1)</div>
+                                        <div
+                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
+                                            Cáº­p nháº­t thanh toÃ¡n & Audit Log (6.6)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
+                                            Nháº­n tiá»n thÆ°á»Ÿng quá»¹ Purse (6.5)</div>
+                                        <div
+                                            class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
+                                            Xem Leaderboard ngá»±a má»›i (6.8)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg">
+                                            Nháº­n thu nháº­p & Standings (6.8)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            CÃ¢n Jockey sau cuá»™c Ä‘ua Weighing In (6.3)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            BiÃªn báº£n bá»‹ khÃ³a cá»©ng Ä‘iá»‡n tá»­ (6.2)</div>
+                                    </td>
+                                    <td class="p-3 space-y-2">
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Äá»‘i chiáº¿u & tráº£ thÆ°á»Ÿng Ä‘iá»ƒm áº£o (6.4)</div>
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Nháº­n thÃ´ng bÃ¡o Ä‘á»‘i chiáº¿u dá»± Ä‘oÃ¡n</div>
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Cá»™ng Ä‘iá»ƒm thÆ°á»Ÿng áº£o hoáº·c nháº­n Voucher</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>

@@ -704,12 +704,12 @@
                                     </div>
                                     <div>
                                         <h3 class="font-bold text-[#FAF3E0]">Hạng mục In-Scope (Phase 1)</h3>
-                                        <p class="text-xs text-[#FAF3E0]/50">15 modules A–O — đồng bộ
-                                            INTRODUCTION_20260522</p>
+                                        <p class="text-xs text-[#FAF3E0]/50">17 modules A–Q — đồng bộ
+                                            INTRODUCTION_UPDATED_20260522_REVISED</p>
                                     </div>
                                 </div>
                                 <span class="text-xs font-semibold px-2.5 py-0.5 rounded border text-[#0D3B2E]"
-                                    style="background: #D4AF37; border-color: #C8A24E;">15 Modules (A–O)</span>
+                                    style="background: #D4AF37; border-color: #C8A24E;">17 Modules (A–Q)</span>
                             </div>
 
                             <div id="in-scope-modules" class="space-y-5 max-h-[700px] overflow-y-auto pr-2"></div>
@@ -726,12 +726,12 @@
                                     </div>
                                     <div>
                                         <h3 class="font-bold text-[#FAF3E0]">Hạng mục Out-of-Scope</h3>
-                                        <p class="text-xs text-[#FAF3E0]/50">12 mục — Phase 2+ hoặc hệ thống ngoài
+                                        <p class="text-xs text-[#FAF3E0]/50">13 mục — Phase 2+ hoặc hệ thống ngoài
                                         </p>
                                     </div>
                                 </div>
                                 <span class="text-xs font-semibold px-2.5 py-0.5 rounded border text-[#FAF3E0]/80"
-                                    style="background: rgba(139,26,26,0.2); border-color: rgba(200,35,51,0.4);">12
+                                    style="background: rgba(139,26,26,0.2); border-color: rgba(200,35,51,0.4);">13
                                     Mục</span>
                             </div>
 
@@ -814,24 +814,34 @@
                                     <path id="line-admin-rev" d="M 500 60 L 500 350" fill="none" class="data-line"
                                         stroke="#2a3d35" stroke-width="1.5" stroke-dasharray="5 5" />
 
-                                    <path id="line-jockey" d="M 500 350 L 820 250" fill="none" class="data-line"
+                                    <!-- 2. Doctor -->
+                                    <path id="line-doctor" d="M 500 350 L 734 195" fill="none" class="data-line"
                                         stroke="#2a3d35" stroke-width="2.5" marker-end="url(#arrow)" />
-                                    <path id="line-jockey-rev" d="M 820 250 L 500 350" fill="none" class="data-line"
+                                    <path id="line-doctor-rev" d="M 734 195 L 500 350" fill="none" class="data-line"
                                         stroke="#2a3d35" stroke-width="1.5" stroke-dasharray="5 5" />
 
-                                    <path id="line-referee" d="M 500 350 L 730 540" fill="none" class="data-line"
+                                    <!-- 3. Jockey -->
+                                    <path id="line-jockey" d="M 500 350 L 734 465" fill="none" class="data-line"
                                         stroke="#2a3d35" stroke-width="2.5" marker-end="url(#arrow)" />
-                                    <path id="line-referee-rev" d="M 730 540 L 500 350" fill="none" class="data-line"
+                                    <path id="line-jockey-rev" d="M 734 465 L 500 350" fill="none" class="data-line"
                                         stroke="#2a3d35" stroke-width="1.5" stroke-dasharray="5 5" />
 
-                                    <path id="line-spectator" d="M 500 350 L 270 540" fill="none" class="data-line"
+                                    <!-- 4. Referee -->
+                                    <path id="line-referee" d="M 500 350 L 500 600" fill="none" class="data-line"
                                         stroke="#2a3d35" stroke-width="2.5" marker-end="url(#arrow)" />
-                                    <path id="line-spectator-rev" d="M 270 540 L 500 350" fill="none" class="data-line"
+                                    <path id="line-referee-rev" d="M 500 600 L 500 350" fill="none" class="data-line"
                                         stroke="#2a3d35" stroke-width="1.5" stroke-dasharray="5 5" />
 
-                                    <path id="line-owner" d="M 500 350 L 180 250" fill="none" class="data-line"
+                                    <!-- 5. Spectator -->
+                                    <path id="line-spectator" d="M 500 350 L 266 465" fill="none" class="data-line"
                                         stroke="#2a3d35" stroke-width="2.5" marker-end="url(#arrow)" />
-                                    <path id="line-owner-rev" d="M 180 250 L 500 350" fill="none" class="data-line"
+                                    <path id="line-spectator-rev" d="M 266 465 L 500 350" fill="none" class="data-line"
+                                        stroke="#2a3d35" stroke-width="1.5" stroke-dasharray="5 5" />
+
+                                    <!-- 6. Horse Owner -->
+                                    <path id="line-owner" d="M 500 350 L 266 195" fill="none" class="data-line"
+                                        stroke="#2a3d35" stroke-width="2.5" marker-end="url(#arrow)" />
+                                    <path id="line-owner-rev" d="M 266 195 L 500 350" fill="none" class="data-line"
                                         stroke="#2a3d35" stroke-width="1.5" stroke-dasharray="5 5" />
 
                                     <!-- Actor Nodes -->
@@ -845,47 +855,57 @@
                                             font-weight="800" text-anchor="middle">ADMIN</text>
                                     </g>
 
-                                    <!-- 2. Jockey -->
+                                    <!-- 2. Doctor -->
+                                    <g id="node-doctor" onclick="selectActor('doctor')"
+                                        class="cursor-pointer group svg-actor-node"
+                                        style="transition: opacity 0.5s ease;">
+                                        <circle cx="734" cy="195" r="42" fill="#0F1318" stroke="#4a5c52" stroke-width="2"
+                                            class="group-hover:stroke-[#D4AF37] transition-all"></circle>
+                                        <text x="734" y="199" font-family="Inter" font-size="12" fill="#ffffff"
+                                            font-weight="800" text-anchor="middle">DOCTOR</text>
+                                    </g>
+
+                                    <!-- 3. Jockey -->
                                     <g id="node-jockey" onclick="selectActor('jockey')"
                                         class="cursor-pointer group svg-actor-node"
                                         style="transition: opacity 0.5s ease;">
-                                        <circle cx="820" cy="250" r="42" fill="#0F1318" stroke="#4a5c52"
+                                        <circle cx="734" cy="465" r="42" fill="#0F1318" stroke="#4a5c52"
                                             stroke-width="2" class="group-hover:stroke-[#D4AF37] transition-all">
                                         </circle>
-                                        <text x="820" y="254" font-family="Inter" font-size="12" fill="#ffffff"
+                                        <text x="734" y="469" font-family="Inter" font-size="12" fill="#ffffff"
                                             font-weight="800" text-anchor="middle">JOCKEY</text>
                                     </g>
 
-                                    <!-- 3. Referee -->
+                                    <!-- 4. Referee -->
                                     <g id="node-referee" onclick="selectActor('referee')"
                                         class="cursor-pointer group svg-actor-node"
                                         style="transition: opacity 0.5s ease;">
-                                        <circle cx="730" cy="540" r="42" fill="#0F1318" stroke="#4a5c52"
+                                        <circle cx="500" cy="600" r="42" fill="#0F1318" stroke="#4a5c52"
                                             stroke-width="2" class="group-hover:stroke-[#D4AF37] transition-all">
                                         </circle>
-                                        <text x="730" y="544" font-family="Inter" font-size="12" fill="#ffffff"
+                                        <text x="500" y="604" font-family="Inter" font-size="12" fill="#ffffff"
                                             font-weight="800" text-anchor="middle">REFEREE</text>
                                     </g>
 
-                                    <!-- 4. Spectator -->
+                                    <!-- 5. Spectator -->
                                     <g id="node-spectator" onclick="selectActor('spectator')"
                                         class="cursor-pointer group svg-actor-node"
                                         style="transition: opacity 0.5s ease;">
-                                        <circle cx="270" cy="540" r="42" fill="#0F1318" stroke="#4a5c52"
+                                        <circle cx="266" cy="465" r="42" fill="#0F1318" stroke="#4a5c52"
                                             stroke-width="2" class="group-hover:stroke-[#D4AF37] transition-all">
                                         </circle>
-                                        <text x="270" y="544" font-family="Inter" font-size="12" fill="#ffffff"
+                                        <text x="266" y="469" font-family="Inter" font-size="12" fill="#ffffff"
                                             font-weight="800" text-anchor="middle">SPECTATOR</text>
                                     </g>
 
-                                    <!-- 5. Horse Owner -->
+                                    <!-- 6. Horse Owner -->
                                     <g id="node-owner" onclick="selectActor('owner')"
                                         class="cursor-pointer group svg-actor-node"
                                         style="transition: opacity 0.5s ease;">
-                                        <circle cx="180" cy="250" r="42" fill="#0F1318" stroke="#4a5c52"
+                                        <circle cx="266" cy="195" r="42" fill="#0F1318" stroke="#4a5c52"
                                             stroke-width="2" class="group-hover:stroke-[#D4AF37] transition-all">
                                         </circle>
-                                        <text x="180" y="254" font-family="Inter" font-size="12" fill="#ffffff"
+                                        <text x="266" y="199" font-family="Inter" font-size="12" fill="#ffffff"
                                             font-weight="800" text-anchor="middle">OWNER</text>
                                     </g>
                                 </g>
@@ -945,21 +965,21 @@
 
             <!-- TAB 3: INTERACTIVE SWIMLANE & WORKFLOW -->
             <section id="tab-swimlane" class="tab-content hidden space-y-6">
-                <!-- Workflow View Switcher -->
+                <!-- Workflow View Switcher Header -->
                 <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                     <div>
                         <h3 class="font-extrabold text-slate-100 flex items-center gap-2">
                             <i data-lucide="route" class="w-5 h-5 text-brand-400"></i>
                             Sơ đồ dòng chảy quy trình phối hợp (Swimlane Workflow)
                         </h3>
-                        <p class="text-xs text-slate-400">Xem phân đoạn hoạt động theo pha hoặc nghiên cứu trực tiếp ma
-                            trận bản vẽ đầy đủ của dự án</p>
+                        <p class="text-xs text-slate-400">Xem phân đoạn hoạt động theo pha hoặc nghiên cứu trực tiếp ma trận bản vẽ đầy đủ của dự án</p>
                     </div>
 
                     <!-- Toggle Swimlane ViewMode -->
                     <div class="flex bg-slate-950 p-1 border border-slate-800 rounded-xl">
                         <button onclick="setSwimlaneViewMode('interactive')" id="btn-swim-interactive"
-                            class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-brand-600 text-white transition-all">
+                            class="px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all text-[#0D3B2E]"
+                            style="background: linear-gradient(90deg, #D4AF37, #C8A24E);">
                             Phân đoạn Từng Pha
                         </button>
                         <button onclick="setSwimlaneViewMode('matrix')" id="btn-swim-matrix"
@@ -970,58 +990,70 @@
                 </div>
 
                 <!-- INTERACTIVE PHASE WORKFLOW VIEW (Subtab 1) -->
-                <div id="swim-interactive-container" class="space-y-6">
-                    <!-- Phases Horizontal Timeline (6 stages) -->
-                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
-                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
-                            <button onclick="selectPhase(1)" id="phase-btn-1"
-                                class="phase-btn p-3 border border-[#D4AF37]/50 text-[#0D3B2E] rounded-xl text-left transition-all duration-300"
-                                style="background:linear-gradient(90deg,#D4AF37,#C8A24E);">
-                                <span class="text-[10px] font-bold text-[#0D3B2E]/70 block">Pha 1</span>
-                                <span class="text-xs font-bold block truncate">① Khởi tạo giải đấu</span>
-                            </button>
-                            <button onclick="selectPhase(2)" id="phase-btn-2"
-                                class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
-                                <span class="text-[10px] font-bold text-slate-500 block">Pha 2</span>
-                                <span class="text-xs font-bold block truncate">② Đăng ký tham gia</span>
-                            </button>
-                            <button onclick="selectPhase(3)" id="phase-btn-3"
-                                class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
-                                <span class="text-[10px] font-bold text-slate-500 block">Pha 3</span>
-                                <span class="text-xs font-bold block truncate">③ Chuẩn bị cuộc đua</span>
-                            </button>
-                            <button onclick="selectPhase(4)" id="phase-btn-4"
-                                class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
-                                <span class="text-[10px] font-bold text-slate-500 block">Pha 4</span>
-                                <span class="text-xs font-bold block truncate">④ Trước giờ đua</span>
-                            </button>
-                            <button onclick="selectPhase(5)" id="phase-btn-5"
-                                class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
-                                <span class="text-[10px] font-bold text-slate-500 block">Pha 5</span>
-                                <span class="text-xs font-bold block truncate">⑤ Diễn biến (Live)</span>
-                            </button>
-                            <button onclick="selectPhase(6)" id="phase-btn-6"
-                                class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
-                                <span class="text-[10px] font-bold text-slate-500 block">Pha 6</span>
-                                <span class="text-xs font-bold block truncate">⑥ Chốt & Trả thưởng</span>
-                            </button>
-                        </div>
-                    </div>
-
+                <div id="swim-interactive-container" class="flex flex-col gap-6 w-full">
                     <!-- Workflow Swimlane visualizer + Business Sandbox Simulator split layout -->
-                    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+                    <div class="grid grid-cols-12 gap-6 items-start w-full">
                         <!-- Left: Swimlanes per Actor -->
-                        <div class="xl:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
-                            <h3
-                                class="font-bold text-slate-100 flex items-center gap-2 text-sm border-b border-slate-800 pb-3">
-                                <i data-lucide="layers" class="w-4.5 h-4.5 text-brand-400"></i>
-                                Phân công hành động chi tiết của Pha đang chọn
-                            </h3>
+                        <div class="col-span-12 lg:col-span-7 flex flex-col gap-4">
+                            <!-- Phases Horizontal Timeline (6 stages) -->
+                            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
+                                <div class="grid grid-cols-3 md:grid-cols-6 gap-2">
+                                    <button onclick="selectPhase(1)" id="phase-btn-1"
+                                        class="phase-btn p-3 border border-[#D4AF37]/50 text-[#0D3B2E] rounded-xl text-left transition-all duration-300"
+                                        style="background:linear-gradient(90deg,#D4AF37,#C8A24E);">
+                                        <span class="text-[10px] font-bold text-[#0D3B2E]/70 block">Pha 1</span>
+                                        <span class="text-xs font-bold block truncate">① Khởi tạo giải đấu</span>
+                                    </button>
+                                    <button onclick="selectPhase(2)" id="phase-btn-2"
+                                        class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
+                                        <span class="text-[10px] font-bold text-slate-500 block">Pha 2</span>
+                                        <span class="text-xs font-bold block truncate">② Đăng ký tham gia</span>
+                                    </button>
+                                    <button onclick="selectPhase(3)" id="phase-btn-3"
+                                        class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
+                                        <span class="text-[10px] font-bold text-slate-500 block">Pha 3</span>
+                                        <span class="text-xs font-bold block truncate">③ Chuẩn bị cuộc đua</span>
+                                    </button>
+                                    <button onclick="selectPhase(4)" id="phase-btn-4"
+                                        class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
+                                        <span class="text-[10px] font-bold text-slate-500 block">Pha 4</span>
+                                        <span class="text-xs font-bold block truncate">④ Trước giờ đua</span>
+                                    </button>
+                                    <button onclick="selectPhase(5)" id="phase-btn-5"
+                                        class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
+                                        <span class="text-[10px] font-bold text-slate-500 block">Pha 5</span>
+                                        <span class="text-xs font-bold block truncate">⑤ Diễn biến (Live)</span>
+                                    </button>
+                                    <button onclick="selectPhase(6)" id="phase-btn-6"
+                                        class="phase-btn p-3 bg-slate-950/40 border border-slate-800 text-slate-400 hover:text-white rounded-xl text-left transition-all duration-300">
+                                        <span class="text-[10px] font-bold text-slate-500 block">Pha 6</span>
+                                        <span class="text-xs font-bold block truncate">⑥ Chốt & Trả thưởng</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 flex-1">
+
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-2">
+                                <h3 class="font-bold text-slate-100 flex items-center gap-2 text-sm">
+                                    <i data-lucide="layers" class="w-4.5 h-4.5 text-brand-400"></i>
+                                    Phân công hành động chi tiết của Pha đang chọn
+                                </h3>
+                                <button onclick="resetHappyPath()" id="btn-reset-path"
+                                    class="px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all">
+                                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                                    Reset Happy Path
+                                </button>
+                            </div>
 
                             <!-- Lane matrix -->
                             
-<div class="relative w-full h-[680px] overflow-hidden bg-slate-950 rounded-2xl border border-slate-800 shadow-inner" id="svg-container">
-    <svg id="branching-flow-svg" class="w-full h-full absolute inset-0 z-10">
+<div class="relative w-full bg-slate-950 rounded-2xl border border-slate-800 shadow-inner flex" style="min-h: 660px;">
+    <div class="w-32 sm:w-48 sticky left-0 z-20 bg-slate-950 border-r border-slate-800 flex flex-col shrink-0" id="sticky-actors-col">
+        <!-- Sticky actors column populated by JS -->
+    </div>
+    <div class="w-full overflow-x-auto scrollbar-thin">
+        <div class="relative min-w-[1000px] h-[660px]" id="svg-container">
+            <svg id="branching-flow-svg" class="w-full h-full absolute inset-0 z-10">
         <defs>
             <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
                 <feGaussianBlur stdDeviation="3" result="blur" />
@@ -1084,13 +1116,14 @@
             50% { opacity: 0.3; }
         }
     </style>
+        </div>
+    </div>
 </div>
-</div>
+                            </div>
                         </div>
 
                         <!-- Right: Business Sandbox Simulator Terminal Panel -->
-                        <div class="xl:col-span-5 flex flex-col gap-4">
-                            
+                        <div class="col-span-12 lg:col-span-5 flex flex-col gap-4 h-[720px] overflow-y-auto">
                             <!-- GLOBAL SIMULATION STATE wrapper with absolute overlay panel inside -->
                             <div id="sim-state-wrapper" class="relative">
                                 
@@ -1212,7 +1245,56 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Actor Actions Details -->
+                    <div class="col-span-12 w-full mt-4">
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                        <h3
+                            class="font-bold text-slate-100 flex items-center gap-2 text-sm border-b border-slate-800 pb-3 mb-4">
+                            <i data-lucide="list-checks" class="w-4.5 h-4.5 text-brand-400"></i>
+                            Chi tiết Module nghiệp vụ phân vai
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                            <div class="space-y-3">
+                                <h4
+                                    class="text-[11px] font-bold text-blue-400 uppercase tracking-wider border-b border-blue-500/20 pb-1">
+                                    Admin</h4>
+                                <div id="swim-admin-actions" class="space-y-2 flex flex-col"></div>
+                            </div>
+                            <div class="space-y-3">
+                                <h4
+                                    class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider border-b border-emerald-500/20 pb-1">
+                                    Owner</h4>
+                                <div id="swim-owner-actions" class="space-y-2 flex flex-col"></div>
+                            </div>
+                            <div class="space-y-3">
+                                <h4
+                                    class="text-[11px] font-bold text-amber-500 uppercase tracking-wider border-b border-amber-500/20 pb-1">
+                                    Jockey</h4>
+                                <div id="swim-jockey-actions" class="space-y-2 flex flex-col"></div>
+                            </div>
+                            <div class="space-y-3">
+                                <h4
+                                    class="text-[11px] font-bold text-purple-400 uppercase tracking-wider border-b border-purple-500/20 pb-1">
+                                    Referee</h4>
+                                <div id="swim-referee-actions" class="space-y-2 flex flex-col"></div>
+                            </div>
+                            <div class="space-y-3">
+                                <h4
+                                    class="text-[11px] font-bold text-cyan-400 uppercase tracking-wider border-b border-cyan-500/20 pb-1">
+                                    Doctor</h4>
+                                <div id="swim-doctor-actions" class="space-y-2 flex flex-col"></div>
+                            </div>
+                            <div class="space-y-3">
+                                <h4
+                                    class="text-[11px] font-bold text-indigo-400 uppercase tracking-wider border-b border-indigo-500/20 pb-1">
+                                    Spectator</h4>
+                                <div id="swim-spectator-actions" class="space-y-2 flex flex-col"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+</div>
 
                 <!-- COMPLETE MA TRẬN SWIMLANE VIEW (Subtab 2 - Built on hrtms_swimlane_workflow.html) -->
                 <div id="swim-matrix-container"
@@ -1224,34 +1306,34 @@
                             </div>
                             <div>
                                 <h3 class="font-bold text-slate-100">Bản vẽ Swimlane Toàn diện & Đồng bộ</h3>
-                                <p class="text-xs text-slate-400">Lưu vết liên lạc nghiệp vụ từ Giai đoạn ① đến ⑥ (Bản
-                                    đầy đủ thay thế ảnh thô)</p>
+                                <p class="text-xs text-slate-400">Lưu vết liên lạc nghiệp vụ từ Giai đoạn ① đến ⑥ (Bản đầy đủ thay thế ảnh thô)</p>
                             </div>
                         </div>
                         <span class="text-xs text-slate-400 font-medium">Định dạng bảng ma trận chuẩn hóa</span>
                     </div>
 
                     <!-- Complete swimlane table inside responsive view -->
-                    <div class="w-full overflow-x-auto rounded-xl border border-slate-800">
+                    <div class="w-full max-h-[600px] overflow-auto border border-slate-800 rounded-xl scrollbar-thin">
                         <table class="w-full text-left border-collapse min-w-[1000px]">
                             <thead>
                                 <tr
                                     class="bg-slate-950 text-slate-300 border-b border-slate-800 text-xs font-bold uppercase tracking-wider">
                                     <th
-                                        class="p-4 border-r border-slate-800 w-[14%] bg-slate-950/90 sticky left-0 z-10">
+                                        class="p-4 border-r border-slate-800 w-[12%] sticky top-0 left-0 z-40 bg-slate-900">
                                         Giai đoạn</th>
-                                    <th class="p-4 border-r border-slate-800 w-[17%]">Admin (Ban tổ chức)</th>
-                                    <th class="p-4 border-r border-slate-800 w-[17%]">Horse Owner (Chủ ngựa)</th>
-                                    <th class="p-4 border-r border-slate-800 w-[17%]">Jockey (Nài ngựa)</th>
-                                    <th class="p-4 border-r border-slate-800 w-[17%]">Race Referee (Trọng tài)</th>
-                                    <th class="p-4 w-[18%]">Spectator (Khán giả)</th>
+                                    <th class="p-4 border-r border-slate-800 w-[14%] sticky top-0 z-30 bg-slate-900">Admin (Ban tổ chức)</th>
+                                    <th class="p-4 border-r border-slate-800 w-[14%] sticky top-0 z-30 bg-slate-900">Horse Owner (Chủ ngựa)</th>
+                                    <th class="p-4 border-r border-slate-800 w-[14%] sticky top-0 z-30 bg-slate-900">Jockey (Nài ngựa)</th>
+                                    <th class="p-4 border-r border-slate-800 w-[14%] sticky top-0 z-30 bg-slate-900">Doctor (Bác sĩ thú y)</th>
+                                    <th class="p-4 border-r border-slate-800 w-[14%] sticky top-0 z-30 bg-slate-900">Race Referee (Trọng tài)</th>
+                                    <th class="p-4 w-[18%] sticky top-0 z-30 bg-slate-900">Spectator (Khán giả)</th>
                                 </tr>
                             </thead>
                             <tbody class="text-xs text-slate-300 divide-y divide-slate-800/60">
                                 <!-- Phase 1 Row -->
                                 <tr class="hover:bg-slate-950/20">
                                     <td
-                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        class="p-4 font-bold border-r border-slate-800 sticky left-0 z-20 bg-slate-950">
                                         <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai đoạn
                                             1</span>
                                         ① Khởi tạo giải
@@ -1267,12 +1349,10 @@
                                             class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
                                             Cấu hình Quỹ tiền thưởng (Purse)</div>
                                     </td>
-                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
-                                        đoạn</td>
-                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
-                                        đoạn</td>
-                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
-                                        đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
                                     <td class="p-3 space-y-2">
                                         <div
                                             class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
@@ -1283,7 +1363,7 @@
                                 <!-- Phase 2 Row -->
                                 <tr class="hover:bg-slate-950/20">
                                     <td
-                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        class="p-4 font-bold border-r border-slate-800 sticky left-0 z-20 bg-slate-950">
                                         <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai đoạn
                                             2</span>
                                         ② Đăng ký tham gia
@@ -1315,15 +1395,22 @@
                                             class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg">
                                             Nhận và xử lý (Duyệt/Từ chối) lời mời</div>
                                     </td>
-                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
-                                        đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            Duyệt y tế Jockey (2.1-MD)</div>
+                                        <div
+                                            class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            Duyệt y tế Ngựa (2.2-MD)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
                                     <td class="p-3 text-slate-500 italic">Nằm ngoài giai đoạn</td>
                                 </tr>
 
                                 <!-- Phase 3 Row -->
                                 <tr class="hover:bg-slate-950/20">
                                     <td
-                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        class="p-4 font-bold border-r border-slate-800 sticky left-0 z-20 bg-slate-950">
                                         <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai đoạn
                                             3</span>
                                         ③ Chuẩn bị giải đua
@@ -1331,7 +1418,7 @@
                                     <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
                                             class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
-                                            Phân bổ ngựa đã duyệt vào các Race</div>
+                                            Phân bộ ngựa đã duyệt vào các Race</div>
                                         <div
                                             class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
                                             Bốc thăm vị trí xuất phát công khai</div>
@@ -1352,9 +1439,10 @@
                                             class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg">
                                             Xem thông tin cuộc đua & ngựa lái</div>
                                     </td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
                                     <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
-                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
+                                            class="p-2 bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded-lg">
                                             Nhận thông báo được phân công & danh sách</div>
                                     </td>
                                     <td class="p-3 space-y-2">
@@ -1370,27 +1458,29 @@
                                 <!-- Phase 4 Row -->
                                 <tr class="hover:bg-slate-950/20">
                                     <td
-                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        class="p-4 font-bold border-r border-slate-800 sticky left-0 z-20 bg-slate-950">
                                         <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai đoạn
                                             4</span>
                                         ④ Trước giờ đua
                                     </td>
-                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
-                                        đoạn</td>
-                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
-                                        đoạn</td>
-                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
-                                        đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
                                     <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
-                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
-                                            Xác minh danh tính ngựa trực tiếp</div>
+                                            class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            Cân Jockey trước đua Weighing Out (4.1-MD)</div>
                                         <div
-                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
-                                            Ghi nhận trạng thái kiểm tra sức khỏe</div>
+                                            class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            Khám y tế Paddock lâm sàng (4.3)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
-                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
-                                            Loại ngựa không đủ điều kiện</div>
+                                            class="p-2 bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded-lg">
+                                            Khớp danh tính tại Paddock (4.2)</div>
+                                        <div
+                                            class="p-2 bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded-lg">
+                                            Xác nhận danh sách chạy chính thức (4.5)</div>
                                     </td>
                                     <td class="p-3 space-y-2">
                                         <div
@@ -1402,42 +1492,45 @@
                                 <!-- Phase 5 Row -->
                                 <tr class="hover:bg-slate-950/20">
                                     <td
-                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        class="p-4 font-bold border-r border-slate-800 sticky left-0 z-20 bg-slate-950">
                                         <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai đoạn
                                             5</span>
                                         ⑤ Diễn biến (Live)
                                     </td>
-                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
-                                        đoạn</td>
-                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
-                                        đoạn</td>
-                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai
-                                        đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
                                     <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
-                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
-                                            Chuyển trạng thái sang Live & khóa cổng cược</div>
+                                            class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
+                                            Nộp đơn khiếu nại Protest (5.4)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
-                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
-                                            Ghi vi phạm qua dropdown mã lỗi</div>
+                                            class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg">
+                                            Nộp đơn khiếu nại Protest (5.4)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
-                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
-                                            Xác nhận kết quả sơ bộ, lập biên bản</div>
+                                            class="p-2 bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded-lg">
+                                            Chuyển Live & khóa cổng cược (5.1)</div>
                                         <div
-                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
-                                            Chuyển cuộc đua sang Unofficial</div>
+                                            class="p-2 bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded-lg">
+                                            Ghi vi phạm qua dropdown mã lỗi (5.3)</div>
+                                        <div
+                                            class="p-2 bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded-lg">
+                                            Giải quyết Protest (5.5) & Chốt Unofficial (5.6)</div>
                                     </td>
                                     <td class="p-3 space-y-2">
                                         <div
                                             class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
-                                            Theo dõi trạng thái đua thay đổi trực tiếp</div>
+                                            Theo dõi Live Simulation (5.2)</div>
                                     </td>
                                 </tr>
 
                                 <!-- Phase 6 Row -->
                                 <tr class="hover:bg-slate-950/20">
                                     <td
-                                        class="p-4 font-bold border-r border-slate-800 bg-slate-950/40 sticky left-0 z-10">
+                                        class="p-4 font-bold border-r border-slate-800 sticky left-0 z-20 bg-slate-950">
                                         <span class="text-brand-400 block text-[10px] font-bold uppercase">Giai đoạn
                                             6</span>
                                         ⑥ Công bố & Trả thưởng
@@ -1445,33 +1538,38 @@
                                     <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
                                             class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
-                                            Duyệt biên bản & Chốt 'Official'</div>
+                                            Duyệt biên bản & Chốt 'Official' (6.1)</div>
                                         <div
                                             class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
-                                            Cập nhật trạng thái thanh toán giải thưởng</div>
-                                        <div
-                                            class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
-                                            Ghi nhận thông tin vào Audit Log</div>
+                                            Cập nhật thanh toán & Audit Log (6.6)</div>
                                     </td>
                                     <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
                                             class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
-                                            Nhận thông báo kết quả & chia tiền thưởng</div>
+                                            Nhận tiền thưởng quỹ Purse (6.5)</div>
                                         <div
                                             class="p-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 rounded-lg">
-                                            Xem bảng xếp hạng Leaderboard ngựa mới</div>
+                                            Xem Leaderboard ngựa mới (6.8)</div>
                                     </td>
                                     <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
                                             class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg">
-                                            Nhận thông báo tiền thưởng & BXH Jockey</div>
+                                            Nhận thu nhập & Standings (6.8)</div>
                                     </td>
                                     <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
-                                            class="p-2 bg-rose-500/10 border border-rose-500/20 text-rose-300 rounded-lg">
-                                            Biên bản bị khóa cứng điện tử vĩnh viễn</div>
+                                            class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            Cân Jockey sau cuộc đua Weighing In (6.3)</div>
+                                    </td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div
+                                            class="p-2 bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded-lg">
+                                            Biên bản bị khóa cứng điện tử (6.2)</div>
                                     </td>
                                     <td class="p-3 space-y-2">
+                                        <div
+                                            class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
+                                            Đối chiếu & trả thưởng điểm ảo (6.4)</div>
                                         <div
                                             class="p-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-lg">
                                             Nhận thông báo đối chiếu dự đoán</div>
@@ -1989,12 +2087,12 @@
             
             // Apply theme color to badge
             badge.className = "px-2 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider text-white";
-            if (actorName === 'ADMIN') badge.style.backgroundColor = '#6366f1';
+            if (actorName === 'ADMIN') badge.style.backgroundColor = '#3b82f6';
             else if (actorName === 'OWNER') badge.style.backgroundColor = '#10B981';
             else if (actorName === 'JOCKEY') badge.style.backgroundColor = '#F59E0B';
             else if (actorName === 'DOCTOR') badge.style.backgroundColor = '#06b6d4';
             else if (actorName === 'REFEREE') badge.style.backgroundColor = '#a855f7';
-            else if (actorName === 'SPECTATOR') badge.style.backgroundColor = '#ec4899';
+            else if (actorName === 'SPECTATOR') badge.style.backgroundColor = '#6366f1';
             else badge.style.backgroundColor = '#475569';
             
             actorModule.innerHTML = `Tác nhân: <strong class="text-white">${nodeData.actor || 'N/A'}</strong> | Module Backend: <strong class="text-white">${nodeData.module || 'N/A'}</strong>`;
@@ -2014,6 +2112,13 @@
             const overlay = document.getElementById('node-detail-card');
             if (overlay) overlay.classList.add('hidden');
             renderBranchingFlow(GLOBAL_SIM_STATE.currentPhaseId || 1);
+        }
+
+        function resetHappyPath() {
+            GLOBAL_SIM_STATE.activeErrors = [];
+            GLOBAL_SIM_STATE.activeExpandedErrNodeId = null;
+            deselectNode();
+            logToConsole("INFO", "Reset thành công: Đã xóa toàn bộ nhánh ngoại lệ. Khôi phục Happy Path.");
         }
 
         function clearTerminal() {
@@ -2085,12 +2190,7 @@
         function toggleErrorOnCheckpoint(errorId, phaseId, node) {
             // Special popups/interactions
             if (errorId === 'horse_reg_rejected' && !GLOBAL_SIM_STATE.activeErrors.includes(errorId)) {
-                const reason = prompt("Lỗi Duyệt Hồ Sơ: Nhập lý do từ chối (>= 10 ký tự):");
-                if (!reason || reason.length < 10) {
-                    alert("Lý do quá ngắn. Đã hủy thao tác bẻ luồng.");
-                    return;
-                }
-                logToConsole("WARNING", `Duyệt hồ sơ ngựa bị từ chối. Lý do: ${reason}`);
+                logToConsole("WARNING", `Duyệt hồ sơ ngựa bị từ chối.`);
             }
             
             const idx = GLOBAL_SIM_STATE.activeErrors.indexOf(errorId);
@@ -2202,9 +2302,9 @@
             }
             
             // Adjust SVG width if error sub-flow is expanded
-            let svgWidth = 1000;
+            let svgWidth = 1350;
             if (subFlow) {
-                svgWidth = 1000 + subFlow.nodes.length * 200 + 100;
+                svgWidth = 1350 + subFlow.nodes.length * 200 + 100;
             }
             const svg = document.getElementById('branching-flow-svg');
             svg.setAttribute("width", svgWidth);
@@ -2219,6 +2319,9 @@
                 }
             };
             
+            const stickyCol = document.getElementById('sticky-actors-col');
+            if (stickyCol) stickyCol.innerHTML = '';
+            
             // 1. Draw Visual Background Swimlanes
             LANES.forEach(lane => {
                 // Lane Rect Band
@@ -2230,6 +2333,14 @@
                 rect.setAttribute("fill", lane.color);
                 rect.setAttribute("stroke-bottom", lane.borderColor);
                 pathsGroup.appendChild(rect);
+                const laneDiv = document.createElement('div');
+                laneDiv.className = 'flex items-center justify-center border-b border-slate-800 text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider text-center p-2';
+                laneDiv.style.height = (lane.yMax - lane.yMin) + 'px';
+                laneDiv.style.color = lane.textColor;
+                laneDiv.style.opacity = '0.7';
+                laneDiv.innerHTML = lane.name;
+                if (stickyCol) stickyCol.appendChild(laneDiv);
+
                 
                 // Lane Border Bottom Line
                 if (lane.yMax < 660) {
@@ -2244,17 +2355,7 @@
                     pathsGroup.appendChild(line);
                 }
                 
-                // Lane Label
-                const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                label.setAttribute("x", "15");
-                label.setAttribute("y", lane.yMin + 20);
-                label.setAttribute("fill", lane.textColor);
-                label.setAttribute("font-size", "9");
-                label.setAttribute("font-weight", "extrabold");
-                label.setAttribute("letter-spacing", "0.05em");
-                label.setAttribute("opacity", "0.4");
-                label.innerHTML = lane.name;
-                nodesGroup.appendChild(label);
+                
             });
 
             // Map nodes
@@ -2349,6 +2450,7 @@
                 if (n.actor === 'jockey') stroke = '#F59E0B'; 
                 if (n.actor === 'referee') stroke = '#a855f7'; 
                 if (n.actor === 'spectator') stroke = '#ec4899'; 
+                if (n.actor === 'doctor') stroke = '#06b6d4'; 
                 if (n.actor === 'system') stroke = '#475569'; 
                 
                 if (isErrorNode) {
@@ -2524,6 +2626,7 @@
                         else if (sub.actor === 'jockey') badgeFill = '#F59E0B';
                         else if (sub.actor === 'referee') badgeFill = '#a855f7';
                         else if (sub.actor === 'spectator') badgeFill = '#ec4899';
+                        else if (sub.actor === 'doctor') badgeFill = '#06b6d4';
                         
                         badgeCircle.setAttribute("fill", badgeFill);
                         g.appendChild(badgeCircle);
@@ -2574,7 +2677,7 @@
         };
 
         /* ============================================================
-           OVERVIEW — In-Scope (A–O) & Out-of-Scope (12 mục) per INTRODUCTION_20260522
+           OVERVIEW — In-Scope (A–O) & Out-of-Scope (13 mục) per INTRODUCTION_20260522
            ============================================================ */
         const CATEGORIES = [
             { id: 'platform', emoji: '🏗️', title: 'Nền tảng Hệ thống', color: '#6366f1', border: 'rgba(99,102,241,0.3)' },
@@ -2596,21 +2699,21 @@
         const IN_SCOPE_MODULES = [
             { id: 'A', title: 'Quản Lý Tài Khoản và Phân Quyền', icon: 'shield-check', desc: 'Horse Owner, Jockey, Race Referee, Spectator tự đăng ký. Admin quản lý tài khoản theo role. Xác thực username/password. Phân quyền RBAC. Tuân thủ OWASP Top 10 và ISO 27001.' },
             { id: 'B', title: 'Quản Lý Giải Đấu', icon: 'trophy', desc: 'Admin tạo giải (tên, thời gian, quy mô, loại hình đua). Cấu hình cấu trúc vòng đua (vòng loại → bán kết → chung kết). Quản lý và cập nhật thông tin giải sau khi tạo.' },
-            { id: 'C', title: 'Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ', icon: 'file-plus-2', desc: 'Horse Owner đăng ký ngựa (tên, tuổi, giới tính, huyết thống, trọng lượng, đặc điểm). Admin duyệt/từ chối kèm lý do. F1: bước duyệt không kiểm tra chứng chỉ Jockey. F3: sức khỏe ngựa ghi nhận thủ công.' },
-            { id: 'D', title: 'Quản Lý Nài ngựa (Jockey)', icon: 'user-plus', desc: 'Jockey đăng ký tài khoản với chứng chỉ hành nghề. Horse Owner tìm kiếm, gửi lời mời. Jockey xác nhận/từ chối. Horse Owner chốt ghép cặp ngựa–Jockey chính thức.' },
-            { id: 'E', title: 'Lập Lịch Thi Đấu, Bốc Thăm và Sắp Xếp Cuộc Đua', icon: 'calendar-days', desc: 'Admin phân bổ ngựa đã duyệt, xác định ngày giờ, bốc thăm Post Position ngẫu nhiên công khai. Sinh lịch tự động. Horse Owner xác nhận tham gia để đưa ngựa vào danh sách xuất phát.' },
-            { id: 'F', title: 'Phân Công Trọng Tài và Referee COI Check', icon: 'user-cog', desc: 'Admin phân công Lead + Assistant Referees. Referee COI Check: không có quan hệ gia đình trực hệ với Horse Owner. Thông báo phân công. Lưu trữ lịch sử ≥5 ngày trước đua.' },
-            { id: 'G', title: 'Kiểm Tra Trước Thi Đấu (Pre-race Preparation)', icon: 'stethoscope', desc: 'Race Referee xác minh danh tính ngựa, ghi nhận sức khỏe thủ công. Jockey Independence Check: chứng chỉ hợp lệ, không quan hệ gia đình với Horse Owner trong cùng cuộc đua. Tách biệt khỏi bước duyệt hồ sơ.' },
-            { id: 'H', title: 'Theo Dõi Diễn Biến Cuộc Đua và Xử Lý Vi Phạm', icon: 'eye', desc: 'Race Referee quản lý trạng thái: Upcoming → Live → Unofficial. Tự động khóa cổng dự đoán khi Live. Ghi nhận vi phạm bằng dropdown mã lỗi.' },
-            { id: 'I', title: 'Xử Lý Vi Phạm và Khiếu Nại (Protest Handling)', icon: 'scale', desc: 'Race Referee tiếp nhận khiếu nại từ Horse Owner/Jockey sau khi đua kết thúc nhưng trước khi công bố chính thức. Phán quyết xử lý thông báo ngược qua closed-loop.' },
-            { id: 'J', title: 'Quản Lý Kết Quả và Công Bố Chính Thức (Admin)', icon: 'award', desc: 'Admin công bố kết quả (Unofficial → Official). Khóa cứng biên bản thi đấu. Tính nguyên tử ACID 1 Database Transaction duy nhất Rollback toàn cục.' },
-            { id: 'K', title: 'Tính Toán và Phân Bổ Tiền Thưởng', icon: 'coins', desc: 'Tính toán phân bổ tiền thưởng theo quy tắc cấu hình. Admin cập nhật trạng thái thanh toán + audit log. Thanh toán tiền thật nằm ngoài hệ thống.' },
-            { id: 'L', title: 'Bảng Xếp Hạng Tích Lũy (Leaderboard & Jockey Standings)', icon: 'bar-chart-2', desc: 'Leaderboard tự động xếp hạng ngựa và Jockey bằng HTTP Polling 30s. Không dùng WebSockets.' },
-            { id: 'M', title: 'Quản Lý Dự Đoán và Prediction Gate', icon: 'target', desc: 'Admin cấu hình dự đoán Win và Place, phần thưởng, kiểm soát cổng. Mở cổng chỉ sau Post Position Draw (F4).' },
-            { id: 'N', title: 'Đối Chiếu Dự Đoán và Trả Thưởng (Spectator)', icon: 'check-square', desc: 'Tự động đối chiếu dự đoán sau Official. Cộng điểm ảo Win/Place trực tiếp vào ví cá nhân.' },
-            { id: 'O', title: 'Hệ Thống Thông Báo (Notification)', icon: 'bell', desc: 'Thông báo In-app và Email cho các sự kiện kích hoạt như từ chối, kết quả khiếu nại, kết quả đua, dự đoán, tiền thưởng. Không SMS.' },
+            { id: 'C', title: 'Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ', icon: 'file-plus-2', desc: 'Horse Owner đăng ký ngựa (tên, tuổi, giống, VaccinationRecordRef, DopingTestDate, DopingTestResult). Admin duyệt/từ chối. Auto-reject nếu giống ngựa sai AllowedBreed. Từ chối bắt buộc nhập lý do tối thiểu 10 ký tự (F1: không duyệt Jockey ở đây, F3: y tế ghi thủ công).' },
+            { id: 'D', title: 'Quản Lý Nài ngựa (Jockey)', icon: 'user-plus', desc: 'Jockey đăng ký tài khoản (chứng chỉ, kinh nghiệm). Horse Owner tìm kiếm, gửi lời mời ghép cặp. Jockey chấp nhận/từ chối. Hệ thống tự động chặn ghép cặp nếu kinh nghiệm Jockey (ExperienceYears) dưới mức MinJockeyExperienceYears của giải.' },
+            { id: 'E', title: 'Lập Lịch Thi Đấu, Bốc Thăm và Sắp Xếp Cuộc Đua', icon: 'calendar-days', desc: 'Admin phân bổ ngựa đã duyệt, bốc thăm Post Position ngẫu nhiên công khai. Lịch chốt chặng (Confirmation Cut-off Time 24h trước đua). Nếu quá hạn hoặc rút lui, chuyển thành Cancelled, giải phóng cổng xuất phát Vacant, gửi alert khẩn cấp cho Admin và ghi Audit Log.' },
+            { id: 'F', title: 'Phân Công Trọng Tài và Referee COI Check', icon: 'user-cog', desc: 'Admin phân công Lead + Assistant Referees. Referee COI Check: không có quan hệ gia đình trực hệ với Horse Owner có ngựa tham gia cuộc đua đó. Thông báo phân công. Lưu lịch sử ≥5 ngày trước đua.' },
+            { id: 'G', title: 'Kiểm Tra Trước Thi Đấu (Pre-race Preparation)', icon: 'stethoscope', desc: 'Trước giờ đua (Paddock), Doctor khám y tế ghi nhận Certified/Unfit. Hệ thống chạy Jockey Independence Check chặn Jockey có quan hệ gia đình với Owner đối thủ. Loại ngựa khẩn cấp Disqualified bẻ luồng sang 4.5-DISQ, phát 3 thông báo đồng thời và hoàn cược Spectator (Prediction Refund).' },
+            { id: 'H', title: 'Theo Dõi Diễn Biến Cuộc Đua và Xử Lý Vi Phạm', icon: 'eye', desc: 'Trạng thái cuộc đua: Upcoming → Live → Unofficial → Official. Tự động khóa cổng dự đoán khi Live. Màn hình Spectator hiển thị Live Simulation Animation ngẫu nhiên bằng Canvas/SVG Client-side sử dụng setInterval 100ms (không WebSockets/GPS). Dropdown chứa ít nhất 7 mã vi phạm.' },
+            { id: 'I', title: 'Xử Lý Vi Phạm và Khiếu Nại (Protest Handling)', icon: 'scale', desc: 'Referee tiếp nhận đơn khiếu nại Protest từ Owner/Jockey sau khi đua kết thúc sơ bộ nhưng trước khi công bố chính thức. Referee phán quyết hình phạt (Disqualified, PlaceBehind, Warning, Scratch) gửi thông báo closed-loop cho cả hai bên.' },
+            { id: 'J', title: 'Quản Lý Kết Quả và Công Bố Chính Thức (Admin)', icon: 'award', desc: 'Admin declare Official trong 1 Database Transaction nguyên tử gồm 6 tác vụ (chuyển trạng thái, khóa biên bản, cập nhật BXH ngựa và nài ngựa, đối chiếu trả thưởng Spectator, ghi Audit Log). Lỗi bất kỳ tác vụ nào sẽ Rollback toàn cục ACID.' },
+            { id: 'K', title: 'Tính Toán và Phân Bổ Tiền Thưởng', icon: 'coins', desc: 'Admin cấu hình quỹ Purse. Tự động tính toán phân bổ thưởng lý thuyết: Thứ hạng ngựa (Nhất 50-60%, Nhì 20-25%, Ba 10-12%, Tư-Năm 3-8%); Phân bổ nội bộ (Jockey 10% khi Nhất, 5% khi Nhì-Tư hoặc phí cố định; Owner 80-90% còn lại). Ghi Audit Log.' },
+            { id: 'L', title: 'Bảng Xếp Hạng Tích Lũy (Leaderboard & Jockey Standings)', icon: 'bar-chart-2', desc: 'Leaderboard tự động xếp hạng ngựa (hệ thống điểm hoặc Earnings) và Jockey (Wins, top, Win Rate, thu nhập) bằng HTTP Polling 30s. Không dùng WebSockets.' },
+            { id: 'M', title: 'Quản Lý Dự Đoán và Prediction Gate', icon: 'target', desc: 'Cấu hình dự đoán Win và Place, phần thưởng, kiểm soát cổng. Ràng buộc cứng F4: mở cổng sau khi bốc thăm Post Position. Form Score: chỉ số phong độ quy tắc tĩnh tự động từ 40% lịch sử ngựa, 35% lịch sử Jockey, 25% kết quả trung bình (SQL Form Score, không AI/ML) (F7).' },
+            { id: 'N', title: 'Đối Chiếu Dự Đoán và Trả Thưởng (Spectator)', icon: 'check-square', desc: 'Tự động đối chiếu dự đoán trong transaction declare Official. Khán giả đoán đúng Win được cộng +200 điểm ảo, Place được cộng +100 điểm ảo trực tiếp vào ví cá nhân. Gửi thông báo tự động In-app & Email.' },
+            { id: 'O', title: 'Hệ Thống Thông Báo (Notification)', icon: 'bell', desc: 'Thông báo tự động In-app và Email cho các sự kiện: từ chối ngựa (kèm lý do >= 10 kí tự), lời mời Jockey, phân công Trọng tài, phán quyết khiếu nại, thay đổi lịch đua khẩn cấp, trả thưởng Spectator. Không SMS.' },
             { id: 'P', title: 'Báo Cáo và Xuất Dữ Liệu', icon: 'printer', desc: 'Xuất người dùng theo role, ngựa, Jockey, kết quả, BXH, dự đoán, tiền thưởng định dạng CSV, PDF hoặc in.' },
-            { id: 'Q', title: 'Bảo Mật, Xác Thực và Audit Log', icon: 'shield-alert', desc: 'Mã hóa JWT, Session Management, RBAC. Ghi Audit Log toàn bộ thao tác hệ thống quan trọng.' }
+            { id: 'Q', title: 'Bảo Mật, Xác Thực và Audit Log', icon: 'shield-alert', desc: 'Mã hóa mật khẩu, quản lý phiên, RBAC chặt chẽ ở Backend. Ghi Audit Log toàn bộ thao tác hệ thống quan trọng của Admin và Trọng tài.' }
         ];
 
         const OUT_SCOPE_ITEMS = [
@@ -2625,7 +2728,8 @@
             { id: '9', title: 'Tích Hợp Mạng Xã Hội', tag: 'Social', desc: 'Không chia sẻ kết quả trực tiếp lên mạng xã hội hay đăng nhập SSO (Google, FB).' },
             { id: '10', title: 'Quản Lý Huấn Luyện Viên', tag: 'Trainer', desc: 'Tích hợp chung quyền với Horse Owner, không có tài khoản và module độc lập.' },
             { id: '11', title: 'Livestreaming', tag: 'Media', desc: 'Không hỗ trợ video trực tiếp hoặc bình luận trực tuyến trong hệ thống.' },
-            { id: '12', title: 'Hệ Thống Kế Toán Doanh Nghiệp', tag: 'Finance', desc: 'Không tích hợp Xero/QuickBooks hay báo cáo thu chi chi tiết.' }
+            { id: '12', title: 'Hệ Thống Kế Toán Doanh Nghiệp', tag: 'Finance', desc: 'Không tích hợp Xero/QuickBooks hay báo cáo thu chi chi tiết.' },
+            { id: '13', title: 'Chức Năng Mobile App (iOS/Android)', tag: 'Mobile', desc: 'Phase 1 tập trung vào Web Responsive. Ứng dụng Mobile native sẽ được phát triển ở Phase 2.' }
         ];
 
         function renderScopeModules() {
@@ -2700,6 +2804,23 @@
                     { key: "Thông tin", val: "Lịch thi đấu chính thức và danh sách ngựa đã duyệt" },
                     { key: "Tiền thưởng", val: "Báo cáo quỹ giải thưởng (Purse) & chi trả thực tế" },
                     { key: "Báo cáo", val: "Báo cáo hệ thống định dạng CSV, PDF và in trực tiếp" }
+                ]
+            },
+            doctor: {
+                title: "DOCTOR / VET (Bác sĩ & Thú y)",
+                icon: "stethoscope",
+                color: "cyan",
+                desc: "Đảm bảo an toàn y tế và công bằng tải trọng cho toàn bộ giải đấu. Chịu trách nhiệm khám lâm sàng ngựa, xét nghiệm doping nài ngựa và cân đo tải trọng handicap trước/sau cuộc đua.",
+                inputs: [
+                    { key: "Y tế Jockey", val: "Kiểm tra y tế và tình trạng doping của Jockey" },
+                    { key: "Y tế Ngựa", val: "Kiểm tra sức khỏe, tiêm phòng và doping của Ngựa" },
+                    { key: "Cân trước đua", val: "Cân đo trọng lượng Jockey trước giờ chạy (Weighing Out)" },
+                    { key: "Cân sau đua", val: "Cân đo trọng lượng Jockey sau khi về đích (Weighing In)" }
+                ],
+                outputs: [
+                    { key: "Biên bản Jockey", val: "Xác nhận y tế Jockey (Đạt / Không đạt)" },
+                    { key: "Biên bản Ngựa", val: "Xác nhận thú y Ngựa (Đạt / Không đạt)" },
+                    { key: "Tải trọng", val: "Ghi nhận trọng lượng Jockey trước và sau cuộc đua" }
                 ]
             },
             owner: {
@@ -2840,13 +2961,13 @@
                     { id: '2-1', label: '2.1. Jockey Khai Hồ Sơ|Chứng chỉ hành nghề', x: 50, y: 275, actor: 'jockey' },
                     { id: '2-1-MD', label: '2.1-MD. Doctor Duyệt Jockey|Duyệt sức khỏe/doping', x: 200, y: 385, actor: 'doctor' },
                     { id: '2-2', label: '2.2. Khai Báo Ngựa|Tên & Giống', x: 50, y: 165, actor: 'owner' },
-                    { id: '2-2-MD', label: '2.2-MD. Doctor Duyệt Ngựa|Kiểm tra tiêm phòng', x: 350, y: 385, actor: 'doctor' },
-                    { id: '2-3', label: '2.3. Nộp Đơn Đăng Ký|Gửi Hồ Sơ Ngựa Lên', x: 500, y: 165, actor: 'owner' },
-                    { id: '2-4', label: '2.4. Admin Duyệt Đăng Ký|Duyệt AllowedBreed', x: 650, y: 55, actor: 'admin', type: 'checkpoint', errorId: 'horse_reg_rejected' },
-                    { id: '2-4-ERR', label: '2.4-ERR: Đơn Bị Từ Chối|Lý do >=10 kí tự', x: 650, y: 165, actor: 'owner', type: 'error', errorId: 'horse_reg_rejected' },
-                    { id: '2-5', label: '2.5. Owner Mời Jockey|Gửi lời mời ghép đôi', x: 800, y: 165, actor: 'owner', type: 'checkpoint', errorId: 'jockey_invite_rejected' },
-                    { id: '2-5-ERR', label: '2.5-ERR: Jockey Từ Chối|Mở khóa ghép cặp khác', x: 800, y: 275, actor: 'jockey', type: 'error', errorId: 'jockey_invite_rejected' },
-                    { id: '2-6', label: '2.6. Nhận Kết Quả Duyệt|Approved & Chốt Cặp', x: 950, y: 165, actor: 'owner' }
+                    { id: '2-2-MD', label: '2.2-MD. Doctor Duyệt Ngựa|Kiểm tra tiêm phòng', x: 400, y: 385, actor: 'doctor' },
+                    { id: '2-3', label: '2.3. Nộp Đơn Đăng Ký|Gửi Hồ Sơ Ngựa Lên', x: 600, y: 165, actor: 'owner' },
+                    { id: '2-4', label: '2.4. Admin Duyệt Đăng Ký|Duyệt AllowedBreed', x: 780, y: 55, actor: 'admin', type: 'checkpoint', errorId: 'horse_reg_rejected' },
+                    { id: '2-4-ERR', label: '2.4-ERR: Đơn Bị Từ Chối|Lý do >=10 kí tự', x: 780, y: 165, actor: 'owner', type: 'error', errorId: 'horse_reg_rejected' },
+                    { id: '2-5', label: '2.5. Owner Mời Jockey|Gửi lời mời ghép đôi', x: 960, y: 165, actor: 'owner', type: 'checkpoint', errorId: 'jockey_invite_rejected' },
+                    { id: '2-5-ERR', label: '2.5-ERR: Jockey Từ Chối|Mở khóa ghép cặp khác', x: 960, y: 275, actor: 'jockey', type: 'error', errorId: 'jockey_invite_rejected' },
+                    { id: '2-6', label: '2.6. Nhận Kết Quả Duyệt|Approved & Chốt Cặp', x: 1140, y: 165, actor: 'owner' }
                 ],
                 flowConnections: [
                     { src: '2-1', dst: '2-1-MD' },
@@ -2935,12 +3056,12 @@
                 simNoti: { role: "Spectator", text: "🔔 Bác sĩ đã xác nhận y tế và tải trọng, danh sách đua chính thức đã được chốt." },
                 flowNodes: [
                     { id: '4-1', label: '4.1. Khóa Cổng Dự Đoán|Khóa tự động', x: 50, y: 605, actor: 'spectator' },
-                    { id: '4-1-MD', label: '4.1-MD. Weighing Out|Cân Jockey trước đua', x: 150, y: 385, actor: 'doctor' },
-                    { id: '4-2', label: '4.2. Khớp Danh Tính|Paddock check', x: 290, y: 385, actor: 'doctor', type: 'checkpoint', errorId: 'identity_mismatch' },
-                    { id: '4-3', label: '4.3. Thú Y Paddock|Khám y tế (F3)', x: 430, y: 385, actor: 'doctor', type: 'checkpoint', errorId: 'horse_health_unfit' },
-                    { id: '4-4', label: '4.4. Độc Lập Nài Ngựa|Check quan hệ', x: 570, y: 55, actor: 'admin', type: 'checkpoint', errorId: 'jockey_independence_conflict' },
-                    { id: '4-5-DISQ', label: '4.5-DISQ: TRUẤT QUYỀN KHẨN CẤP|Gửi 3 thông báo & Hoàn điểm cược', x: 430, y: 275, actor: 'jockey', type: 'error', errorId: 'identity_mismatch', w: 200 },
-                    { id: '4-5', label: '4.5. Xác Nhận Chạy|Chốt danh sách', x: 760, y: 495, actor: 'referee' }
+                    { id: '4-1-MD', label: '4.1-MD. Weighing Out|Cân Jockey trước đua', x: 200, y: 385, actor: 'doctor' },
+                    { id: '4-2', label: '4.2. Khớp Danh Tính|Paddock check', x: 400, y: 385, actor: 'doctor', type: 'checkpoint', errorId: 'identity_mismatch' },
+                    { id: '4-3', label: '4.3. Thú Y Paddock|Khám y tế (F3)', x: 600, y: 385, actor: 'doctor', type: 'checkpoint', errorId: 'horse_health_unfit' },
+                    { id: '4-4', label: '4.4. Độc Lập Nài Ngựa|Check quan hệ', x: 800, y: 55, actor: 'admin', type: 'checkpoint', errorId: 'jockey_independence_conflict' },
+                    { id: '4-5-DISQ', label: '4.5-DISQ: TRUẤT QUYỀN KHẨN CẤP|Gửi 3 thông báo & Hoàn điểm cược', x: 600, y: 275, actor: 'jockey', type: 'error', errorId: 'identity_mismatch', w: 200 },
+                    { id: '4-5', label: '4.5. Xác Nhận Chạy|Chốt danh sách', x: 980, y: 495, actor: 'referee' }
                 ],
                 flowConnections: [
                     { src: '4-1-MD', dst: '4-2' },
@@ -3145,13 +3266,13 @@
                 matrixContainer.classList.add('hidden');
                 btnInteractive.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg text-[#0D3B2E] transition-all";
                 btnInteractive.style.background = 'linear-gradient(90deg,#D4AF37,#C8A24E)';
-                btnMatrix.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg text-[#FAF3E0]/50 transition-all";
+                btnMatrix.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-400 hover:text-slate-200 transition-all";
                 btnMatrix.removeAttribute('style');
                 selectPhase(1);
             } else {
                 interactiveContainer.classList.add('hidden');
                 matrixContainer.classList.remove('hidden');
-                btnInteractive.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg text-[#FAF3E0]/50 transition-all";
+                btnInteractive.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-400 hover:text-slate-200 transition-all";
                 btnInteractive.removeAttribute('style');
                 btnMatrix.className = "px-3.5 py-1.5 text-xs font-semibold rounded-lg text-[#0D3B2E] transition-all";
                 btnMatrix.style.background = 'linear-gradient(90deg,#D4AF37,#C8A24E)';
@@ -3177,10 +3298,11 @@
 
         const ACTOR_COORDS = {
             admin: { x: 500, y: 60 },
-            jockey: { x: 820, y: 250 },
-            referee: { x: 730, y: 540 },
-            spectator: { x: 270, y: 540 },
-            owner: { x: 180, y: 250 }
+            doctor: { x: 734, y: 195 },
+            jockey: { x: 734, y: 465 },
+            referee: { x: 500, y: 600 },
+            spectator: { x: 266, y: 465 },
+            owner: { x: 266, y: 195 }
         };
 
         function selectActor(actorId) {
@@ -3333,7 +3455,7 @@
             }
 
             renderBranchingFlow(phaseId);
-            const roles = ['admin', 'owner', 'jockey', 'referee', 'spectator'];
+            const roles = ['admin', 'owner', 'jockey', 'referee', 'spectator', 'doctor'];
             roles.forEach(role => {
                 const container = document.getElementById(`swim-${role}-actions`);
                 if (container) {
