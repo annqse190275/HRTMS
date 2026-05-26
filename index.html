@@ -1019,96 +1019,167 @@
                             </h3>
 
                             <!-- Lane matrix -->
-                            <div class="space-y-3" id="swimlane-matrix">
-                                <!-- Admin Lane -->
-                                <div
-                                    class="p-3 bg-slate-950/50 rounded-xl border border-slate-800/60 flex flex-col sm:flex-row gap-3 items-start">
-                                    <div
-                                        class="w-24 flex-shrink-0 flex items-center gap-2 text-brand-400 font-bold text-xs uppercase pt-1">
-                                        <div class="w-1.5 h-6 bg-brand-500 rounded"></div>
-                                        Admin
-                                    </div>
-                                    <div id="swim-admin-actions" class="flex-1 flex flex-wrap gap-2"></div>
-                                </div>
-                                <!-- Horse Owner Lane -->
-                                <div
-                                    class="p-3 bg-slate-950/50 rounded-xl border border-slate-800/60 flex flex-col sm:flex-row gap-3 items-start">
-                                    <div
-                                        class="w-24 flex-shrink-0 flex items-center gap-2 text-emerald-400 font-bold text-xs uppercase pt-1">
-                                        <div class="w-1.5 h-6 bg-emerald-500 rounded"></div>
-                                        Owner
-                                    </div>
-                                    <div id="swim-owner-actions" class="flex-1 flex flex-wrap gap-2"></div>
-                                </div>
-                                <!-- Jockey Lane -->
-                                <div
-                                    class="p-3 bg-slate-950/50 rounded-xl border border-slate-800/60 flex flex-col sm:flex-row gap-3 items-start">
-                                    <div
-                                        class="w-24 flex-shrink-0 flex items-center gap-2 text-amber-400 font-bold text-xs uppercase pt-1">
-                                        <div class="w-1.5 h-6 bg-amber-500 rounded"></div>
-                                        Jockey
-                                    </div>
-                                    <div id="swim-jockey-actions" class="flex-1 flex flex-wrap gap-2"></div>
-                                </div>
-                                <!-- Referee Lane -->
-                                <div
-                                    class="p-3 bg-slate-950/50 rounded-xl border border-slate-800/60 flex flex-col sm:flex-row gap-3 items-start">
-                                    <div
-                                        class="w-24 flex-shrink-0 flex items-center gap-2 text-rose-400 font-bold text-xs uppercase pt-1">
-                                        <div class="w-1.5 h-6 bg-rose-500 rounded"></div>
-                                        Referee
-                                    </div>
-                                    <div id="swim-referee-actions" class="flex-1 flex flex-wrap gap-2"></div>
-                                </div>
-                                <!-- Spectator Lane -->
-                                <div
-                                    class="p-3 bg-slate-950/50 rounded-xl border border-slate-800/60 flex flex-col sm:flex-row gap-3 items-start">
-                                    <div
-                                        class="w-24 flex-shrink-0 flex items-center gap-2 text-indigo-400 font-bold text-xs uppercase pt-1">
-                                        <div class="w-1.5 h-6 bg-indigo-500 rounded"></div>
-                                        Spectator
-                                    </div>
-                                    <div id="swim-spectator-actions" class="flex-1 flex flex-wrap gap-2"></div>
-                                </div>
-                            </div>
+                            
+<div class="relative w-full h-[680px] overflow-hidden bg-slate-950 rounded-2xl border border-slate-800 shadow-inner" id="svg-container">
+    <svg id="branching-flow-svg" class="w-full h-full absolute inset-0 z-10">
+        <defs>
+            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+            <!-- Markers -->
+            <marker id="arrow-emerald" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#10B981" /></marker>
+            <marker id="arrow-indigo" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#6366f1" /></marker>
+            <marker id="arrow-amber" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#F59E0B" /></marker>
+            <marker id="arrow-teal" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#06b6d4" /></marker>
+            <marker id="arrow-purple" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#a855f7" /></marker>
+            <marker id="arrow-pink" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#ec4899" /></marker>
+            <marker id="arrow-slate" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#1e293b" /></marker>
+            <marker id="arrow-red" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#DC2626" /></marker>
+            <marker id="arrow-gray" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#475569" /></marker>
+        </defs>
+        <g id="svg-paths"></g>
+        <g id="svg-nodes"></g>
+    </svg>
+    <!-- Phase 5 Live Simulation Canvas -->
+    <div id="live-race-container" class="absolute inset-0 z-20 bg-slate-900 flex flex-col hidden p-4">
+        <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-2">
+            <h4 class="text-emerald-400 font-bold uppercase text-xs flex items-center gap-2"><i data-lucide="play-circle" class="w-4 h-4"></i> Live Racing Simulation</h4>
+            <button onclick="toggleLiveRace()" class="text-xs text-slate-400 hover:text-white bg-slate-800 px-2 py-1 rounded">Đóng</button>
+        </div>
+        <canvas id="live-race-canvas" class="w-full flex-1 rounded-xl bg-[#0f172a]"></canvas>
+    </div>
+    <style>
+        .path-animated {
+            stroke-dasharray: 8;
+            animation: dash 1.5s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: -16; }
+        }
+        .node-hover {
+            transition: all 0.3s ease;
+        }
+        .node-hover:hover {
+            filter: brightness(1.2);
+            cursor: pointer;
+        }
+        .node-dimmed {
+            opacity: 0.15 !important;
+            filter: grayscale(80%) !important;
+            pointer-events: none;
+            transition: all 0.4s ease;
+        }
+        .pulse-red {
+            animation: pulse-glow 1.5s infinite alternate;
+        }
+        @keyframes pulse-glow {
+            0% { filter: drop-shadow(0 0 2px rgba(220, 38, 38, 0.5)); }
+            100% { filter: drop-shadow(0 0 10px rgba(220, 38, 38, 0.95)); }
+        }
+        .blink {
+            animation: blinker 1.2s linear infinite;
+        }
+        @keyframes blinker {
+            50% { opacity: 0.3; }
+        }
+    </style>
+</div>
+</div>
                         </div>
 
                         <!-- Right: Business Sandbox Simulator Terminal Panel -->
                         <div class="xl:col-span-5 flex flex-col gap-4">
-                            <!-- Simulator Sandbox Console Panel -->
-                            <div
-                                class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between space-y-4">
+                            
+                            <!-- GLOBAL SIMULATION STATE wrapper with absolute overlay panel inside -->
+                            <div id="sim-state-wrapper" class="relative">
+                                
+                                <!-- Card: GLOBAL SIMULATION STATE -->
+                                <div id="global-sim-state-card" class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4 transition-all duration-300">
+                                    <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
+                                        <div class="flex items-center gap-2">
+                                            <i data-lucide="activity" class="w-4.5 h-4.5 text-brand-400"></i>
+                                            <h4 class="text-xs font-extrabold text-slate-200 uppercase tracking-wider">GLOBAL SIMULATION STATE</h4>
+                                        </div>
+                                    </div>
+
+                                    <!-- Branch State indicator -->
+                                    <div class="flex items-center justify-between bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60 text-xs">
+                                        <span class="text-slate-400 font-medium">Trạng thái Nhánh:</span>
+                                        <span id="branch-state-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold transition-all bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">HAPPY PATH</span>
+                                    </div>
+
+                                    <!-- Active Errors Area -->
+                                    <div class="space-y-1.5 bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60 text-xs">
+                                        <span class="text-slate-400 font-medium block">Lỗi nghiệp vụ đang kích hoạt:</span>
+                                        <ul id="active-errors-list" class="space-y-1 text-[11px] text-slate-500 italic list-disc list-inside">
+                                            <li>Không có lỗi nào hoạt động</li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Virtual Virtual State Card Grid -->
+                                    <div class="grid grid-cols-2 gap-2.5 text-[11px] bg-slate-950/80 p-3 rounded-xl border border-slate-800/60">
+                                        <div>
+                                            <span class="text-slate-500 block">Trạng thái Giải:</span>
+                                            <strong id="sim-state-tournament" class="text-blue-400 font-bold">Chưa tạo</strong>
+                                        </div>
+                                        <div>
+                                            <span class="text-slate-500 block">Cổng dự đoán:</span>
+                                            <strong id="sim-state-gate" class="text-slate-400">Đóng</strong>
+                                        </div>
+                                        <div>
+                                            <span class="text-slate-500 block">Conflict-of-Interest:</span>
+                                            <strong id="sim-state-coi" class="text-slate-400">Chưa kiểm tra</strong>
+                                        </div>
+                                        <div>
+                                            <span class="text-slate-500 block">Jockey Independence:</span>
+                                            <strong id="sim-state-jockey" class="text-slate-400">Chưa kiểm tra</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card: NODE DETAIL OVERLAY (Hidden by default, overlays above card) -->
+                                <div id="node-detail-card" class="absolute inset-0 z-30 hidden bg-slate-950/95 backdrop-blur-md rounded-2xl border border-slate-800 p-5 flex flex-col justify-between space-y-3 transition-all duration-300">
+                                    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                                        <div class="flex items-center gap-2">
+                                            <span id="detail-actor-badge" class="px-2 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider text-white">ADMIN</span>
+                                            <span id="detail-node-id" class="text-slate-400 text-xs font-mono font-bold">Node 1.1</span>
+                                        </div>
+                                        <button onclick="deselectNode()" class="text-slate-400 hover:text-slate-100 p-1 hover:bg-slate-800 rounded transition-all">
+                                            <i data-lucide="x" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="flex-1 overflow-y-auto space-y-3 text-xs pr-1">
+                                        <h4 id="detail-title" class="font-extrabold text-slate-100 text-sm leading-snug">Tiêu đề bước chức năng</h4>
+                                        
+                                        <div class="space-y-2">
+                                            <div>
+                                                <span class="text-[9px] text-slate-500 font-bold block uppercase tracking-wider">Tác nhân & Module</span>
+                                                <p id="detail-actor-module" class="text-slate-300 font-medium"></p>
+                                            </div>
+                                            <div>
+                                                <span class="text-[9px] text-slate-500 font-bold block uppercase tracking-wider">Quy tắc nghiệp vụ & Ràng buộc</span>
+                                                <p id="detail-rules" class="text-slate-300 leading-relaxed font-normal bg-slate-950/50 p-2 rounded border border-slate-800/80"></p>
+                                            </div>
+                                            <div>
+                                                <span class="text-[9px] text-slate-500 font-bold block uppercase tracking-wider">Chi tiết luồng hoạt động</span>
+                                                <p id="detail-desc" class="text-slate-300 leading-relaxed font-normal"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Card: SIMULATOR LOG -->
+                            <div id="simulator-log-card" class="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col space-y-3">
                                 <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
                                     <div class="flex items-center gap-2">
                                         <i data-lucide="terminal" class="w-4.5 h-4.5 text-emerald-400"></i>
-                                        <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Console
-                                            Sandbox Nghiệp Vụ</h4>
+                                        <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider">SIMULATOR LOG</h4>
                                     </div>
-                                    <span
-                                        class="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-[10px] font-bold">Simulator
-                                        Active</span>
-                                </div>
-
-                                <!-- Virtual Virtual State Card -->
-                                <div
-                                    class="grid grid-cols-2 gap-2 text-[11px] bg-slate-950/80 p-3 rounded-xl border border-slate-800/60">
-                                    <div>
-                                        <span class="text-slate-500 block">Trạng thái Giải Đua:</span>
-                                        <strong id="sim-state-tournament" class="text-blue-400 font-bold">Chưa
-                                            tạo</strong>
-                                    </div>
-                                    <div>
-                                        <span class="text-slate-500 block">Cổng dự đoán:</span>
-                                        <strong id="sim-state-gate" class="text-slate-400">Đóng</strong>
-                                    </div>
-                                    <div>
-                                        <span class="text-slate-500 block">Conflict-of-Interest:</span>
-                                        <strong id="sim-state-coi" class="text-slate-400">Chưa kiểm tra</strong>
-                                    </div>
-                                    <div>
-                                        <span class="text-slate-500 block">Jockey Independence:</span>
-                                        <strong id="sim-state-jockey" class="text-slate-400">Chưa kiểm tra</strong>
-                                    </div>
+                                    <button onclick="clearTerminal()" class="px-2 py-0.5 bg-slate-850 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 rounded text-[9px] font-bold uppercase transition-all">CLEAR</button>
                                 </div>
 
                                 <!-- Terminal Log Area -->
@@ -1121,15 +1192,14 @@
                                 <!-- In-app simulated notifications pushing area -->
                                 <div class="space-y-1.5" id="sim-noti-area">
                                     <span
-                                        class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Luồng
-                                        đẩy Notification ảo:</span>
-                                    <div
-                                        class="p-2.5 bg-slate-950/40 rounded-xl border border-slate-800/50 text-[10px] text-slate-500 italic">
+                                        class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Luồng đẩy Notification ảo:</span>
+                                    <div id="sim-noti-box"
+                                        class="p-2.5 bg-slate-950/40 rounded-xl border border-slate-800/50 text-[10px] text-slate-500 italic transition-all">
                                         Chưa có sự kiện thông báo nào được tạo...
                                     </div>
                                 </div>
                             </div>
-
+                            
                             <!-- Dynamic Phase Rules Card -->
                             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3 flex-1">
                                 <div class="flex items-center gap-2 border-b border-slate-800 pb-2">
@@ -1425,7 +1495,1072 @@
         /* ============================================================
            THEME — Racing color tokens (Context Diagram, UI highlights)
            ============================================================ */
-        const THEME = {
+        
+        const GLOBAL_SIM_STATE = {
+            activeErrors: [],
+            selectedNodeId: null,
+            selectedSubNodeIdx: null,
+            activeExpandedErrNodeId: null,
+            currentPhaseId: 1
+        };
+        
+        let liveRaceInterval = null;
+        let horses = [];
+
+        // 1:1 BA spec Vietnamese description from flowdetails_updated.md
+        const FLOW_DETAILS_DB = {
+            '1-1': {
+                title: "1.1. Đăng ký tài khoản & Cấp quyền RBAC",
+                actor: "Tất cả các Actors",
+                module: "Module A — Quản Lý Tài Khoản và Phân Quyền",
+                rules: "Tuân thủ OWASP Top 10 bảo mật xác thực phiên làm việc, mã hóa bcrypt mật khẩu, tự động ngắt kết nối Session Timeout.",
+                desc: "Các vai trò (Admin, Owner, Jockey, Referee, Spectator) thực hiện đăng ký tài khoản. Hệ thống tự động phân chia quyền hạn tương ứng dưới sự kiểm soát chặt chẽ của Admin, cấp JWT Token để phân quyền RBAC truy cập hệ thống."
+            },
+            '1-2': {
+                title: "1.2. Tạo Giải Đấu Đặc Thù",
+                actor: "Admin",
+                module: "Module B — Quản Lý Giải Đấu",
+                rules: "Ngày bắt đầu phải lớn hơn ngày hiện tại ít nhất 10 ngày. Giống ngựa AllowedBreed (multi-select) bắt buộc không được để trống.",
+                desc: "Admin khởi tạo giải đấu với các thông số: Tên giải, ngày chạy, giống ngựa hợp lệ (Thoroughbred, Arabian, Quarter Horse, Mixed), loại mặt đường (Turf, Dirt, Synthetic), cự ly đua (RaceDistance), hạng mục thi đấu (Classic, Maiden) và số năm kinh nghiệm tối thiểu của Jockey."
+            },
+            '1-3': {
+                title: "1.3. Lập Sơ Đồ Vòng Đua",
+                actor: "Admin",
+                module: "Module B — Quản Lý Giải Đấu",
+                rules: "Xây dựng sơ đồ cây các vòng thi đấu phân cấp (Vòng loại &rarr; Bán kết &rarr; Chung kết).",
+                desc: "Admin thiết lập cấu trúc các vòng chạy và các cuộc đua (Races) trực thuộc, thiết lập quan hệ 1-n trong CSDL để đảm bảo sơ đồ giải đấu hiển thị trực quan."
+            },
+            '1-4': {
+                title: "1.4. Phân Bổ Quỹ Purse",
+                actor: "Admin",
+                module: "Module K — Tính Toán và Phân Bổ Tiền Thưởng",
+                rules: "Tổng tỷ lệ phần trăm phân chia bắt buộc phải bằng chính xác 100% (Ví dụ: Top 1: 50-60%, Top 2: 20-25%, Top 3: 10-12%, Top 4-5: 3-8%).",
+                desc: "Admin cấu hình tổng ngân quỹ tiền thưởng (Purse Amount) lý thuyết cho giải và thiết lập tỷ lệ chia thưởng cụ thể cho từng vị trí về đích của cuộc đua."
+            },
+            '1-5': {
+                title: "1.5. Công Bố Giải Đấu",
+                actor: "Hệ thống",
+                module: "Module B & Module N — Hệ Thống Thông Báo",
+                rules: "Trạng thái giải đấu tự động chuyển sang Open for Registration.",
+                desc: "Ban tổ chức bấm nút Công bố. Hệ thống tự động cập nhật trạng thái giải và gửi email/in-app notification cho tất cả các tác nhân. Khán giả bắt đầu nhìn thấy thông tin giải đấu hiển thị công khai trên giao diện."
+            },
+            '2-1': {
+                title: "2.1. Jockey Khai Hồ Sơ",
+                actor: "Jockey",
+                module: "Module D — Quản Lý Nài ngựa (Jockey)",
+                rules: "Bắt buộc khai báo chứng chỉ hành nghề hợp lệ khi tạo tài khoản.",
+                desc: "Jockey đăng ký tài khoản và khai báo thông tin chứng chỉ hành nghề, số năm kinh nghiệm đua ngựa thực tế lên hệ thống để gửi Admin duyệt."
+            },
+            '2-1-MD': {
+                title: "2.1-MD. Doctor Duyệt Y Tế Jockey",
+                actor: "Doctor",
+                module: "Module D — Quản Lý Nài Ngựa (Jockey)",
+                rules: "Kiểm duyệt lý lịch bệnh án, giấy chứng nhận sức khỏe thể chất và kiểm định doping ban đầu.",
+                desc: "Bác sĩ kiểm tra hồ sơ y tế, xác định Jockey đủ thể chất thi đấu chuyên nghiệp và bấm phê duyệt để Jockey có thể tham gia ghép cặp."
+            },
+            '2-2': {
+                title: "2.2. Khai Báo Ngựa",
+                actor: "Owner",
+                module: "Module C — Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ",
+                rules: "Khai báo đầy đủ tên, giống ngựa, cân nặng, độ tuổi, huyết thống, đặc điểm nhận diện.",
+                desc: "Chủ ngựa (Horse Owner) khai báo hồ sơ ngựa đua và các thông số y tế cơ bản của ngựa lên hệ thống để gửi Admin duyệt."
+            },
+            '2-2-MD': {
+                title: "2.2-MD. Doctor Duyệt Y Tế Ngựa",
+                actor: "Doctor",
+                module: "Module C — Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ",
+                rules: "Kiểm duyệt hồ sơ tiêm phòng dịch (Vaccination Record) và ngày xét nghiệm doping âm tính gần nhất.",
+                desc: "Bác sĩ thú y xem xét các chỉ số sinh trắc học và lịch sử tiêm phòng của chú ngựa, bấm phê duyệt y tế để cho phép ghép cặp với Jockey."
+            },
+            '2-3': {
+                title: "2.3. Nộp Đơn Đăng Ký Ngựa",
+                actor: "Owner",
+                module: "Module C — Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ",
+                rules: "Chủ ngựa chọn chú ngựa đã được Doctor duyệt y tế sạch ở bước 2.2-MD để nộp đơn ứng tuyển.",
+                desc: "Chủ ngựa tiến hành nộp hồ sơ đăng ký của ngựa vào giải đấu đang mở cổng ứng tuyển để chuẩn bị kiểm duyệt."
+            },
+            '2-4': {
+                title: "2.4. Admin Duyệt Đăng Ký Ngựa",
+                actor: "Admin",
+                module: "Module C — Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ",
+                rules: "Kiểm duyệt tính hợp lệ của ngựa đối với AllowedBreed, cự ly và độ tuổi cho phép.",
+                desc: "Admin kiểm duyệt đơn đăng ký của chú ngựa và bấm chấp thuận phê duyệt nếu đạt yêu cầu, cho phép đi ghép cặp."
+            },
+            '2-4-ERR': {
+                title: "2.4-ERR: Đơn Đăng Ký Bị Từ Chối",
+                actor: "Admin & Hệ thống",
+                module: "Module C — Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ",
+                rules: "<strong>Auto-reject:</strong> Tự động chặn duyệt nếu giống ngựa vi phạm AllowedBreed.<br><strong>Ràng buộc lý do:</strong> Admin bắt buộc nhập lý do từ chối tối thiểu 10 ký tự.",
+                desc: "Đơn bị từ chối chuyển trạng thái sang Rejected kèm lý do chi tiết gửi đến Owner, đồng thời giải phóng hồ sơ ngựa về Draft để Owner sửa đổi và nộp lại."
+            },
+            '2-5': {
+                title: "2.5. Owner Mời Jockey Ghép Cặp",
+                actor: "Owner & Jockey",
+                module: "Module D — Quản Lý Nài Ngựa (Jockey)",
+                rules: "Chủ ngựa gửi lời mời ghép cặp đến Jockey đã được duyệt y tế ở bước 2.1-MD. Jockey có quyền Chấp nhận (Accept) hoặc Từ chối (Decline).",
+                desc: "Sau khi đơn của ngựa được Admin duyệt, Owner gửi lời mời ghép cặp. Jockey nhận được thông báo, có quyền chấp nhận để chốt pairing hoặc từ chối."
+            },
+            '2-5-ERR': {
+                title: "2.5-ERR: Jockey Từ Chối Lời Mời",
+                actor: "Jockey & Hệ thống",
+                module: "Module D — Quản Lý Nài Ngựa (Jockey) & Module N",
+                rules: "Jockey nhấn Decline từ chối lời mời. Hệ thống giải phóng đơn để Owner mời người khác.",
+                desc: "Jockey từ chối lời mời thuê. Hệ thống cập nhật trạng thái lời mời sang Declined, tự động gửi thông báo cho Owner và mở khóa để Owner tiếp tục tìm kiếm Jockey khả dụng khác."
+            },
+            '2-6': {
+                title: "2.6. Hoàn Tất Đăng Ký & Ghép Cặp",
+                actor: "Owner",
+                module: "Module N — Hệ Thống Thông Báo",
+                rules: "Nhận thông báo in-app và email về kết quả chốt cặp thành công.",
+                desc: "Hệ thống đồng bộ kết quả ghép cặp thành công, gửi thông báo hoàn tất cho Owner và đưa cặp thi đấu vào danh sách chuẩn bị lập lịch thi đấu ở Pha 3."
+            },
+            '3-1': {
+                title: "3.1. Phân Bổ Lượt Chạy",
+                actor: "Admin",
+                module: "Module E — Lập Lịch Thi Đấu, Bốc Thăm và Sắp Xếp Cuộc Đua",
+                rules: "Phân chia các ngựa đã duyệt vào từng lượt chạy (Race) trực thuộc giải.",
+                desc: "Admin thực hiện phân bổ cặp ngựa-Jockey đã duyệt vào các lượt chạy tương ứng của giải."
+            },
+            '3-2': {
+                title: "3.2. Bốc Thăm Post Draw",
+                actor: "Admin",
+                module: "Module E — Lập Lịch Thi Đấu, Bốc Thăm và Sắp Xếp Cuộc Đua",
+                rules: "Bốc thăm cổng xuất phát (Post Position) ngẫu nhiên và công khai. Sinh lịch tự động.",
+                desc: "Admin kích hoạt chức năng bốc thăm vị trí cổng xuất phát cho các ngựa thi đấu. Hệ thống tự động gán ngẫu nhiên số cổng cho từng ngựa."
+            },
+            '3-3': {
+                title: "3.3. Xác Nhận Lịch Chạy",
+                actor: "Owner",
+                module: "Module E — Lập Lịch Thi Đấu, Bốc Thăm và Sắp Xếp Cuộc Đua",
+                rules: "Chủ ngựa bắt buộc nhấn xác nhận tham gia trước giờ chốt quy định.",
+                desc: "Chủ ngựa nhận thông báo lịch thi đấu, kiểm tra và bấm xác nhận tham gia để chính thức đưa ngựa vào danh sách xuất phát."
+            },
+            '3-3-ERR': {
+                title: "3.3-ERR: Rút/Quá Hạn",
+                actor: "Owner & Hệ thống",
+                module: "Module E — Lập Lịch Thi Đấu, Bốc Thăm và Sắp Xếp Cuộc Đua",
+                rules: "<strong>Confirmation Cut-off Time:</strong> Quá hạn xác nhận 24 giờ trước giờ đua hoặc Chủ ngựa chủ động rút tên.",
+                desc: "Scheduler quét database mỗi 15 phút, phát hiện các đơn chưa confirm khi chạm mốc 24h trước đua. Tự động chuyển trạng thái RaceEntry thành Cancelled, giải phóng cổng chạy đã gán thành Vacant, phát cảnh báo URGENT đến Admin và ghi log Audit."
+            },
+            '3-5': {
+                title: "3.5. COI Check Trọng Tài",
+                actor: "Admin & Hệ thống",
+                module: "Module F — Phân Công Trọng Tài và Referee COI Check",
+                rules: "<strong>F2 - Phân công Trọng tài:</strong> Ban trọng tài phải được chỉ định ít nhất 5 ngày làm việc trước đua và chạy kiểm tra xung đột lợi ích COI.",
+                desc: "Admin phân công trọng tài giám sát cuộc đua. Hệ thống chạy thuật toán COI Check tự động để kiểm chứng tính độc lập nhân thân của trọng tài."
+            },
+            '3-5-ERR': {
+                title: "3.5-ERR: Xung Đột COI",
+                actor: "Admin & Hệ thống",
+                module: "Module F — Phân Công Trọng Tài và Referee COI Check",
+                rules: "Trọng tài được chọn có quan hệ trực hệ (cha mẹ, vợ chồng, con cái) với Chủ ngựa có ngựa tham gia cuộc đua đó.",
+                desc: "Hệ thống phát hiện xung đột quan hệ trực hệ, lập tức chặn phân công, báo lỗi COI Conflict ở Backend, hiển thị cảnh báo đỏ trên UI và vô hiệu hóa nút lưu phân công cho đến khi Admin chọn trọng tài khác."
+            },
+            '3-4': {
+                title: "3.4. Tra Cứu Lịch Chạy",
+                actor: "Jockey",
+                module: "Module E — Lập Lịch Thi Đấu",
+                rules: "Jockey xem lịch đua cá nhân.",
+                desc: "Jockey tra cứu ngày giờ thi đấu và số cổng xuất phát được phân công để sẵn sàng di chuyển."
+            },
+            '3-6': {
+                title: "3.6. Nhận Nhiệm Vụ",
+                actor: "Referee",
+                module: "Module F / N — Ban Trọng tài",
+                rules: "Trọng tài chính/phụ nhận thông báo lịch làm việc.",
+                desc: "Hệ thống gửi thông báo nhiệm vụ giám sát cuộc đua cho ban trọng tài đã qua thẩm định COI Verified."
+            },
+            '3-7': {
+                title: "3.7. Mở Cổng Dự Đoán",
+                actor: "Hệ thống",
+                module: "Module L — Quản Lý Dự Đoán và Prediction Gate",
+                rules: "<strong>F4 - Mở cổng dự đoán:</strong> Cổng dự đoán chỉ mở tự động sau khi đã hoàn tất bốc thăm cổng xuất phát (Post Draw).",
+                desc: "Hệ thống tự động kích hoạt trạng thái Open cho Prediction Gate sau khi có số cổng xuất phát chính thức để đảm bảo công bằng."
+            },
+            '3-8': {
+                title: "3.8. Đặt Dự Đoán",
+                actor: "Spectator",
+                module: "Module L — Quản Lý Dự Đoán",
+                rules: "<strong>F6 - Hỗ trợ cược Win/Place:</strong> Chỉ cho phép Spectator đặt cược Win (thắng đầu) hoặc Place (vào top 3). Không hỗ trợ kèo tổ hợp phức tạp.",
+                desc: "Khán giả đặt cược điểm ảo vào kèo Win hoặc Place cho chú ngựa yêu thích để tham gia trò chơi dự đoán tương tác."
+            },
+            '4-1': {
+                title: "4.1. Khóa Cổng Dự Đoán",
+                actor: "Hệ thống",
+                module: "Module L — Quản Lý Dự Đoán",
+                rules: "Cổng dự đoán tự động khóa cứng ngay trước giờ đua, chuyển sang trạng thái Locked.",
+                desc: "Hệ thống tự động ngắt tính năng nhận cược từ khán giả khi đến giờ quy định, cấm hoàn toàn mọi thay đổi kèo cược."
+            },
+            '4-1-MD': {
+                title: "4.1-MD. Cân Jockey Trước Đua (Weighing Out)",
+                actor: "Doctor",
+                module: "Module G — Kiểm Tra Trước Thi Đấu (Pre-race Preparation)",
+                rules: "Ghi nhận trọng lượng ban đầu của Jockey và trang bị bảo hộ tại phòng cân trước giờ chạy.",
+                desc: "Bác sĩ tiến hành cân đo Jockey để bảo đảm Jockey đáp ứng đúng tiêu chuẩn Handicap tải trọng được quy định cho cuộc đua."
+            },
+            '4-2': {
+                title: "4.2. Khớp Danh Tính Ngựa (Doctor)",
+                actor: "Doctor",
+                module: "Module G — Kiểm Tra Trước Thi Đấu (Pre-race Preparation)",
+                rules: "Đối chiếu vết sẹo, màu lông, đốm trắng ở trán, và quét chip điện tử thực tế của ngựa tại khu vực paddock.",
+                desc: "Bác sĩ thú y kiểm tra thực tế các dấu hiệu nhận dạng sinh học của ngựa để đảm bảo ngựa khớp hoàn toàn với hồ sơ đăng ký ban đầu."
+            },
+            '4-3': {
+                title: "4.3. Thú Y Paddock (Doctor)",
+                actor: "Doctor",
+                module: "Module G — Kiểm Tra Trước Thi Đấu (Pre-race Preparation)",
+                rules: "<strong>F3 - Khám thú y paddock:</strong> Thăm khám lâm sàng dáng đi (kiểm tra tật khập khiễng) và lấy mẫu thử doping nhanh.",
+                desc: "Bác sĩ thú y trực tiếp thăm khám y khoa toàn diện cho ngựa tại paddock để xác định ngựa đủ sức khỏe và không có doping."
+            },
+            '4-4': {
+                title: "4.4. Độc Lập Nài Ngựa",
+                actor: "Admin",
+                module: "Module G — Kiểm Tra Trước Thi Đấu",
+                rules: "Jockey không được có quan hệ gia đình trực hệ với các Chủ ngựa đối thủ trong cùng cuộc đua đó.",
+                desc: "Hệ thống tự động chạy thuật toán đối chiếu dữ liệu nhân thân để bảo đảm tính độc lập khách quan của Jockey."
+            },
+            '4-5-DISQ': {
+                title: "4.5-DISQ: TRUẤT QUYỀN KHẨN CẤP",
+                actor: "Jockey",
+                module: "Module G — Kiểm Tra Trước Thi Đấu",
+                rules: "<strong>Truất Quyền Khẩn Cấp (DISQ):</strong> Đổi trạng thái RaceEntry thành Disqualified. Loại bỏ khỏi danh sách đua.<br><strong>Phát 3 thông báo đồng thời:</strong> Gửi đồng thời thông báo in-app/email cho Owner, Jockey, và Admin.<br><strong>Hoàn cược ảo:</strong> Spectator cược vào ngựa DISQ tự động được hoàn lại 100% điểm ảo đã cược trước giờ đua.",
+                desc: "Ngựa vi phạm y tế/nhận dạng/độc lập bị bẻ luồng sang Truất quyền khẩn cấp, loại khỏi cuộc đua. Hệ thống phát 3 thông báo khẩn cấp đồng thời và thực hiện hoàn điểm ảo cược của Spectator tự động."
+            },
+            '4-5': {
+                title: "4.5. Xác Nhận Chạy (Referee)",
+                actor: "Referee",
+                module: "Module G — Kiểm Tra Trước Thi Đấu",
+                rules: "Chốt danh sách ngựa đua chính thức đủ điều kiện xuất phát.",
+                desc: "Trọng tài chốt danh sách chạy chính thức, ký biên bản điện tử và cho phép di chuyển ra vạch xuất phát."
+            },
+            '5-1': {
+                title: "5.1. Bấm LIVE Start",
+                actor: "Referee",
+                module: "Module H — Theo Dõi Diễn Biến Cuộc Đua và Xử Lý Vi Phạm",
+                rules: "Trọng tài bấm nút súng lệnh sút còi khai cuộc. Cuộc đua chuyển trạng thái sang LIVE.",
+                desc: "Trọng tài chính kích hoạt súng lệnh khởi động. Trạng thái cuộc đua chuyển sang LIVE trên toàn hệ thống."
+            },
+            '5-2': {
+                title: "5.2. Khán Giả Xem Live",
+                actor: "Spectator",
+                module: "Module H — Theo Dõi Diễn Biến Cuộc Đua",
+                rules: "<strong>Live Simulation Animation:</strong> Chip di chuyển ngẫu nhiên trên canvas ở Frontend bằng Math.random() và setInterval mỗi 100ms. Tuyệt đối không sử dụng WebSockets.",
+                desc: "Khán giả xem mô phỏng hoạt cảnh chip di chuyển sinh động chạy đua trên mô hình làn chạy, không đòi hỏi WebSocket."
+            },
+            '5-live-btn': {
+                title: "▶ XEM MÔ PHỎNG LÀN CHẠY",
+                actor: "Spectator",
+                module: "Mô phỏng đồ họa Client-side",
+                rules: "Click nút để mở canvas theo dõi diễn biến hoạt cảnh.",
+                desc: "Mở hộp thoại Canvas xem các chip ngựa chạy đua sinh động."
+            },
+            '5-3': {
+                title: "5.3. Ghi Lỗi Vi Phạm",
+                actor: "Referee",
+                module: "Module H — Theo Dõi Diễn Biến Cuộc Đua",
+                rules: "Dropdown 7 mã lỗi vi phạm chuẩn ngành đua ngựa để trọng tài chốt biên bản nhanh.",
+                desc: "Trọng tài giám sát trực tiếp trên sân ghi nhận nhanh hành vi vi phạm của Jockey/ngựa bằng menu dropdown mã vi phạm."
+            },
+            '5-4': {
+                title: "5.4. Nộp Đơn Protest",
+                actor: "Owner & Jockey",
+                module: "Module I — Xử Lý Khiếu Nại (Protest)",
+                rules: "Chỉ được nộp đơn sau khi cuộc đua kết thúc sơ bộ nhưng phải trước khi công bố kết quả chính thức.",
+                desc: "Chủ ngựa hoặc Jockey của ngựa bị hại nộp đơn khiếu nại Protest lên Steward Panel yêu cầu xem xét hành vi phạm quy trên sân."
+            },
+            '5-5': {
+                title: "5.5. Xử Lý Protest",
+                actor: "Referee",
+                module: "Module I — Xử Lý Khiếu Nại",
+                rules: "Xem xét khiếu nại, bác bỏ đơn vì thiếu chứng cứ và giữ nguyên xếp hạng sơ bộ ban đầu.",
+                desc: "Trọng tài họp phân tích đơn khiếu nại, ra quyết định bác bỏ Protest và giữ nguyên kết quả gốc, gửi thông báo phản hồi closed-loop."
+            },
+            '5-5-ERR': {
+                title: "5.5-ERR: Chấp Thuận & Áp Hình Phạt",
+                actor: "Referee & Hệ thống",
+                module: "Module I / N — Xử Lý Khiếu Nại",
+                rules: "<strong>Phạt Hạ Bậc (Place Behind):</strong> Đẩy ngựa phạm lỗi xếp ngay sau ngựa bị hại.<br><strong>Truất Quyền (Disqualified):</strong> Đẩy ngựa vi phạm xuống vị trí cuối cùng.<br><strong>Tự động tính lại thứ hạng:</strong> Hệ thống tự động chạy thuật toán xếp hạng mới.<br><strong>Closed-loop Notification:</strong> Bắt buộc gửi thông báo đồng thời cho bên nộp khiếu nại và bên bị phạt.",
+                desc: "Trọng tài chấp thuận khiếu nại, chọn hình phạt tương ứng. Hệ thống tự động tính toán lại toàn bộ thứ hạng sơ bộ mới, cập nhật biên bản và phát thông báo closed-loop đồng thời cho hai bên."
+            },
+            '5-6': {
+                title: "5.6. Chốt Kết Quả",
+                actor: "Referee",
+                module: "Module H — Theo Dõi Diễn Biến",
+                rules: "Biên bản điện tử kết quả sơ bộ được ký chốt, trạng thái cuộc đua chuyển sang Unofficial.",
+                desc: "Trọng tài chính thực hiện ký biên bản và chốt kết quả sơ bộ, đưa cuộc đua sang trạng thái Unofficial chờ Admin phê duyệt."
+            },
+            '6-1': {
+                title: "6.1. Declare Official",
+                actor: "Admin",
+                module: "Module J — Xác Nhận Kết Quả và Công Bố Chính Thức",
+                rules: "Admin bấm phê duyệt công bố chính thức. Hệ thống cập nhật thứ hạng và mở luồng chia thưởng.",
+                desc: "Admin phê duyệt kết quả sơ bộ đã chốt, chuyển cuộc đua sang trạng thái Official chính thức."
+            },
+            '6-1-ERR': {
+                title: "6.1-ERR: Lỗi Rollback Toàn Cục",
+                actor: "Admin & Hệ thống",
+                module: "Module J — Xác Nhận Kết Quả và Công Bố Chính Thức",
+                rules: "<strong>Tính nguyên tử ACID:</strong> Phát hiện bất kỳ Exception nào ở Backend trong chuỗi 6 tác vụ declare Official (DB sập, lỗi ví, lỗi log) -> Kích hoạt `Rollback Transaction` lập tức.<br><strong>Giam Unofficial:</strong> Trả dữ liệu về nguyên vẹn trước khi bấm nút, giam cuộc đua ở Unofficial, cấm chia thưởng.<br><strong>Báo cảnh báo đỏ ACID:</strong> Hiển thị cảnh báo chớp đỏ chớp tắt trên UI và mở lại nút thao tác.",
+                desc: "Backend kích hoạt Rollback Transaction toàn cục khi có lỗi phát sinh để bảo toàn dữ liệu. SVG UI chớp đỏ rực báo lỗi ACID và cấm chia thưởng cho đến khi lỗi được khắc phục và Admin thực hiện lại."
+            },
+            '6-2': {
+                title: "6.2. Khóa Biên Bản",
+                actor: "Hệ thống",
+                module: "Module H — Quản Lý Kết Quả",
+                rules: "Khóa cứng biên bản thi đấu vĩnh viễn, vô hiệu hóa hoàn toàn nút Sửa/Xóa dữ liệu.",
+                desc: "Hệ thống tự động thực hiện đóng băng và mã hóa khóa cứng biên bản thi đấu của cuộc đua."
+            },
+            '6-3': {
+                title: "6.3. Doctor Weighing In (Cân sau đua)",
+                actor: "Doctor",
+                module: "Module J — Xác Nhận Kết Quả và Công Bố Chính Thức",
+                rules: "Bác sĩ tiến hành cân đo lại Jockey ngay sau khi cán đích. Sai lệch không vượt quá 0.5kg so với Weighing Out.",
+                desc: "Doctor thực hiện kiểm tra cân nặng sau đua để ngăn chặn hành vi Jockey bỏ bớt tải trọng/chì trong lúc đua. Ghi nhận trọng lượng vào PostRaceJockeyWeight."
+            },
+            '6-4': {
+                title: "6.4. Trả Thưởng Ví Ảo",
+                actor: "Hệ thống",
+                module: "Module M & Module N — Trả Thưởng Ví Ảo",
+                rules: "Tự động đối chiếu cược dự đoán. Cộng điểm ảo Win (+200 điểm) và Place (+100 điểm) trực tiếp vào ví cá nhân.",
+                desc: "Hệ thống đối chiếu kết quả Official với vé cược, tự động tính toán điểm thưởng và cộng trực tiếp điểm ảo vào ví cá nhân Spectator."
+            },
+            '6-5': {
+                title: "6.5. Phân Bổ Quỹ Purse",
+                actor: "Hệ thống",
+                module: "Module K — Tính Toán và Phân Bổ Tiền Thưởng",
+                rules: "Tính toán tiền thưởng lý thuyết thực tế theo quỹ Purse cấu hình và thứ hạng về đích.",
+                desc: "Hệ thống tự động tính toán số tiền thưởng phân phối lý thuyết cho các Chủ ngựa đoạt giải và lưu vết lịch sử."
+            },
+            '6-6': {
+                title: "6.6. Thanh Toán Offline & Audit Log",
+                actor: "Admin",
+                module: "Module K — Phân Bổ Tiền Thưởng",
+                rules: "<strong>Thanh toán ngoại tuyến:</strong> Các giao dịch tiền thật được BTC xử lý độc lập bên ngoài hệ thống. Admin cập nhật trạng thái thanh toán + ghi Audit Log bắt buộc.",
+                desc: "Admin theo dõi thanh toán tiền mặt bên ngoài, đánh dấu hoàn thành và ghi nhận Audit Log vết thanh toán lên hệ thống."
+            },
+            '6-7': {
+                title: "6.7. Báo Cáo Thống Kê",
+                actor: "Admin/Tác nhân",
+                module: "Module O — Báo Cáo và Xuất Dữ Liệu",
+                rules: "Cho phép kết xuất báo cáo định dạng CSV, PDF hoặc trực tiếp in.",
+                desc: "Ban tổ chức hoặc người dùng thực hiện xuất dữ liệu tổng hợp về giải đua, bảng xếp hạng và tiền thưởng ra báo cáo CSV/PDF."
+            },
+            '6-8': {
+                title: "6.8. Tự Động Cập Nhật Bảng Xếp Hạng",
+                actor: "Hệ thống",
+                module: "Module L — Bảng Xếp Hạng Tích Lũy",
+                rules: "Bảng xếp hạng Standings được đồng bộ tự động định kỳ tối thiểu 30 giây bằng HTTP Polling.",
+                desc: "Hệ thống tự động cộng dồn điểm số của ngựa thi đấu và Jockey sau khi chốt cuộc đua để cập nhật trực tiếp lên Leaderboard công khai."
+            }
+        };
+
+        const ERROR_SUB_FLOWS = {
+            '2-4-ERR': {
+                triggerCheckpoint: '2-4',
+                nodes: [
+                    { id: '2-4-A', label: 'A. Kiểm Giống Ngựa|Auto-reject', actor: 'admin', module: 'Module C', rules: 'Chỉ chấp nhận giống ngựa AllowedBreed (Thoroughbred, Arabian, Quarter Horse, Mixed).', desc: 'Hệ thống tự động so khớp Horse.Breed với AllowedBreed của giải đấu. Nếu vi phạm, tự động khóa nút phê duyệt của Admin.' },
+                    { id: '2-4-B', label: 'B. Nhập Lý Do|Tối thiểu 10 ký tự', actor: 'admin', module: 'Module C', rules: 'Trường lý do từ chối bắt buộc nhập và tối thiểu 10 ký tự.', desc: 'Admin click nút từ chối duyệt (Reject). Hệ thống kích hoạt hộp thoại bắt buộc nhập lý do từ chối có độ dài >=10 ký tự.' },
+                    { id: '2-4-C', label: 'C. Ghi Nhận DB|Status = Rejected', actor: 'admin', module: 'Module C', rules: 'Trạng thái đơn đổi sang Rejected, lưu trường ReasonOfRejection.', desc: 'Hệ thống thực hiện cập nhật CSDL của đơn đăng ký thi đấu của ngựa sang trạng thái Rejected.' },
+                    { id: '2-4-D', label: 'D. Gửi Thông Báo|Owner nhận đơn', actor: 'owner', module: 'Module N', rules: 'Gửi đồng thời email và in-app notification.', desc: 'Hệ thống tự động phát thông báo từ chối kèm lý do chi tiết cho Chủ ngựa (Owner) nắm thông tin.' },
+                    { id: '2-4-E', label: 'E. Giải Phóng Đơn|Reset về Draft', actor: 'owner', module: 'Module C', rules: 'Đơn đăng ký được reset về Draft để chỉnh sửa.', desc: 'Hệ thống tự động mở khóa đơn đăng ký, chuyển trạng thái về Draft để Owner có thể sửa đổi và nộp lại.' }
+                ]
+            },
+            '2-5-ERR': {
+                triggerCheckpoint: '2-5',
+                nodes: [
+                    { id: '2-5-A', label: 'A. Nhận Lời Mời|Jockey nhận thông báo', actor: 'jockey', module: 'Module D', rules: 'Hệ thống gửi thông báo mời ghép cặp từ Owner đến Jockey.', desc: 'Chủ ngựa sau khi được duyệt hồ sơ ngựa sẽ gửi lời mời ghép cặp đến Jockey đã y tế sạch.' },
+                    { id: '2-5-B', label: 'B. Jockey Từ Chối|Nhấn nút Decline', actor: 'jockey', module: 'Module D', rules: 'Jockey có quyền tự do từ chối do trùng lịch hoặc thỏa thuận không đạt.', desc: 'Jockey mở hộp thoại lời mời và quyết định nhấn nút từ chối (Decline).' },
+                    { id: '2-5-C', label: 'C. Ghi Nhận Lời Mời|Status = Declined', actor: 'jockey', module: 'Module D', rules: 'Bản ghi Pairing hoặc Lời mời chuyển trạng thái sang Declined.', desc: 'Hệ thống cập nhật trạng thái bản ghi lời mời thành Declined trong CSDL.' },
+                    { id: '2-5-D', label: 'D. Gửi Thông Báo|Chủ ngựa nhận tin', actor: 'owner', module: 'Module N', rules: 'Gửi email và in-app thông báo lời mời bị từ chối.', desc: 'Hệ thống tự động phát thông báo về hòm thư của Owner: *Jockey Nguyễn Văn A đã từ chối lời mời của bạn*.' },
+                    { id: '2-5-E', label: 'E. Giải Phóng Đơn|Mở khóa mời người khác', actor: 'owner', module: 'Module D', rules: 'Mở khóa trạng thái ghép đôi của ngựa để Owner có thể chọn Jockey khác.', desc: 'Hệ thống tự động giải phóng trạng thái đơn, cho phép Owner quay lại tìm kiếm danh sách Jockey khả dụng khác.' }
+                ]
+            },
+            '3-3-ERR': {
+                triggerCheckpoint: '3-3',
+                nodes: [
+                    { id: '3-3-A', label: 'A. Scheduler Quét|Định kỳ mỗi 15p', actor: 'admin', module: 'Module E', rules: 'Scheduler tự động chạy ngầm ở Backend quét CSDL.', desc: 'Hệ thống kích hoạt background job quét định kỳ 15 phút một lần tìm kiếm các lượt chạy chưa xác nhận.' },
+                    { id: '3-3-B', label: 'B. Kiểm Trạm Chốt|Confirmation 24h', actor: 'admin', module: 'Module E', rules: 'Mốc cut-off bắt buộc là 24 giờ trước thời điểm bắt đầu cuộc đua.', desc: 'Scheduler phát hiện các đơn đăng ký vẫn giữ trạng thái Pending khi đã chạm mốc 24h trước giờ đua.' },
+                    { id: '3-3-C', label: 'C. Hủy RaceEntry|Status = Cancelled', actor: 'owner', module: 'Module E', rules: 'RaceEntry.Status chuyển lập tức sang Cancelled.', desc: 'Hệ thống tự động bẻ luồng, hủy lượt đăng ký chạy của cặp ngựa thi đấu vi phạm hạn chốt.' },
+                    { id: '3-3-D', label: 'D. Giải Cổng Đua|PostPosition = Vacant', actor: 'owner', module: 'Module E', rules: 'Số cổng đã bốc thăm tự động giải phóng sang Vacant.', desc: 'Hệ thống cập nhật bảng PostPosition gán cổng xuất phát của ngựa này về Vacant để sẵn sàng xếp cặp khác.' },
+                    { id: '3-3-E', label: 'E. URGENT Cảnh Báo|Audit Log hệ thống', actor: 'admin', module: 'Module N', rules: 'Gửi URGENT notification đến Admin, ghi Audit Log.', desc: 'Hệ thống gửi cảnh báo khẩn cấp đến Admin để điều chỉnh danh sách hoặc tìm ngựa dự bị, đồng thời ghi log giám sát.' }
+                ]
+            },
+            '3-5-ERR': {
+                triggerCheckpoint: '3-5',
+                nodes: [
+                    { id: '3-5-A', label: 'A. Quét Quan Hệ|Nhân thân gia đình', actor: 'admin', module: 'Module F', rules: 'Backend tự động đối soát thông tin gia đình trực hệ của trọng tài.', desc: 'Khi Admin chọn Trọng tài, hệ thống lập tức đối chiếu danh sách nhân thân của Trọng tài với các Chủ ngựa trong lượt chạy.' },
+                    { id: '3-5-B', label: 'B. Phát Hiện COI|Trùng quan hệ trực hệ', actor: 'admin', module: 'Module F', rules: 'Trọng tài không có quan hệ gia đình (cha, mẹ, vợ, chồng, con) với Owner.', desc: 'Hệ thống phát hiện Trọng tài được chọn có quan hệ trực hệ ruột thịt trực tiếp với Chủ ngựa có ngựa tham gia đua.' },
+                    { id: '3-5-C', label: 'C. Chặn Lưu Phân Công|Lỗi Backend COI', actor: 'admin', module: 'Module F', rules: 'Từ chối lưu bản ghi phân công, trả về lỗi xung đột COI.', desc: 'Hệ thống chặn đứng hành động lưu phân công của Admin lên database để bảo đảm tính trung thực giải đua.' },
+                    { id: '3-5-D', label: 'D. Báo Đỏ Giao Diện|Ép chọn Trọng tài khác', actor: 'admin', module: 'Module F', rules: 'Hiển thị cảnh báo đỏ trên UI, vô hiệu hóa nút Lưu hoàn tất.', desc: 'SVG UI của Admin hiển thị thông tin cảnh báo đỏ rực về xung đột lợi ích. Admin bắt buộc phải chọn Trọng tài khác hợp lệ.' }
+                ]
+            },
+            '4-5-DISQ': {
+                triggerCheckpoint: '4-2',
+                nodes: [
+                    { id: '4-5-A', label: 'A. Paddock Vi Phạm|Referee Phát Hiện', actor: 'referee', module: 'Module G', rules: 'Bất kỳ 1 thuộc tính paddock nào bị vi phạm (danh tính lệch, y tế Unfit, nài mất độc lập).', desc: 'Trọng tài phát hiện sẹo/màu ngựa sai lệch, bác sĩ thú y chốt ngựa Unfit trên giấy, hoặc Jockey vi phạm quan hệ trực hệ đối thủ.' },
+                    { id: '4-5-B', label: 'B. Truất Quyền|RaceEntry = Disqualified', actor: 'admin', module: 'Module G', rules: 'Loại bỏ hoàn toàn ngựa vi phạm khỏi danh sách chạy chính thức.', desc: 'Hệ thống lập tức bẻ luồng sang Truất quyền khẩn cấp, cập nhật CSDL trạng thái thi đấu của cặp thành Disqualified.' },
+                    { id: '4-5-C', label: 'C. Phát 3 Thông Báo|Owner - Jockey - Admin', actor: 'referee', module: 'Module N', rules: 'Gửi đồng thời thông báo in-app và email đến 3 tác nhân liên đới.', desc: 'Hệ thống tự động kích hoạt gửi 3 thông báo khẩn cấp đồng thời cho Chủ ngựa, Jockey và Admin để nắm bắt danh sách chạy mới.' },
+                    { id: '4-5-D', label: 'D. Hoàn Điểm Cược|Refund Virtual Points', actor: 'spectator', module: 'Module M', rules: 'Hoàn trả 100% số điểm cược ảo cho khán giả cược ngựa bị loại.', desc: 'Hệ thống tự động rà soát Spectator đã đặt cược vào chú ngựa bị loại, thực hiện hoàn trả toàn bộ số điểm ảo đã cược về ví cá nhân.' }
+                ]
+            },
+            '5-5-ERR': {
+                triggerCheckpoint: '5-5',
+                nodes: [
+                    { id: '5-5-A', label: 'A. Duyệt Protest|Referee Xem Xét', actor: 'referee', module: 'Module I', rules: 'Xem xét khiếu nại dựa trên băng ghi hình kỹ thuật và báo cáo.', desc: 'Trọng tài chính tiếp nhận đơn khiếu nại Protest của Owner/Jockey, xác nhận có lỗi vi phạm thực tế diễn ra trên đường đua.' },
+                    { id: '5-5-B', label: 'B. Áp Hình Phạt|Place Behind / DISQ', actor: 'referee', module: 'Module I', rules: 'Áp dụng truất quyền thi đấu (DISQ) hoặc hạ bậc xếp ngay sau ngựa bị hại (Place Behind).', desc: 'Referee chốt phán quyết phạt ngựa phạm quy: đẩy xuống cuối (DISQ) hoặc hạ thứ hạng xếp sau ngựa bị hại.' },
+                    { id: '5-5-C', label: 'C. Tính Lại Thứ Hạng|Thuật toán hệ thống', actor: 'admin', module: 'Module I', rules: 'Tự động tính toán lại thứ hạng toàn bộ lượt đua.', desc: 'Hệ thống tự động chạy lại thuật toán sắp xếp để điều chỉnh thứ hạng sơ bộ của các chú ngựa còn lại dựa trên hình phạt.' },
+                    { id: '5-5-D', label: 'D. Ký Biên Bản Mới|Unofficial Result', actor: 'referee', module: 'Module H', rules: 'Cập nhật bảng xếp hạng sơ bộ mới đã điều chỉnh vào biên bản.', desc: 'Trọng tài ký biên bản điện tử chốt kết quả sơ bộ (Unofficial Result) đã điều chỉnh để gửi lên Admin phê duyệt.' },
+                    { id: '5-5-E', label: 'E. Closed-loop Noti|Thông báo 2 bên', actor: 'referee', module: 'Module N', rules: 'Gửi thông báo phán quyết chi tiết đồng thời cho cả bên gửi đơn và bên bị phạt.', desc: 'Hệ thống phát thông báo email và in-app closed-loop cho cả hai bên để đảm bảo tính minh bạch, kết thúc quá trình khiếu nại.' }
+                ]
+            },
+            '6-1-ERR': {
+                triggerCheckpoint: '6-1',
+                nodes: [
+                    { id: '6-1-A', label: 'A. Bắt Exception|Lỗi chuỗi declare', actor: 'admin', module: 'Module J', rules: 'Hệ thống phát hiện lỗi database hoặc tính toán trung gian.', desc: 'Trong quá trình declare Official, Backend bắt được Exception hệ thống (lỗi DB, lỗi ví Spectator, lỗi Audit Log).' },
+                    { id: '6-1-B', label: 'B. Rollback Trans|ACID Transaction', actor: 'admin', module: 'Module J', rules: 'Hủy bỏ toàn bộ các bước đã chạy thành công trước đó.', desc: 'Backend thực thi lệnh Rollback Transaction lập tức để khôi phục trạng thái CSDL nguyên vẹn 100% như trước khi bấm nút.' },
+                    { id: '6-1-C', label: 'C. Giam Unofficial|Khóa cứng chia thưởng', actor: 'admin', module: 'Module J', rules: 'Cuộc đua được giữ nguyên trạng thái Unofficial, cấm chia thưởng và BXH.', desc: 'Cuộc đua được giữ nguyên ở trạng thái Unofficial, cấm tự động chia quỹ Purse, cấm cập nhật ví ảo Spectator và BXH.' },
+                    { id: '6-1-D', label: 'D. Báo Chớp Đỏ ACID|Mở khóa thao tác', actor: 'admin', module: 'Module J', rules: 'Cảnh báo đỏ nhấp nháy trên UI, giải phóng nút để thực hiện lại.', desc: 'SVG UI chớp đỏ rực báo lỗi ACID và cấm chia thưởng cho đến khi lỗi được khắc phục và Admin thực hiện lại.' }
+                ]
+            }
+        };
+        
+        function logToConsole(type, message) {
+            const terminal = document.getElementById('sim-terminal');
+            const logLine = document.createElement('p');
+            if (type === 'INFO') {
+                logLine.className = "text-emerald-400 font-mono";
+            } else if (type === 'WARNING') {
+                logLine.className = "text-amber-400 font-mono";
+            } else if (type === 'URGENT' || type === 'ERROR') {
+                logLine.className = "text-rose-500 font-mono font-bold";
+            } else {
+                logLine.className = "text-blue-400 font-mono";
+            }
+            logLine.innerText = `[${type}] ${message}`;
+            terminal.appendChild(logLine);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // Selection Handlers
+        function selectNode(nodeId, phaseId, subNodeIdx = null) {
+            GLOBAL_SIM_STATE.selectedNodeId = nodeId;
+            GLOBAL_SIM_STATE.selectedSubNodeIdx = subNodeIdx;
+            
+            const overlay = document.getElementById('node-detail-card');
+            if (!overlay) return;
+            
+            let nodeData = null;
+            
+            // Check if it's a sub-node
+            if (subNodeIdx !== null && GLOBAL_SIM_STATE.activeExpandedErrNodeId) {
+                const subFlow = ERROR_SUB_FLOWS[GLOBAL_SIM_STATE.activeExpandedErrNodeId];
+                if (subFlow && subFlow.nodes[subNodeIdx]) {
+                    nodeData = subFlow.nodes[subNodeIdx];
+                }
+            } else {
+                // Check FLOW_DETAILS_DB
+                nodeData = FLOW_DETAILS_DB[nodeId];
+            }
+            
+            if (!nodeData) {
+                // Fallback if data is missing
+                nodeData = {
+                    title: nodeId,
+                    actor: 'N/A',
+                    module: 'N/A',
+                    rules: 'Chưa có thông tin đặc tả cụ thể.',
+                    desc: 'Vui lòng kiểm tra lại tài liệu flowdetails_updated.md.'
+                };
+            }
+            
+            // Update overlay UI
+            const badge = document.getElementById('detail-actor-badge');
+            const nodeIdSpan = document.getElementById('detail-node-id');
+            const title = document.getElementById('detail-title');
+            const actorModule = document.getElementById('detail-actor-module');
+            const rules = document.getElementById('detail-rules');
+            const desc = document.getElementById('detail-desc');
+            
+            nodeIdSpan.innerText = nodeId.includes('-') ? `${nodeId}` : `Nút ${nodeId}`;
+            title.innerText = nodeData.title || nodeData.label || 'Bước Nghiệp Vụ';
+            
+            const actorName = (nodeData.actor || 'system').toUpperCase();
+            badge.innerText = actorName;
+            
+            // Apply theme color to badge
+            badge.className = "px-2 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider text-white";
+            if (actorName === 'ADMIN') badge.style.backgroundColor = '#6366f1';
+            else if (actorName === 'OWNER') badge.style.backgroundColor = '#10B981';
+            else if (actorName === 'JOCKEY') badge.style.backgroundColor = '#F59E0B';
+            else if (actorName === 'DOCTOR') badge.style.backgroundColor = '#06b6d4';
+            else if (actorName === 'REFEREE') badge.style.backgroundColor = '#a855f7';
+            else if (actorName === 'SPECTATOR') badge.style.backgroundColor = '#ec4899';
+            else badge.style.backgroundColor = '#475569';
+            
+            actorModule.innerHTML = `Tác nhân: <strong class="text-white">${nodeData.actor || 'N/A'}</strong> | Module Backend: <strong class="text-white">${nodeData.module || 'N/A'}</strong>`;
+            rules.innerHTML = nodeData.rules || 'Không có ràng buộc đặc biệt.';
+            desc.innerHTML = nodeData.desc || 'Chưa có chi tiết hoạt động.';
+            
+            // Show overlay
+            overlay.classList.remove('hidden');
+            
+            // Render flow to update active state/borders of nodes
+            renderBranchingFlow(phaseId || GLOBAL_SIM_STATE.currentPhaseId || 1);
+        }
+
+        function deselectNode() {
+            GLOBAL_SIM_STATE.selectedNodeId = null;
+            GLOBAL_SIM_STATE.selectedSubNodeIdx = null;
+            const overlay = document.getElementById('node-detail-card');
+            if (overlay) overlay.classList.add('hidden');
+            renderBranchingFlow(GLOBAL_SIM_STATE.currentPhaseId || 1);
+        }
+
+        function clearTerminal() {
+            const terminal = document.getElementById('sim-terminal');
+            if (terminal) {
+                terminal.innerHTML = '<p class="text-slate-500">[SYSTEM] Hộp Simulator Log đã được dọn sạch. Nhấp các nút để ghi nhận log mới.</p>';
+            }
+        }
+
+        function updateSimulationGlobalStateCard(phaseId) {
+            const state = phaseData[phaseId].simState;
+            const isUnhappy = GLOBAL_SIM_STATE.activeErrors.length > 0;
+            
+            const badge = document.getElementById('branch-state-badge');
+            const errorsList = document.getElementById('active-errors-list');
+            
+            if (isUnhappy) {
+                badge.innerText = 'UNHAPPY BRANCHING';
+                badge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold transition-all bg-rose-500/10 text-rose-500 border border-rose-500/20 pulse-red";
+                
+                errorsList.innerHTML = '';
+                GLOBAL_SIM_STATE.activeErrors.forEach(errId => {
+                    let errName = errId;
+                    if (errId === 'horse_reg_rejected') errName = 'Từ chối duyệt hồ sơ đăng ký ngựa thi đấu';
+                    else if (errId === 'jockey_invite_rejected') errName = 'Jockey từ chối lời mời ghép cặp của Owner';
+                    else if (errId === 'owner_missed_confirmation') errName = 'Chủ ngựa rút lui đột xuất / Quá hạn xác nhận 24h';
+                    else if (errId === 'coi_conflict_detected') errName = 'Phát hiện Xung đột lợi ích Trọng tài (COI Check)';
+                    else if (errId === 'identity_mismatch') errName = 'Sai lệch danh tính ngựa kiểm paddock';
+                    else if (errId === 'horse_health_unfit') errName = 'Ngữa vi phạm y tế paddock (Unfit)';
+                    else if (errId === 'jockey_independence_conflict') errName = 'Jockey vi phạm quan hệ trực hệ paddock';
+                    else if (errId === 'protest_approved') errName = 'Khiếu nại Protest được phê duyệt (Hạ bậc / Loại)';
+                    else if (errId === 'transaction_rollback') errName = 'Lỗi Backend Database - ACID Rollback';
+                    
+                    const li = document.createElement('li');
+                    li.innerText = errName;
+                    li.className = "text-rose-400 font-bold";
+                    errorsList.appendChild(li);
+                });
+            } else {
+                badge.innerText = 'HAPPY PATH';
+                badge.className = "px-2.5 py-0.5 rounded-full text-[10px] font-bold transition-all bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+                errorsList.innerHTML = '<li>Không có lỗi nào hoạt động</li>';
+            }
+            
+            // Map values
+            document.getElementById('sim-state-tournament').innerText = state.tournament;
+            document.getElementById('sim-state-gate').innerText = state.gate;
+            document.getElementById('sim-state-coi').innerText = state.coi;
+            document.getElementById('sim-state-jockey').innerText = state.jockey;
+            
+            // Change colors
+            if (state.tournament.includes('OFFICIAL') || state.tournament.includes('Declare')) {
+                document.getElementById('sim-state-tournament').className = "text-yellow-400 font-extrabold";
+            } else if (state.tournament.includes('LIVE')) {
+                document.getElementById('sim-state-tournament').className = "text-rose-500 font-extrabold blink";
+            } else {
+                document.getElementById('sim-state-tournament').className = "text-blue-400 font-bold";
+            }
+            
+            if (state.gate.includes('MỞ')) {
+                document.getElementById('sim-state-gate').className = "text-emerald-400 font-bold";
+            } else if (state.gate.includes('Locked') || state.gate.includes('Khóa')) {
+                document.getElementById('sim-state-gate').className = "text-amber-500 font-bold";
+            } else {
+                document.getElementById('sim-state-gate').className = "text-slate-500";
+            }
+        }
+
+        function toggleErrorOnCheckpoint(errorId, phaseId, node) {
+            // Special popups/interactions
+            if (errorId === 'horse_reg_rejected' && !GLOBAL_SIM_STATE.activeErrors.includes(errorId)) {
+                const reason = prompt("Lỗi Duyệt Hồ Sơ: Nhập lý do từ chối (>= 10 ký tự):");
+                if (!reason || reason.length < 10) {
+                    alert("Lý do quá ngắn. Đã hủy thao tác bẻ luồng.");
+                    return;
+                }
+                logToConsole("WARNING", `Duyệt hồ sơ ngựa bị từ chối. Lý do: ${reason}`);
+            }
+            
+            const idx = GLOBAL_SIM_STATE.activeErrors.indexOf(errorId);
+            if (idx > -1) {
+                GLOBAL_SIM_STATE.activeErrors.splice(idx, 1);
+                logToConsole("INFO", `Đã gỡ bỏ nhánh ngoại lệ: ${errorId}. Khôi phục Happy Path.`);
+                // If the error was expanded, collapse it
+                if (GLOBAL_SIM_STATE.activeExpandedErrNodeId && GLOBAL_SIM_STATE.activeExpandedErrNodeId.includes(errorId)) {
+                    GLOBAL_SIM_STATE.activeExpandedErrNodeId = null;
+                    deselectNode();
+                }
+            } else {
+                GLOBAL_SIM_STATE.activeErrors.push(errorId);
+                
+                // Trigger specific console logs based on BA rules
+                if (errorId === 'jockey_invite_rejected') {
+                    logToConsole("WARNING", "Jockey từ chối lời mời ghép cặp của Chủ ngựa. Cập nhật Declined, giải phóng đơn để Owner mời người khác.");
+                } else if (errorId === 'owner_missed_confirmation') {
+                    logToConsole("URGENT", "Chủ ngựa rút lui đột xuất/quá hạn 24h. Trạng thái Cancelled. Vị trí cổng xuất phát đổi thành Vacant.");
+                } else if (errorId === 'coi_conflict_detected') {
+                    logToConsole("URGENT", "Trọng tài có quan hệ trực hệ với Owner. Bị chặn phân công do xung đột lợi ích!");
+                } else if (['identity_mismatch', 'horse_health_unfit', 'jockey_independence_conflict'].includes(errorId)) {
+                    logToConsole("URGENT", `Phát hiện lỗi ${errorId}. Khẩn cấp truất quyền thi đấu (DISQ). Hoàn trả toàn bộ 200 điểm dự đoán ảo (Refund virtual points) cho khán giả.`);
+                } else if (errorId === 'protest_approved') {
+                    logToConsole("WARNING", "Chấp thuận khiếu nại (Protest). Quyết định: Phạt Place Behind. Bảng xếp hạng sơ bộ đã được cập nhật.");
+                } else if (errorId === 'transaction_rollback') {
+                    logToConsole("ERROR", "Lỗi Backend Database: Rollback toàn bộ ACID Transaction. Cuộc đua bị giam ở trạng thái Unofficial. Đóng băng trả thưởng.");
+                } else {
+                    logToConsole("WARNING", `Kích hoạt ngoại lệ: ${errorId}`);
+                }
+            }
+            
+            updateSimulationGlobalStateCard(phaseId);
+            renderBranchingFlow(phaseId);
+        }
+        
+        function isNodeAffectedByError(nodeId, phaseId) {
+            const errs = GLOBAL_SIM_STATE.activeErrors;
+            // Phase 2 error cascades
+            if ((errs.includes('horse_reg_rejected') || errs.includes('jockey_invite_rejected')) && phaseId >= 3) return true;
+            // Phase 3 error cascades
+            if (errs.includes('owner_missed_confirmation') && phaseId >= 4 && !nodeId.includes('err')) return true;
+            if (errs.includes('coi_conflict_detected') && phaseId === 5 && nodeId === '5-1') return true; // Cấm Live start
+            // Phase 4 error cascades (DISQ)
+            if ((errs.includes('identity_mismatch') || errs.includes('horse_health_unfit') || errs.includes('jockey_independence_conflict')) && phaseId >= 5) {
+                if (!nodeId.includes('err') && !nodeId.includes('disq')) return true; 
+            }
+            // Phase 6 rollback
+            if (errs.includes('transaction_rollback') && phaseId === 6 && nodeId === '6-2') return true; // Đóng băng chia thưởng
+            
+            return false;
+        }
+
+        function toggleLiveRace() {
+            const container = document.getElementById('live-race-container');
+            const svg = document.getElementById('branching-flow-svg');
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+                svg.classList.add('hidden');
+                startLiveSimulation();
+            } else {
+                container.classList.add('hidden');
+                svg.classList.remove('hidden');
+                stopLiveSimulation();
+            }
+        }function stopLiveSimulation() {
+            if (liveRaceInterval) clearInterval(liveRaceInterval);
+        }
+
+        function renderBranchingFlow(phaseId) {
+            GLOBAL_SIM_STATE.currentPhaseId = phaseId;
+            const data = phaseData[phaseId];
+            if (!data || !data.flowNodes) return;
+            
+            const pathsGroup = document.getElementById('svg-paths');
+            const nodesGroup = document.getElementById('svg-nodes');
+            pathsGroup.innerHTML = '';
+            nodesGroup.innerHTML = '';
+            
+            // Constrain container and allow horizontal scroll if sub-flow expands
+            const container = document.getElementById('svg-container');
+            container.style.height = "680px";
+            container.className = "relative w-full overflow-x-auto overflow-y-hidden bg-slate-950 rounded-2xl border border-slate-800 shadow-inner";
+            
+            // Update Global Simulation State card
+            updateSimulationGlobalStateCard(phaseId);
+            
+            // Define lanes coordinates and centers
+            const LANES = [
+                { name: 'ADMIN (Ban Tổ Chức)', yMin: 0, yMax: 110, yCenter: 55, color: 'rgba(99, 102, 241, 0.04)', borderColor: 'rgba(99, 102, 241, 0.12)', textColor: '#6366f1' },
+                { name: 'HORSE OWNER (Chủ Ngựa)', yMin: 110, yMax: 220, yCenter: 165, color: 'rgba(16, 185, 129, 0.03)', borderColor: 'rgba(16, 185, 129, 0.12)', textColor: '#10B981' },
+                { name: 'JOCKEY (Nài Ngựa)', yMin: 220, yMax: 330, yCenter: 275, color: 'rgba(245, 158, 11, 0.03)', borderColor: 'rgba(245, 158, 11, 0.12)', textColor: '#F59E0B' },
+                { name: 'DOCTOR / VET (Bác Sĩ & Thú Y)', yMin: 330, yMax: 440, yCenter: 385, color: 'rgba(6, 182, 212, 0.03)', borderColor: 'rgba(6, 182, 212, 0.12)', textColor: '#06b6d4' },
+                { name: 'RACE REFEREE (Trọng Tài)', yMin: 440, yMax: 550, yCenter: 495, color: 'rgba(168, 85, 247, 0.03)', borderColor: 'rgba(168, 85, 247, 0.12)', textColor: '#a855f7' },
+                { name: 'SPECTATOR (Khán Giả)', yMin: 550, yMax: 660, yCenter: 605, color: 'rgba(236, 72, 153, 0.03)', borderColor: 'rgba(236, 72, 153, 0.12)', textColor: '#ec4899' }
+            ];
+
+            const LANE_Y_CENTERS = {
+                'admin': 55, 'owner': 165, 'jockey': 275, 'doctor': 385, 'referee': 495, 'spectator': 605, 'system': 55
+            };
+
+            // Determine if an error is active & expanded
+            let activeExpandedNodeId = GLOBAL_SIM_STATE.activeExpandedErrNodeId;
+            let subFlow = null;
+            let maxSubFlowX = 0;
+            
+            if (activeExpandedNodeId) {
+                subFlow = ERROR_SUB_FLOWS[activeExpandedNodeId];
+            }
+            
+            // Adjust SVG width if error sub-flow is expanded
+            let svgWidth = 1000;
+            if (subFlow) {
+                svgWidth = 1000 + subFlow.nodes.length * 200 + 100;
+            }
+            const svg = document.getElementById('branching-flow-svg');
+            svg.setAttribute("width", svgWidth);
+            svg.setAttribute("height", "660");
+            svg.style.width = svgWidth + "px";
+            svg.style.height = "660px";
+
+            // Click empty space on SVG to deselect
+            svg.onclick = (e) => {
+                if (e.target === svg) {
+                    deselectNode();
+                }
+            };
+            
+            // 1. Draw Visual Background Swimlanes
+            LANES.forEach(lane => {
+                // Lane Rect Band
+                const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                rect.setAttribute("x", "0");
+                rect.setAttribute("y", lane.yMin);
+                rect.setAttribute("width", svgWidth);
+                rect.setAttribute("height", lane.yMax - lane.yMin);
+                rect.setAttribute("fill", lane.color);
+                rect.setAttribute("stroke-bottom", lane.borderColor);
+                pathsGroup.appendChild(rect);
+                
+                // Lane Border Bottom Line
+                if (lane.yMax < 660) {
+                    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    line.setAttribute("x1", "0");
+                    line.setAttribute("y1", lane.yMax);
+                    line.setAttribute("x2", svgWidth);
+                    line.setAttribute("y2", lane.yMax);
+                    line.setAttribute("stroke", lane.borderColor);
+                    line.setAttribute("stroke-width", "1");
+                    line.setAttribute("stroke-dasharray", "4,4");
+                    pathsGroup.appendChild(line);
+                }
+                
+                // Lane Label
+                const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                label.setAttribute("x", "15");
+                label.setAttribute("y", lane.yMin + 20);
+                label.setAttribute("fill", lane.textColor);
+                label.setAttribute("font-size", "9");
+                label.setAttribute("font-weight", "extrabold");
+                label.setAttribute("letter-spacing", "0.05em");
+                label.setAttribute("opacity", "0.4");
+                label.innerHTML = lane.name;
+                nodesGroup.appendChild(label);
+            });
+
+            // Map nodes
+            const nodeMap = {};
+            data.flowNodes.forEach(n => { nodeMap[n.id] = n; });
+            
+            // 2. Draw connections
+            data.flowConnections.forEach(conn => {
+                const src = nodeMap[conn.src];
+                const dst = nodeMap[conn.dst];
+                if (!src || !dst) return;
+                
+                const isErrorBranch = conn.isErrorBranch === true;
+                const isErrorActive = conn.errorId && GLOBAL_SIM_STATE.activeErrors.includes(conn.errorId);
+                
+                if (isErrorBranch && !isErrorActive) return;
+                
+                let strokeColor = isErrorBranch ? '#DC2626' : '#6366f1'; 
+                let marker = isErrorBranch ? 'url(#arrow-red)' : 'url(#arrow-indigo)';
+                let isDimmed = false;
+                
+                // Dimming Logic: If happy path but error is active
+                if (!isErrorBranch && conn.errorId && isErrorActive) {
+                    strokeColor = '#475569';
+                    marker = 'url(#arrow-gray)';
+                    isDimmed = true;
+                }
+                if (isNodeAffectedByError(conn.dst, phaseId) || isNodeAffectedByError(conn.src, phaseId)) {
+                    strokeColor = '#475569';
+                    marker = 'url(#arrow-gray)';
+                    isDimmed = true;
+                }
+                
+                // If a sub-flow is expanded, dim all paths that do not belong to the error trigger path
+                if (activeExpandedNodeId) {
+                    const activeTrigger = subFlow.triggerCheckpoint;
+                    const isTriggerPath = (conn.src === activeTrigger && conn.dst === activeExpandedNodeId) || 
+                                          (conn.errorId && activeExpandedNodeId.includes(conn.errorId) && isErrorBranch);
+                    if (!isTriggerPath) {
+                        isDimmed = true;
+                        strokeColor = '#334155';
+                        marker = 'url(#arrow-slate)';
+                    }
+                }
+                
+                const sx = src.x + (src.w || 150) / 2;
+                const sy = src.y + (src.h || 44) / 2;
+                const dx = dst.x + (dst.w || 150) / 2;
+                const dy = dst.y + (dst.h || 44) / 2;
+                
+                const pathStr = `M ${sx},${sy} C ${(sx+dx)/2},${sy} ${(sx+dx)/2},${dy} ${dx},${dy}`;
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", pathStr);
+                path.setAttribute("fill", "none");
+                path.setAttribute("stroke", strokeColor);
+                path.setAttribute("stroke-width", "2.5");
+                path.setAttribute("marker-end", marker);
+                if (isErrorBranch) path.setAttribute("class", "path-animated");
+                if (isDimmed) path.setAttribute("opacity", "0.15");
+                
+                pathsGroup.appendChild(path);
+            });
+            
+            // 3. Draw nodes
+            data.flowNodes.forEach(n => {
+                const isErrorNode = n.type === 'error';
+                const isCheckpoint = n.type === 'checkpoint';
+                
+                if (isErrorNode && !GLOBAL_SIM_STATE.activeErrors.includes(n.errorId)) return;
+                
+                let isDimmed = isNodeAffectedByError(n.id, phaseId);
+                if (n.errorId && !isErrorNode && !isCheckpoint && GLOBAL_SIM_STATE.activeErrors.includes(n.errorId)) {
+                    isDimmed = true;
+                }
+                
+                // If a sub-flow is expanded, dim all nodes except trigger checkpoint and active error node
+                if (activeExpandedNodeId) {
+                    const isTriggerCheckpoint = isCheckpoint && n.errorId && activeExpandedNodeId.includes(n.errorId);
+                    const isActiveError = n.id === activeExpandedNodeId;
+                    if (!isTriggerCheckpoint && !isActiveError) {
+                        isDimmed = true;
+                    }
+                }
+                
+                let fill = '#0f172a';
+                let stroke = '#475569';
+                let textColor = '#e2e8f0';
+                
+                // Colors mapped 1:1 with BA rules
+                if (n.actor === 'admin') stroke = '#6366f1'; 
+                if (n.actor === 'owner') stroke = '#10B981'; 
+                if (n.actor === 'jockey') stroke = '#F59E0B'; 
+                if (n.actor === 'referee') stroke = '#a855f7'; 
+                if (n.actor === 'spectator') stroke = '#ec4899'; 
+                if (n.actor === 'system') stroke = '#475569'; 
+                
+                if (isErrorNode) {
+                    fill = '#450a0a'; 
+                    stroke = '#dc2626'; 
+                    textColor = '#fca5a5';
+                } else if (isCheckpoint) {
+                    stroke = '#f59e0b';
+                }
+                
+                // Highlight border if selected
+                let isSelected = GLOBAL_SIM_STATE.selectedNodeId === n.id && GLOBAL_SIM_STATE.selectedSubNodeIdx === null;
+                if (isSelected) {
+                    stroke = '#D4AF37';
+                }
+                
+                const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                g.setAttribute("class", isDimmed ? "node-dimmed" : "node-hover");
+                
+                // Click handlers
+                if (isCheckpoint) {
+                    // Checkpoint triggers the belling error
+                    g.onclick = (e) => {
+                        e.stopPropagation();
+                        toggleErrorOnCheckpoint(n.errorId, phaseId, n);
+                    };
+                } else if (isErrorNode) {
+                    // Error node toggles/expands error sub-flow!
+                    g.onclick = (e) => {
+                        e.stopPropagation();
+                        if (GLOBAL_SIM_STATE.activeExpandedErrNodeId === n.id) {
+                            GLOBAL_SIM_STATE.activeExpandedErrNodeId = null;
+                            deselectNode();
+                        } else {
+                            GLOBAL_SIM_STATE.activeExpandedErrNodeId = n.id;
+                            selectNode(n.id, phaseId);
+                        }
+                    };
+                } else if (n.id === '5-live-btn') {
+                    g.onclick = (e) => {
+                        e.stopPropagation();
+                        toggleLiveRace();
+                    };
+                } else {
+                    g.onclick = (e) => {
+                        e.stopPropagation();
+                        selectNode(n.id, phaseId);
+                    };
+                }
+                
+                const w = n.w || 150;
+                const h = n.h || 44;
+                
+                const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                rect.setAttribute("x", n.x);
+                rect.setAttribute("y", n.y);
+                rect.setAttribute("width", w);
+                rect.setAttribute("height", h);
+                rect.setAttribute("rx", n.actor === 'system' ? "22" : "8"); 
+                rect.setAttribute("fill", fill);
+                rect.setAttribute("stroke", stroke);
+                rect.setAttribute("stroke-width", isSelected ? "3.5" : "2");
+                if (isCheckpoint) rect.setAttribute("stroke-dasharray", "4");
+                
+                // Add filter glow for selected or active error
+                if (isSelected || (isErrorNode && !isDimmed)) {
+                    rect.setAttribute("filter", "url(#glow)");
+                }
+                g.appendChild(rect);
+                
+                // Label lines (split by |)
+                const lines = n.label.split('|');
+                lines.forEach((line, i) => {
+                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.setAttribute("x", n.x + w/2);
+                    text.setAttribute("y", n.y + h/2 + (lines.length > 1 ? (i===0 ? -4 : 10) : 4));
+                    text.setAttribute("fill", textColor);
+                    text.setAttribute("font-size", i===0 && lines.length > 1 ? "11" : "10");
+                    text.setAttribute("font-weight", isCheckpoint || (i===0 && lines.length > 1) ? "bold" : "normal");
+                    text.setAttribute("text-anchor", "middle");
+                    text.innerHTML = line;
+                    g.appendChild(text);
+                });
+                
+                if (isCheckpoint) {
+                    const icon = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    icon.setAttribute("x", n.x + w - 18);
+                    icon.setAttribute("y", n.y + 16);
+                    icon.setAttribute("font-size", "12");
+                    icon.innerHTML = "⚙️";
+                    g.appendChild(icon);
+                }
+                
+                // Draw toggle indicator on error node (▼ / ▲)
+                if (isErrorNode) {
+                    const icon = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    icon.setAttribute("x", n.x + w - 15);
+                    icon.setAttribute("y", n.y + 14);
+                    icon.setAttribute("font-size", "9");
+                    icon.setAttribute("fill", "#fca5a5");
+                    icon.innerHTML = (activeExpandedNodeId === n.id) ? "▲" : "▼";
+                    g.appendChild(icon);
+                }
+                
+                nodesGroup.appendChild(g);
+            });
+
+            // 4. Draw Actor Lane-Aligned Error Sub-flow (Sub-nodes A, B, C, D, E)
+            if (subFlow && subFlow.nodes) {
+                const errNode = nodeMap[activeExpandedNodeId];
+                if (errNode) {
+                    let prevX = errNode.x + (errNode.w || 150);
+                    let prevY = errNode.y + (errNode.h || 44) / 2;
+                    
+                    subFlow.nodes.forEach((sub, idx) => {
+                        const subW = 170;
+                        const subH = 50;
+                        const subX = errNode.x + 180 + idx * 200;
+                        const subY = LANE_Y_CENTERS[sub.actor] - subH / 2;
+                        
+                        maxSubFlowX = Math.max(maxSubFlowX, subX + subW);
+                        
+                        // Check if this subnode is selected
+                        let isSubSelected = GLOBAL_SIM_STATE.selectedNodeId === sub.id && GLOBAL_SIM_STATE.selectedSubNodeIdx === idx;
+                        
+                        // Draw red dashed connection from previous node to this subnode
+                        const pathStr = `M ${prevX},${prevY} C ${(prevX+subX)/2},${prevY} ${(prevX+subX)/2},${subY + subH/2} ${subX},${subY + subH/2}`;
+                        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                        path.setAttribute("d", pathStr);
+                        path.setAttribute("fill", "none");
+                        path.setAttribute("stroke", "#dc2626");
+                        path.setAttribute("stroke-width", "2.5");
+                        path.setAttribute("stroke-dasharray", "4,4");
+                        path.setAttribute("class", "path-animated");
+                        path.setAttribute("marker-end", "url(#arrow-red)");
+                        pathsGroup.appendChild(path);
+                        
+                        // Draw subnode group
+                        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                        g.setAttribute("class", "node-hover");
+                        g.onclick = (e) => {
+                            e.stopPropagation();
+                            selectNode(sub.id, phaseId, idx);
+                        };
+                        
+                        // Subnode Rect
+                        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                        rect.setAttribute("x", subX);
+                        rect.setAttribute("y", subY);
+                        rect.setAttribute("width", subW);
+                        rect.setAttribute("height", subH);
+                        rect.setAttribute("rx", "10");
+                        rect.setAttribute("fill", "#1e0707");
+                        rect.setAttribute("stroke", isSubSelected ? "#D4AF37" : "#dc2626");
+                        rect.setAttribute("stroke-width", isSubSelected ? "3.5" : "2");
+                        if (isSubSelected) {
+                            rect.setAttribute("filter", "url(#glow)");
+                        }
+                        g.appendChild(rect);
+                        
+                        // Badge Badge letter (A, B, C, D...)
+                        const badgeCircle = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                        badgeCircle.setAttribute("x", subX + 8);
+                        badgeCircle.setAttribute("y", subY + 8);
+                        badgeCircle.setAttribute("width", "18");
+                        badgeCircle.setAttribute("height", "18");
+                        badgeCircle.setAttribute("rx", "9");
+                        
+                        // Badge color based on actor
+                        let badgeFill = '#6366f1';
+                        if (sub.actor === 'admin') badgeFill = '#6366f1';
+                        else if (sub.actor === 'owner') badgeFill = '#10B981';
+                        else if (sub.actor === 'jockey') badgeFill = '#F59E0B';
+                        else if (sub.actor === 'referee') badgeFill = '#a855f7';
+                        else if (sub.actor === 'spectator') badgeFill = '#ec4899';
+                        
+                        badgeCircle.setAttribute("fill", badgeFill);
+                        g.appendChild(badgeCircle);
+                        
+                        // Badge Letter Text
+                        const badgeText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                        badgeText.setAttribute("x", subX + 17);
+                        badgeText.setAttribute("y", subY + 20);
+                        badgeText.setAttribute("fill", "#ffffff");
+                        badgeText.setAttribute("font-size", "10");
+                        badgeText.setAttribute("font-weight", "extrabold");
+                        badgeText.setAttribute("text-anchor", "middle");
+                        badgeText.innerHTML = sub.id.split('-').pop(); // 'A', 'B', etc.
+                        g.appendChild(badgeText);
+                        
+                        // Text Label lines
+                        const lines = sub.label.split('|');
+                        lines.forEach((line, i) => {
+                            const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                            text.setAttribute("x", subX + 32 + (subW - 32)/2);
+                            text.setAttribute("y", subY + subH/2 + (lines.length > 1 ? (i===0 ? -3 : 9) : 4));
+                            text.setAttribute("fill", "#fca5a5");
+                            text.setAttribute("font-size", "9");
+                            text.setAttribute("font-weight", i===0 ? "bold" : "normal");
+                            text.setAttribute("text-anchor", "middle");
+                            text.innerHTML = line;
+                            g.appendChild(text);
+                        });
+                        
+                        nodesGroup.appendChild(g);
+                        
+                        prevX = subX + subW;
+                        prevY = subY + subH / 2;
+                    });
+                }
+            }
+        }const THEME = {
             gold: '#D4AF37',
             goldDim: '#C8A24E',
             turf: '#1A5E3F',
@@ -1454,41 +2589,43 @@
         const MODULE_CAT_MAP = {
             A: 'platform', B: 'tournament', C: 'registration', D: 'registration',
             E: 'tournament', F: 'tournament', G: 'racing', H: 'racing', I: 'racing',
-            J: 'results', K: 'results', L: 'prediction', M: 'prediction',
-            N: 'support', O: 'support'
+            J: 'results', K: 'results', L: 'results', M: 'prediction', N: 'prediction',
+            O: 'support', P: 'support', Q: 'platform'
         };
 
         const IN_SCOPE_MODULES = [
             { id: 'A', title: 'Quản Lý Tài Khoản và Phân Quyền', icon: 'shield-check', desc: 'Horse Owner, Jockey, Race Referee, Spectator tự đăng ký. Admin quản lý tài khoản theo role. Xác thực username/password. Phân quyền RBAC. Tuân thủ OWASP Top 10 và ISO 27001.' },
             { id: 'B', title: 'Quản Lý Giải Đấu', icon: 'trophy', desc: 'Admin tạo giải (tên, thời gian, quy mô, loại hình đua). Cấu hình cấu trúc vòng đua (vòng loại → bán kết → chung kết). Quản lý và cập nhật thông tin giải sau khi tạo.' },
             { id: 'C', title: 'Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ', icon: 'file-plus-2', desc: 'Horse Owner đăng ký ngựa (tên, tuổi, giới tính, huyết thống, trọng lượng, đặc điểm). Admin duyệt/từ chối kèm lý do. F1: bước duyệt không kiểm tra chứng chỉ Jockey. F3: sức khỏe ngựa ghi nhận thủ công.' },
-            { id: 'D', title: 'Quản Lý Jockey', icon: 'user-plus', desc: 'Jockey đăng ký tài khoản với chứng chỉ hành nghề. Horse Owner tìm kiếm, gửi lời mời. Jockey xác nhận/từ chối. Horse Owner chốt ghép cặp ngựa–Jockey chính thức.' },
+            { id: 'D', title: 'Quản Lý Nài ngựa (Jockey)', icon: 'user-plus', desc: 'Jockey đăng ký tài khoản với chứng chỉ hành nghề. Horse Owner tìm kiếm, gửi lời mời. Jockey xác nhận/từ chối. Horse Owner chốt ghép cặp ngựa–Jockey chính thức.' },
             { id: 'E', title: 'Lập Lịch Thi Đấu, Bốc Thăm và Sắp Xếp Cuộc Đua', icon: 'calendar-days', desc: 'Admin phân bổ ngựa đã duyệt, xác định ngày giờ, bốc thăm Post Position ngẫu nhiên công khai. Sinh lịch tự động. Horse Owner xác nhận tham gia để đưa ngựa vào danh sách xuất phát.' },
             { id: 'F', title: 'Phân Công Trọng Tài và Referee COI Check', icon: 'user-cog', desc: 'Admin phân công Lead + Assistant Referees. Referee COI Check: không có quan hệ gia đình trực hệ với Horse Owner. Thông báo phân công. Lưu trữ lịch sử ≥5 ngày trước đua.' },
-            { id: 'G', title: 'Kiểm Tra Trước Thi Đấu (Pre-race Preparation)', icon: 'stethoscope', desc: 'Race Referee xác minh danh tính ngựa, ghi nhận sức khỏe thủ công. Jockey Independence Check: chứng chỉ hợp lệ, không quan hệ gia đình với Horse Owner trong cùng cuộc đua. Tách biệt khỏi bước duyệt hồ sơ (Module C).' },
-            { id: 'H', title: 'Theo Dõi Diễn Biến Cuộc Đua và Xử Lý Vi Phạm', icon: 'eye', desc: 'Race Referee quản lý trạng thái: Upcoming → Live → Unofficial. Tự động khóa cổng dự đoán khi Live. Ghi nhận vi phạm bằng dropdown mã lỗi. Admin chuyển Unofficial → Official.' },
-            { id: 'I', title: 'Xử Lý Khiếu Nại (Protest/Complaint Handling)', icon: 'scale', desc: 'Race Referee tiếp nhận khiếu nại từ Horse Owner/Jockey sau khi đua kết thúc nhưng trước khi công bố chính thức. Kết quả xử lý được thông báo ngược lại qua Notification (closed-loop feedback bắt buộc).' },
-            { id: 'J', title: 'Xác Nhận Kết Quả và Công Bố Chính Thức (Admin)', icon: 'award', desc: 'Admin công bố kết quả (Unofficial → Official). Cập nhật BXH Ngựa (Points/Earnings) và BXH Jockey (Wins, Win Rate, Earnings). Hiển thị qua Polling 30s, không dùng WebSockets.' },
-            { id: 'K', title: 'Tính Toán và Phân Bổ Tiền Thưởng', icon: 'coins', desc: 'Tính toán phân bổ tiền thưởng theo quy tắc cấu hình. Admin cập nhật trạng thái thanh toán + audit log. Thanh toán tiền thật (payment disbursement) nằm ngoài hệ thống (F5).' },
-            { id: 'L', title: 'Quản Lý Dự Đoán và Prediction Gate', icon: 'target', desc: 'Admin cấu hình dự đoán, phần thưởng, kiểm soát cổng. F4: cổng chỉ mở sau Post Position Draw. F6: Phase 1 chỉ hỗ trợ Win và Place. Form Score = SQL tĩnh 40/35/25 (F7).' },
-            { id: 'M', title: 'Đối Chiếu Dự Đoán và Trả Thưởng (Spectator)', icon: 'check-square', desc: 'Tự động đối chiếu dự đoán sau Official. Hiển thị chi tiết kết quả. Cộng điểm ảo/voucher. Thông báo tự động qua In-app và Email. Xem lịch sử dự đoán cá nhân và tổng điểm tích lũy.' },
-            { id: 'N', title: 'Hệ Thống Thông Báo (Notification)', icon: 'bell', desc: 'In-app và Email: từ chối hồ sơ, lời mời Jockey, phân công Referee, kết quả khiếu nại, kết quả đua, tiền thưởng, dự đoán. SMS qua third-party gateway là Out-of-scope Phase 1 (F5).' },
-            { id: 'O', title: 'Báo Cáo và Xuất Dữ Liệu', icon: 'printer', desc: 'Xuất người dùng theo role, ngựa, Jockey, kết quả, BXH, dự đoán, tiền thưởng — định dạng CSV, PDF hoặc in trực tiếp.' }
+            { id: 'G', title: 'Kiểm Tra Trước Thi Đấu (Pre-race Preparation)', icon: 'stethoscope', desc: 'Race Referee xác minh danh tính ngựa, ghi nhận sức khỏe thủ công. Jockey Independence Check: chứng chỉ hợp lệ, không quan hệ gia đình với Horse Owner trong cùng cuộc đua. Tách biệt khỏi bước duyệt hồ sơ.' },
+            { id: 'H', title: 'Theo Dõi Diễn Biến Cuộc Đua và Xử Lý Vi Phạm', icon: 'eye', desc: 'Race Referee quản lý trạng thái: Upcoming → Live → Unofficial. Tự động khóa cổng dự đoán khi Live. Ghi nhận vi phạm bằng dropdown mã lỗi.' },
+            { id: 'I', title: 'Xử Lý Vi Phạm và Khiếu Nại (Protest Handling)', icon: 'scale', desc: 'Race Referee tiếp nhận khiếu nại từ Horse Owner/Jockey sau khi đua kết thúc nhưng trước khi công bố chính thức. Phán quyết xử lý thông báo ngược qua closed-loop.' },
+            { id: 'J', title: 'Quản Lý Kết Quả và Công Bố Chính Thức (Admin)', icon: 'award', desc: 'Admin công bố kết quả (Unofficial → Official). Khóa cứng biên bản thi đấu. Tính nguyên tử ACID 1 Database Transaction duy nhất Rollback toàn cục.' },
+            { id: 'K', title: 'Tính Toán và Phân Bổ Tiền Thưởng', icon: 'coins', desc: 'Tính toán phân bổ tiền thưởng theo quy tắc cấu hình. Admin cập nhật trạng thái thanh toán + audit log. Thanh toán tiền thật nằm ngoài hệ thống.' },
+            { id: 'L', title: 'Bảng Xếp Hạng Tích Lũy (Leaderboard & Jockey Standings)', icon: 'bar-chart-2', desc: 'Leaderboard tự động xếp hạng ngựa và Jockey bằng HTTP Polling 30s. Không dùng WebSockets.' },
+            { id: 'M', title: 'Quản Lý Dự Đoán và Prediction Gate', icon: 'target', desc: 'Admin cấu hình dự đoán Win và Place, phần thưởng, kiểm soát cổng. Mở cổng chỉ sau Post Position Draw (F4).' },
+            { id: 'N', title: 'Đối Chiếu Dự Đoán và Trả Thưởng (Spectator)', icon: 'check-square', desc: 'Tự động đối chiếu dự đoán sau Official. Cộng điểm ảo Win/Place trực tiếp vào ví cá nhân.' },
+            { id: 'O', title: 'Hệ Thống Thông Báo (Notification)', icon: 'bell', desc: 'Thông báo In-app và Email cho các sự kiện kích hoạt như từ chối, kết quả khiếu nại, kết quả đua, dự đoán, tiền thưởng. Không SMS.' },
+            { id: 'P', title: 'Báo Cáo và Xuất Dữ Liệu', icon: 'printer', desc: 'Xuất người dùng theo role, ngựa, Jockey, kết quả, BXH, dự đoán, tiền thưởng định dạng CSV, PDF hoặc in.' },
+            { id: 'Q', title: 'Bảo Mật, Xác Thực và Audit Log', icon: 'shield-alert', desc: 'Mã hóa JWT, Session Management, RBAC. Ghi Audit Log toàn bộ thao tác hệ thống quan trọng.' }
         ];
 
         const OUT_SCOPE_ITEMS = [
-            { id: '1', title: 'Thanh Toán Tiền Thưởng Thực Tế (Payment Disbursement)', tag: 'Finance', desc: 'Hệ thống chỉ ghi nhận số liệu phân bổ; giao dịch thanh toán tiền thật do đơn vị tổ chức xử lý độc lập bên ngoài (F5).' },
-            { id: '2', title: 'WebSockets / Server-Sent Events (SSE)', tag: 'Realtime', desc: 'BXH và kết quả cập nhật qua Polling 30s hoặc F5. Không dùng WebSockets hay SSE trong Phase 1 (F5).' },
-            { id: '3', title: 'Thông Báo Qua SMS (Third-party Gateway)', tag: 'SMS', desc: 'Không tích hợp nhà cung cấp SMS bên thứ ba. Thông báo chỉ qua In-app và Email (F5).' },
-            { id: '4', title: 'Dự Đoán Tổ Hợp Phức Tạp (Exotic Wager)', tag: 'Prediction', desc: 'Không hỗ trợ Exacta, Trifecta, Quinella, Superfecta. Phase 1 chỉ Win và Place (F6).' },
-            { id: '5', title: 'AI / Machine Learning Trong Dự Đoán', tag: 'Analytics', desc: 'Không sử dụng AI/ML. Form Score = phép tính quy tắc tĩnh bằng SQL 40/35/25 (F7).' },
-            { id: '6', title: 'Tích Hợp Hệ Thống Thú Y Bên Ngoài', tag: 'Veterinary', desc: 'Không kết nối hệ thống quản lý bệnh viện thú y. Sức khỏe ngựa ghi nhận thủ công (F3).' },
-            { id: '7', title: 'Tích Hợp Phần Cứng Thời Gian Thực', tag: 'Hardware', desc: 'Không camera vạch đích, thiết bị bấm giờ, GPS, đọc vi mạch. Kết quả cuộc đua do Trọng tài nhập thủ công.' },
-            { id: '8', title: 'Cá Cược Bằng Tiền Thật', tag: 'Gambling', desc: 'Không Payment Gateway, nạp/rút tiền, ví điện tử, Odds/Parimutuel. Dự đoán tương tác phi tài chính.' },
-            { id: '9', title: 'Tích Hợp Mạng Xã Hội và Đăng Nhập Bên Thứ Ba', tag: 'Social', desc: 'Không chia sẻ kết quả lên mạng xã hội. Không đăng nhập Google/Facebook.' },
-            { id: '10', title: 'Quản Lý Huấn Luyện Viên (Trainer Management)', tag: 'Trainer', desc: 'Không phát triển module tài khoản riêng. Vai trò phối hợp qua Horse Owner nếu cần.' },
-            { id: '11', title: 'Livestream và Phát Sóng Video Cuộc Đua', tag: 'Media', desc: 'Không live streaming, bình luận trực tiếp hay phát sóng đa camera. Thuộc phạm vi đối tác phát sóng chuyên biệt.' },
-            { id: '12', title: 'Quản Lý Tài Chính và Kế Toán Toàn Diện', tag: 'Finance', desc: 'Không tích hợp phần mềm kế toán (QuickBooks, Xero). Không báo cáo tài chính chi tiết ngoài phân bổ tiền thưởng.' }
+            { id: '1', title: 'Thanh Toán Tiền Thưởng Thực Tế', tag: 'Finance', desc: 'Chỉ tính phân bổ; giao dịch tiền thật do BTC xử lý độc lập bên ngoài.' },
+            { id: '2', title: 'WebSockets / Server-Sent Events', tag: 'Realtime', desc: 'Cập nhật bằng HTTP Polling 30s hoặc F5. Không dùng WebSockets duy trì liên tục.' },
+            { id: '3', title: 'Thông Báo Qua SMS', tag: 'SMS', desc: 'Không tích hợp dịch vụ bên thứ ba. Chỉ In-app và Email.' },
+            { id: '4', title: 'Dự Đoán Tổ Hợp Phức Tạp (Exotic Wager)', tag: 'Prediction', desc: 'Không hỗ trợ Exacta, Trifecta, Quinella, Superfecta. Chỉ hỗ trợ Win/Place.' },
+            { id: '5', title: 'AI / Machine Learning', tag: 'Analytics', desc: 'Không xây dựng AI. Chỉ số phong độ là SQL Form Score tĩnh dựa trên trọng số.' },
+            { id: '6', title: 'Tích Hợp Hệ Thống Thú Y Bên Ngoài', tag: 'Veterinary', desc: 'Dữ liệu y tế nhập thủ công; Không kết nối API bệnh viện thú y.' },
+            { id: '7', title: 'Tích Hợp Phần Cứng Ngày Đua', tag: 'Hardware', desc: 'Không camera vạch đích, GPS ngựa hay đọc vi mạch. Nhập kết quả thủ công.' },
+            { id: '8', title: 'Cá Cược Bằng Tiền Thật', tag: 'Gambling', desc: 'Tuyệt đối không Payment Gateway/Ví thật/Odds tài chính (Minigame phi tài chính).' },
+            { id: '9', title: 'Tích Hợp Mạng Xã Hội', tag: 'Social', desc: 'Không chia sẻ kết quả trực tiếp lên mạng xã hội hay đăng nhập SSO (Google, FB).' },
+            { id: '10', title: 'Quản Lý Huấn Luyện Viên', tag: 'Trainer', desc: 'Tích hợp chung quyền với Horse Owner, không có tài khoản và module độc lập.' },
+            { id: '11', title: 'Livestreaming', tag: 'Media', desc: 'Không hỗ trợ video trực tiếp hoặc bình luận trực tuyến trong hệ thống.' },
+            { id: '12', title: 'Hệ Thống Kế Toán Doanh Nghiệp', tag: 'Finance', desc: 'Không tích hợp Xero/QuickBooks hay báo cáo thu chi chi tiết.' }
         ];
 
         function renderScopeModules() {
@@ -1644,198 +2781,270 @@
             1: {
                 title: "① Khởi tạo giải đấu",
                 actions: {
-                    admin: ["Tạo giải đấu với thông tin thô (thời gian, quy mô, loại hình)", "Lập cấu trúc các vòng đua (Vòng loại &rarr; Bán kết &rarr; Chung kết)", "Cấu hình Quỹ tiền thưởng (Purse) tương ứng từng cuộc đua"],
+                    admin: ["Tạo giải đấu với thông tin thô (thời gian, cự ly, TrackType, AllowedBreed)", "Lập cấu trúc các vòng đua (Vòng loại &rarr; Bán kết &rarr; Chung kết)", "Cấu hình Quỹ tiền thưởng (Purse) tương ứng từng cuộc đua"],
                     owner: [],
                     jockey: [],
                     referee: [],
                     spectator: ["Xem thông tin giải đấu mới được tạo và cấu trúc vòng đua công khai"]
                 },
                 rules: [
-                    "<strong>Quỹ tiền thưởng:</strong> Quỹ tiền thưởng (Purse) được thiết lập bằng VND làm căn cứ để tính toán và hiển thị tỷ lệ chia thưởng, không thực hiện giao dịch thanh toán trong Phase 1.",
-                    "<strong>Sự kiện:</strong> Ngay sau khi cấu trúc giải được Admin lưu, hệ thống sẽ tự động chuyển trạng thái giải đấu sang 'Đang Đăng Ký' và thông báo công khai trên web."
+                    "<strong>Giống ngựa cho phép:</strong> Thoroughbred, Arabian, Quarter Horse, Mixed.",
+                    "<strong>Quỹ tiền thưởng:</strong> Được thiết lập bằng VND làm căn cứ chia thưởng ngoại tuyến, không thực hiện giao dịch thanh toán trực tiếp."
                 ],
                 design: "Thiết kế thực thể cơ sở dữ liệu `Tournament` và `Race` liên kết 1-nhiều. Hệ thống hiển thị sơ đồ cây các vòng đua trực quan trên Admin Dashboard.",
-                simState: {
-                    tournament: "Đã Khởi Tạo",
-                    gate: "Đóng",
-                    coi: "Chưa kiểm tra",
-                    jockey: "Chưa kiểm tra"
-                },
+                simState: { tournament: "Đã Khởi Tạo", gate: "Đóng", coi: "Chưa kiểm tra", jockey: "Chưa kiểm tra" },
                 terminalLogs: [
                     "[SYSTEM] Khởi chạy Giai đoạn 1: Thiết lập cơ cấu giải đua mới...",
-                    "[DB] INSERT INTO Tournaments (Id, Name, StartDate, Status) VALUES ('SU26SWP03', 'Horse Racing Championship', '2026-06-01', 'Draft')",
-                    "[DB] INSERT INTO Races (TournamentId, Type, Purse) VALUES ('SU26SWP03', 'Sprint', 50000000)",
-                    "[SYSTEM] Tạo giải đấu và phân quỹ Purse 50.000.000 VND thành công!"
+                    "[DB] INSERT INTO Tournaments (Name, AllowedBreed, TrackType) VALUES ('Horse Racing Cup', 'Thoroughbred|Mixed', 'Turf')",
+                    "[SYSTEM] Tạo giải đấu và phân bộ quỹ Purse 50.000.000 VND thành công!"
                 ],
-                simNoti: {
-                    role: "Spectator",
-                    text: "🔔 Giải đấu SU26SWP03 mới đã được ban tổ chức công bố công khai trên hệ thống!"
-                }
+                simNoti: { role: "Spectator", text: "🔔 Giải đấu mới đã được ban tổ chức công bố công khai trên hệ thống!" },
+                flowNodes: [
+                    { id: '1-1', label: '1.1. Đăng ký & Phân quyền|Quyền RBAC', x: 50, y: 55, actor: 'admin' },
+                    { id: '1-2', label: '1.2. Tạo Giải Đấu|TrackType & Distance', x: 230, y: 55, actor: 'admin' },
+                    { id: '1-3', label: '1.3. Lập Sơ Đồ Vòng Đua|Vòng loại -> Chung kết', x: 410, y: 55, actor: 'admin' },
+                    { id: '1-4', label: '1.4. Phân Bổ Quỹ Purse|Tỷ lệ chia 100%', x: 590, y: 55, actor: 'admin' },
+                    { id: '1-5', label: '1.5. Công Bố Giải Đấu|Trạng thái OpenReg', x: 770, y: 605, actor: 'spectator' }
+                ],
+                flowConnections: [
+                    { src: '1-1', dst: '1-2' },
+                    { src: '1-2', dst: '1-3' },
+                    { src: '1-3', dst: '1-4' },
+                    { src: '1-4', dst: '1-5' }
+                ]
             },
             2: {
                 title: "② Đăng ký tham gia",
                 actions: {
-                    admin: ["Kiểm duyệt hồ sơ ngựa thi đấu dựa trên tiêu chuẩn hợp lệ cấu hình sẵn", "Từ chối và điền lý do từ chối để hệ thống tự động gửi thông báo cho Chủ ngựa"],
-                    owner: ["Khai báo hồ sơ ngựa (Tên, mã số, tuổi, huyết thống, đặc điểm)", "Tìm kiếm Jockey khả dụng", "Gửi lời mời và chốt ghép cặp với Jockey chấp thuận", "Nộp hồ sơ ngựa ứng tuyển vào giải đấu"],
-                    jockey: ["Khai báo chứng chỉ hành nghề khi tạo tài khoản", "Xem danh sách lời mời chờ duyệt", "Xác nhận/Từ chối từng lời mời thuê từ phía các Chủ ngựa"],
+                    admin: ["Kiểm duyệt đơn đăng ký của ngựa dựa trên AllowedBreed", "Từ chối và bắt buộc nhập lý do tối thiểu 10 ký tự"],
+                    doctor: ["Duyệt y tế & doping ban đầu của Jockey (2.1-MD)", "Duyệt y tế & tiêm phòng ban đầu của Ngựa (2.2-MD)"],
+                    owner: ["Khai báo hồ sơ ngựa (Tên, giống, cân nặng)", "Nộp hồ sơ ngựa ứng tuyển vào giải đấu sau khi duyệt y tế", "Gửi lời mời ghép cặp đến Jockey đã được duyệt y tế và nhận kết quả chốt cặp"],
+                    jockey: ["Khai báo chứng chỉ hành nghề khi tạo tài khoản", "Xác nhận hoặc từ chối từng lời mời thuê từ phía các Chủ ngựa"],
                     referee: [],
                     spectator: []
                 },
                 rules: [
-                    "<strong>Tách Luồng Phê Duyệt (F1):</strong> Bước duyệt hồ sơ ngựa của Admin tại module này hoàn toàn KHÔNG bao gồm việc kiểm tra chứng chỉ của Jockey. Sự độc lập của Jockey chỉ được kiểm tra tại giai đoạn Pre-race.",
-                    "<strong>Y tế thủ công (F3):</strong> Toàn bộ dữ liệu sức khỏe của ngựa được cập nhật thủ công bởi người dùng có thẩm quyền dựa trên biên bản giấy của bác sĩ thú y; không liên kết API thú y ngoài."
+                    "<strong>Quy trình Option A (Đăng ký độc lập ➔ Ghép cặp sau):</strong> Jockey và Ngựa phải được Doctor phê duyệt y tế độc lập. Sau đó, Owner đăng ký Ngựa vào giải đấu. Admin duyệt đơn đăng ký của Ngựa. Chỉ khi cả hai hồ sơ đã được duyệt toàn bộ, Owner mới có quyền gửi lời mời ghép cặp cho Jockey. Jockey có quyền Chấp nhận hoặc Từ chối lời mời.",
+                    "<strong>Ràng buộc lịch sử y tế (Medical History Log):</strong> Khi đăng ký giải đấu mới, hệ thống tự động kiểm tra bảng MedicalRecords. Nếu có vi phạm doping hoặc chấn thương chưa phục hồi -> tự động chặn đứng đăng ký."
                 ],
-                design: "Duy trì trạng thái hồ sơ ngựa qua các enum: `Pending`, `Approved`, `Rejected`. Khi ở trạng thái `Rejected`, bắt buộc giao diện hiển thị trường nhập chuỗi `reason` gửi trực tiếp vào bảng Notification.",
-                simState: {
-                    tournament: "Đăng ký",
-                    gate: "Đóng",
-                    coi: "Chưa kiểm tra",
-                    jockey: "Chưa kiểm tra"
-                },
+                design: "Thiết kế bảng `MedicalRecords` lưu vết lịch sử y tế. Các hồ sơ bị từ chối chuyển trạng thái về `Draft` để chỉnh sửa, lý do từ chối gửi vào hệ thống notification.",
+                simState: { tournament: "Đăng ký", gate: "Đóng", coi: "Chưa kiểm tra", jockey: "Chưa kiểm tra" },
                 terminalLogs: [
                     "[SYSTEM] Giai đoạn 2: Cổng đăng ký mở dành cho Horse Owner và Jockey.",
-                    "[DB] UPDATE Tournaments SET Status='OpenForRegistration' WHERE Id='SU26SWP03'",
-                    "[API] POST /api/horses -> Đăng ký ngựa 'Thần Phong' (Mã: H-09)",
-                    "[API] POST /api/jockeys/invite -> Gửi lời mời đến Jockey 'Nguyễn Văn A' (Chứng chỉ: JC-992)",
-                    "[DB] INSERT INTO Pairings (HorseId, JockeyId, Status) VALUES ('H-09', 'JC-992', 'Accepted')"
+                    "[DOCTOR-VET] Kiểm tra hồ sơ tiêm phòng và doping của ngựa 'Thần Phong'...",
+                    "[DB] SELECT COUNT(1) FROM MedicalRecords WHERE SubjectId=12 AND Status='Suspended' -> 0 (OK)",
+                    "[SYSTEM] Doctor đã duyệt y tế thành công cho Jockey và Ngựa. Đã được Admin phê duyệt đơn, mở khóa mời Jockey."
                 ],
-                simNoti: {
-                    role: "Horse Owner",
-                    text: "🔔 Jockey 'Nguyễn Văn A' đã chấp thuận lời mời điều khiển ngựa 'Thần Phong' của bạn!"
-                }
+                simNoti: { role: "Horse Owner", text: "🔔 Hồ sơ đã được duyệt y tế và Admin thông qua, sẵn sàng gửi lời mời ghép cặp cho Jockey!" },
+                flowNodes: [
+                    { id: '2-1', label: '2.1. Jockey Khai Hồ Sơ|Chứng chỉ hành nghề', x: 50, y: 275, actor: 'jockey' },
+                    { id: '2-1-MD', label: '2.1-MD. Doctor Duyệt Jockey|Duyệt sức khỏe/doping', x: 200, y: 385, actor: 'doctor' },
+                    { id: '2-2', label: '2.2. Khai Báo Ngựa|Tên & Giống', x: 50, y: 165, actor: 'owner' },
+                    { id: '2-2-MD', label: '2.2-MD. Doctor Duyệt Ngựa|Kiểm tra tiêm phòng', x: 350, y: 385, actor: 'doctor' },
+                    { id: '2-3', label: '2.3. Nộp Đơn Đăng Ký|Gửi Hồ Sơ Ngựa Lên', x: 500, y: 165, actor: 'owner' },
+                    { id: '2-4', label: '2.4. Admin Duyệt Đăng Ký|Duyệt AllowedBreed', x: 650, y: 55, actor: 'admin', type: 'checkpoint', errorId: 'horse_reg_rejected' },
+                    { id: '2-4-ERR', label: '2.4-ERR: Đơn Bị Từ Chối|Lý do >=10 kí tự', x: 650, y: 165, actor: 'owner', type: 'error', errorId: 'horse_reg_rejected' },
+                    { id: '2-5', label: '2.5. Owner Mời Jockey|Gửi lời mời ghép đôi', x: 800, y: 165, actor: 'owner', type: 'checkpoint', errorId: 'jockey_invite_rejected' },
+                    { id: '2-5-ERR', label: '2.5-ERR: Jockey Từ Chối|Mở khóa ghép cặp khác', x: 800, y: 275, actor: 'jockey', type: 'error', errorId: 'jockey_invite_rejected' },
+                    { id: '2-6', label: '2.6. Nhận Kết Quả Duyệt|Approved & Chốt Cặp', x: 950, y: 165, actor: 'owner' }
+                ],
+                flowConnections: [
+                    { src: '2-1', dst: '2-1-MD' },
+                    { src: '2-2', dst: '2-2-MD' },
+                    { src: '2-2-MD', dst: '2-3' },
+                    { src: '2-3', dst: '2-4' },
+                    { src: '2-4', dst: '2-5', errorId: 'horse_reg_rejected' },
+                    { src: '2-4', dst: '2-4-ERR', isErrorBranch: true, errorId: 'horse_reg_rejected' },
+                    { src: '2-4-ERR', dst: '2-3', isErrorBranch: true, errorId: 'horse_reg_rejected' },
+                    { src: '2-5', dst: '2-6', errorId: 'jockey_invite_rejected' },
+                    { src: '2-5', dst: '2-5-ERR', isErrorBranch: true, errorId: 'jockey_invite_rejected' },
+                    { src: '2-5-ERR', dst: '2-5', isErrorBranch: true, errorId: 'jockey_invite_rejected' },
+                    { src: '2-1-MD', dst: '2-5' }
+                ]
             },
             3: {
                 title: "③ Chuẩn bị cuộc đua",
                 actions: {
-                    admin: ["Phân bổ ngựa đã duyệt vào các cuộc đua", "Xác định ngày giờ tổ chức cụ thể từng cuộc đua", "Tiến hành bốc thăm vị trí xuất phát (Post Position) ngẫu nhiên công khai", "Sinh lịch thi đấu chính thức", "Phân công ban Trọng tài cho cuộc đua", "Cấu hình tùy chọn dự đoán cho cuộc đua"],
-                    owner: ["Xem lịch thi đấu phân công", "Xác nhận cho ngựa tham gia theo lịch thi đấu (bắt buộc để đưa ngựa vào danh sách xuất phát chính thức)"],
-                    jockey: ["Xem lịch thi đấu và thông tin ngựa ghép cặp điều khiển"],
-                    referee: ["Nhận thông báo phân công và xem danh sách ngựa/Jockey của trận đấu"],
-                    spectator: ["Xem lịch thi đấu, danh sách ngựa và Post Position của từng ngựa", "Tiến hành gửi dự đoán Win hoặc Place lên hệ thống (Cổng dự đoán Open)"]
+                    admin: ["Phân bổ cặp đấu vào lượt chạy", "Bốc thăm Post Position ngẫu nhiên", "Phân công Trọng tài COI Check", "Mở cổng dự đoán"],
+                    owner: ["Xác nhận tham gia lịch đua trước giờ chốt 24h"],
+                    jockey: ["Tra cứu lịch đua"],
+                    referee: ["Nhận thông báo nhiệm vụ điều khiển"],
+                    spectator: ["Gửi dự đoán Win hoặc Place lên hệ thống (Prediction Gate Open)"]
                 },
                 rules: [
-                    "<strong>Phân công Trọng tài (F2):</strong> Phải phân công ban trọng tài ít nhất 5 ngày làm việc trước ngày đua. Hệ thống tự động kiểm tra Referee Conflict-of-Interest (không được là người thân trực hệ của Horse Owner có ngựa tham gia cuộc đua đó).",
-                    "<strong>Mở cổng dự đoán (F4):</strong> Cổng dự đoán chỉ được phép mở cho Spectator sau khi Admin đã hoàn tất và xác nhận bốc thăm vị trí xuất phát (Post Position Draw)."
+                    "<strong>Phân công Trọng tài (F2):</strong> Phải phân công ban trọng tài ít nhất 5 ngày làm việc trước ngày đua, kiểm tra xung đột lợi ích COI.",
+                    "<strong>Mở cổng dự đoán (F4):</strong> Cổng dự đoán chỉ mở sau khi hoàn tất bốc thăm vị trí xuất phát."
                 ],
-                design: "Cần xây dựng logic bốc thăm ngẫu nhiên ở Backend thông qua thuật toán bốc thăm ngẫu nhiên công khai (mô phỏng shuffle mảng ngựa). Triển khai validator cứng cấm mở cổng dự đoán nếu cờ `isPostPositionDrawn` của cuộc đua chưa bằng true.",
-                simState: {
-                    tournament: "Chuẩn Bị",
-                    gate: "MỞ (Open)",
-                    coi: "Đã kiểm tra (Hợp lệ)",
-                    jockey: "Chưa kiểm tra"
-                },
+                design: "Scheduler của hệ thống quét database tự động chuyển trạng thái `Cancelled` và giải phóng cổng chạy `Vacant` nếu quá hạn xác nhận 24h.",
+                simState: { tournament: "Chuẩn Bị", gate: "MỞ (Open)", coi: "Hợp lệ", jockey: "Chưa kiểm tra" },
                 terminalLogs: [
                     "[SYSTEM] Giai đoạn 3: Phân bổ ngựa và phân công ban Trọng tài.",
-                    "[DB] UPDATE Races SET PostPositionDrawn=1, GateStatus='Open' WHERE Id='R-01'",
-                    "[COI-CHECK] Thực hiện đối chiếu quan hệ thân nhân gia đình trực hệ của Trọng tài...",
                     "[COI-CHECK] OK: Trọng tài chính Trần Văn B không có xung đột với Chủ ngựa nào.",
-                    "[SYSTEM] Phân công ban Trọng tài thành công trước 5 ngày làm việc. Cổng dự đoán Win/Place mở."
+                    "[SYSTEM] Bốc thăm Post Position thành công. Cổng dự đoán Win/Place mở."
                 ],
-                simNoti: {
-                    role: "Race Referee",
-                    text: "🔔 Ban tổ chức chỉ định bạn làm Trọng tài chính cuộc đua R-01 vào lúc 15:00 ngày 01/06/2026!"
-                }
+                simNoti: { role: "Race Referee", text: "🔔 Ban tổ chức chỉ định bạn làm Trọng tài chính cuộc đua R-01!" },
+                flowNodes: [
+                    { id: '3-1', label: '3.1. Phân Bổ Lượt Chạy|Sắp xếp cuộc đua', x: 20, y: 55, actor: 'admin' },
+                    { id: '3-2', label: '3.2. Bốc Thăm Post Draw|Xác định cổng xuất phát', x: 200, y: 55, actor: 'admin' },
+                    { id: '3-3', label: '3.3. Xác Nhận Lịch Chạy|Trước giờ đua 24h', x: 380, y: 165, actor: 'owner', type: 'checkpoint', errorId: 'owner_missed_confirmation' },
+                    { id: '3-3-ERR', label: '3.3-ERR: Rút/Quá Hạn|Cổng Vacant/Cancelled', x: 380, y: 195, actor: 'owner', type: 'error', errorId: 'owner_missed_confirmation' },
+                    { id: '3-5', label: '3.5. COI Check Trọng Tài|Kiểm tra xung đột', x: 560, y: 55, actor: 'admin', type: 'checkpoint', errorId: 'coi_conflict_detected' },
+                    { id: '3-5-ERR', label: '3.5-ERR: Xung Đột COI|Chặn phân công', x: 560, y: 85, actor: 'admin', type: 'error', errorId: 'coi_conflict_detected' },
+                    { id: '3-4', label: '3.4. Tra Cứu Lịch Chạy|Jockey xem lịch', x: 560, y: 275, actor: 'jockey' },
+                    { id: '3-6', label: '3.6. Nhận Nhiệm Vụ|Referee chuẩn bị', x: 780, y: 495, actor: 'referee' },
+                    { id: '3-7', label: '3.7. Mở Cổng Dự Đoán|Ràng buộc F4', x: 380, y: 605, actor: 'spectator' },
+                    { id: '3-8', label: '3.8. Đặt Dự Đoán|Win / Place (F6)', x: 650, y: 605, actor: 'spectator' }
+                ],
+                flowConnections: [
+                    { src: '3-1', dst: '3-2' },
+                    { src: '3-2', dst: '3-3' },
+                    { src: '3-2', dst: '3-5' },
+                    { src: '3-2', dst: '3-7' },
+                    { src: '3-3', dst: '3-4', errorId: 'owner_missed_confirmation' },
+                    { src: '3-3', dst: '3-3-ERR', isErrorBranch: true, errorId: 'owner_missed_confirmation' },
+                    { src: '3-5', dst: '3-6', errorId: 'coi_conflict_detected' },
+                    { src: '3-5', dst: '3-5-ERR', isErrorBranch: true, errorId: 'coi_conflict_detected' },
+                    { src: '3-4', dst: '3-6' },
+                    { src: '3-7', dst: '3-8' }
+                ]
             },
             4: {
                 title: "④ Trước giờ đua (Pre-race)",
                 actions: {
                     admin: [],
+                    doctor: ["Kiểm tra cân nặng ban đầu Jockey (Weighing Out)", "Xác minh nhận dạng thực địa đốm màu ngựa tại Paddock", "Thực hiện khám lâm sàng sức khỏe & lấy mẫu nhanh doping ngựa tại Paddock"],
                     owner: [],
                     jockey: [],
-                    referee: ["Kiểm tra thực tế và xác minh danh tính ngựa", "Ghi nhận trạng thái kiểm tra sức khỏe thủ công từ bác sĩ thú y", "Cập nhật và đánh dấu ngựa hợp lệ hoặc bị loại trước giờ xuất phát"],
-                    spectator: ["Xem lại dự đoán cá nhân (Cổng dự đoán ở trạng thái Locked - chỉ xem, không thể sửa/xóa)"]
+                    referee: [],
+                    spectator: ["Xem lại dự đoán (Cổng dự đoán ở trạng thái Locked)"]
                 },
                 rules: [
-                    "<strong>Kiểm tra Jockey Independence Check:</strong> Thực hiện ngay trước trận đấu. Jockey điều khiển phải có chứng chỉ hợp lệ và không có quan hệ gia đình (vợ, chồng, bố, mẹ, anh, chị, em ruột) với bất kỳ Horse Owner nào có ngựa tham gia trong cuộc đua đó.",
-                    "<strong>Trạng thái:</strong> Nếu ngựa hoặc Jockey bị loại ở bước này, hệ thống sẽ tự động cập nhật danh sách xuất phát, rút tên ngựa khỏi cuộc đua và ghi nhận lý do."
+                    "<strong>Jockey Weighing Out:</strong> Jockey phải thực hiện cân tải trọng Handicap trước giờ chạy để đảm bảo công bằng tải trọng.",
+                    "<strong>Khám y tế Paddock (Doctor):</strong> Bác sĩ thú y trực tiếp thăm khám dáng đi lâm sàng (lameness check) và đối chiếu nhận dạng đốm màu ngựa.",
+                    "<strong>Hệ thống Jockey Independence:</strong> Hệ thống tự động kiểm tra quan hệ thân nhân trực hệ giữa Jockey và Chủ ngựa đối thủ.",
+                    "<strong>Hoàn điểm cược (Refund):</strong> Khi có vi phạm y tế/nhận dạng/độc lập, hệ thống loại ngựa khẩn cấp (Disqualified) và tự động hoàn lại điểm ảo dự đoán cho Spectator."
                 ],
-                design: "Xây dựng màn hình kiểm tra trực quan (Pre-race Check-in) dành riêng cho Trọng tài hiển thị trên thiết bị tablet, cho phép check-box từng tiêu chí danh tính ngựa, sức khỏe và tính độc lập của Jockey.",
-                simState: {
-                    tournament: "Xác Minh",
-                    gate: "Khóa (Locked)",
-                    coi: "Hợp lệ",
-                    jockey: "Đã kiểm tra (Hợp lệ)"
-                },
+                design: "Thiết kế giao diện Paddock Check-in dành cho Doctor/Vet. Khi bấm lỗi rẽ nhánh, hệ thống cập nhật trạng thái `Disqualified` của cặp entry và kích hoạt module refund tự động.",
+                simState: { tournament: "Xác Minh", gate: "Khóa (Locked)", coi: "Hợp lệ", jockey: "Đã kiểm tra (Hợp lệ)" },
                 terminalLogs: [
-                    "[SYSTEM] Giai đoạn 4: Trọng tài kiểm soát trực tiếp tại đường chạy chuẩn bị...",
-                    "[API] POST /api/pre-race/verify-horse -> Xác nhận mã số 'H-09'",
-                    "[JOCKEY-INDEPENDENCE] Kiểm tra quan hệ gia đình giữa Nguyễn Văn A và các Owner...",
-                    "[JOCKEY-INDEPENDENCE] Kết quả: Đạt chuẩn độc lập (No Relation).",
-                    "[SYSTEM] Trạng thái sức khỏe ngựa được Trọng tài nhập thủ công theo biên bản thú y tại chỗ."
+                    "[SYSTEM] Giai đoạn 4: Doctor tiến hành kiểm tra cân nặng và thú y paddock...",
+                    "[WEIGHING-OUT] Jockey Nguyễn Văn A đạt cân nặng quy định: 54.0 kg.",
+                    "[DB] UPDATE RaceEntries SET PreRaceJockeyWeight=54.0 WHERE Id=45",
+                    "[DOCTOR-VET] Khám thú y paddock ngựa 'Thần Phong' đạt chuẩn sức khỏe."
                 ],
-                simNoti: {
-                    role: "Spectator",
-                    text: "🔔 Cổng dự đoán cuộc đua R-01 đã khóa tự động ngay trước thời điểm xuất phát."
-                }
+                simNoti: { role: "Spectator", text: "🔔 Bác sĩ đã xác nhận y tế và tải trọng, danh sách đua chính thức đã được chốt." },
+                flowNodes: [
+                    { id: '4-1', label: '4.1. Khóa Cổng Dự Đoán|Khóa tự động', x: 50, y: 605, actor: 'spectator' },
+                    { id: '4-1-MD', label: '4.1-MD. Weighing Out|Cân Jockey trước đua', x: 150, y: 385, actor: 'doctor' },
+                    { id: '4-2', label: '4.2. Khớp Danh Tính|Paddock check', x: 290, y: 385, actor: 'doctor', type: 'checkpoint', errorId: 'identity_mismatch' },
+                    { id: '4-3', label: '4.3. Thú Y Paddock|Khám y tế (F3)', x: 430, y: 385, actor: 'doctor', type: 'checkpoint', errorId: 'horse_health_unfit' },
+                    { id: '4-4', label: '4.4. Độc Lập Nài Ngựa|Check quan hệ', x: 570, y: 55, actor: 'admin', type: 'checkpoint', errorId: 'jockey_independence_conflict' },
+                    { id: '4-5-DISQ', label: '4.5-DISQ: TRUẤT QUYỀN KHẨN CẤP|Gửi 3 thông báo & Hoàn điểm cược', x: 430, y: 275, actor: 'jockey', type: 'error', errorId: 'identity_mismatch', w: 200 },
+                    { id: '4-5', label: '4.5. Xác Nhận Chạy|Chốt danh sách', x: 760, y: 495, actor: 'referee' }
+                ],
+                flowConnections: [
+                    { src: '4-1-MD', dst: '4-2' },
+                    { src: '4-2', dst: '4-3', errorId: 'identity_mismatch' },
+                    { src: '4-3', dst: '4-4', errorId: 'horse_health_unfit' },
+                    { src: '4-4', dst: '4-5', errorId: 'jockey_independence_conflict' },
+                    { src: '4-2', dst: '4-5-DISQ', isErrorBranch: true, errorId: 'identity_mismatch' },
+                    { src: '4-3', dst: '4-5-DISQ', isErrorBranch: true, errorId: 'horse_health_unfit' },
+                    { src: '4-4', dst: '4-5-DISQ', isErrorBranch: true, errorId: 'jockey_independence_conflict' },
+                    { src: '4-1', dst: '4-5' }
+                ]
             },
             5: {
                 title: "⑤ Diễn biến cuộc đua (Live)",
                 actions: {
                     admin: [],
-                    owner: [],
-                    jockey: [],
-                    referee: ["Bấm lệnh chuyển trạng thái cuộc đua sang 'Live' (Upcoming &rarr; Live)", "Theo dõi cuộc đua, phát hiện và ghi nhận lỗi vi phạm bằng dropdown danh sách mã lỗi", "Tiếp nhận khiếu nại (Protest) từ Owner/Jockey gửi đến", "Điều tra và xử lý vi phạm bằng hình thức phạt (disqualify / place behind)", "Xác nhận kết quả sơ bộ, chốt Biên bản thi đấu và chuyển trạng thái cuộc đua sang 'Unofficial'"],
-                    spectator: ["Theo dõi trạng thái cuộc đua thay đổi theo thời gian thực (Live) trên Web"]
+                    owner: ["Nộp đơn khiếu nại Protest"],
+                    jockey: ["Nộp đơn khiếu nại Protest"],
+                    referee: ["Bấm lệnh LIVE Start", "Ghi nhận lỗi vi phạm trên sân bằng dropdown mã vi phạm", "Tiếp nhận và xử lý khiếu nại Protest", "Xác nhận kết quả sơ bộ và chốt biên bản"],
+                    spectator: ["Theo dõi trạng thái cuộc đua trực tiếp trên Web bằng Live Simulation"]
                 },
                 rules: [
-                    "<strong>Khóa cổng dự đoán tự động:</strong> Khi Trọng tài đổi trạng thái cuộc đua sang 'Live', hệ thống tự động khóa cổng dự đoán của Spectator ngay lập tức (Off Time).",
-                    "<strong>Ghi nhận vi phạm:</strong> Trọng tài bắt buộc chọn vi phạm từ dropdown danh sách mã lỗi đã cấu hình. Chỉ được sửa hoặc xóa lỗi vi phạm trước khi xác nhận kết quả sơ bộ.",
-                    "<strong>Khiếu nại hai chiều đóng vòng (Module I):</strong> Trọng tài tiếp nhận khiếu nại của Owner/Jockey sau khi kết thúc đua sơ bộ. Quyết định xử lý (chấp thuận/bác bỏ) phải được thông báo ngược lại qua Notification đóng vòng."
+                    "<strong>Live Simulation (Animation):</strong> Sử dụng Math.random() di chuyển chip ngựa trên canvas, tuyệt đối không dùng WebSockets.",
+                    "<strong>Khiếu nại Protest:</strong> Trọng tài chốt xử lý đóng vòng (closed-loop), gửi thông báo kết quả cho cả 2 bên."
                 ],
-                design: "Phần mềm sử dụng cơ chế an toàn: khóa cứng chức năng gửi API dự đoán ở Backend bằng trạng thái cuộc đua. Triển khai danh sách mã lỗi bằng một bảng danh mục (Error Codes Metadata) để Trọng tài dễ dàng thao tác dropdown nhanh trên di động.",
-                simState: {
-                    tournament: "LIVE",
-                    gate: "Khóa cứng",
-                    coi: "Hợp lệ",
-                    jockey: "Hợp lệ"
-                },
+                design: "Menu 7 mã lỗi vi phạm đặc thù ngành đua ngựa cho phép Trọng tài ghi nhận biên bản nhanh. Chỉ được sửa đổi trước khi chốt kết quả sơ bộ.",
+                simState: { tournament: "LIVE", gate: "Khóa cứng", coi: "Hợp lệ", jockey: "Hợp lệ" },
                 terminalLogs: [
-                    "[SYSTEM] Giai đoạn 5: Cuộc đua đang diễn ra trực tiếp trên sân!",
-                    "[DB] UPDATE Races SET Status='Live' WHERE Id='R-01'",
-                    "[API] POST /api/referee/violation -> Ghi nhận lỗi 'Chèn ép đường đua' (Mã lỗi: E-02) cho ngựa H-03",
-                    "[API] POST /api/complaints -> Tiếp nhận đơn khiếu nại từ Horse Owner của ngựa H-03",
-                    "[SYSTEM] Trọng tài bác bỏ khiếu nại, áp dụng hình phạt Place Behind cho H-03."
+                    "[SYSTEM] Giai đoạn 5: Phát súng xuất phát cuộc đua R-01 LIVE!",
+                    "[API] POST /api/referee/violation -> Ghi nhận lỗi chèn ép đường đua",
+                    "[SYSTEM] Cuộc đua kết thúc sơ bộ. Trọng tài tiếp nhận đơn khiếu nại Protest."
                 ],
-                simNoti: {
-                    role: "Jockey",
-                    text: "🔔 Trọng tài ghi nhận biên bản vi phạm lỗi chèn ép (E-02) đối với ngựa số H-03 trong cuộc đua."
-                }
+                simNoti: { role: "Jockey", text: "🔔 Trọng tài đã ghi nhận lỗi vi phạm chèn ép (E-02) trong cuộc đua." },
+                flowNodes: [
+                    { id: '5-1', label: '5.1. Bấm LIVE Start|Trạng thái LIVE', x: 50, y: 495, actor: 'referee' },
+                    { id: '5-2', label: '5.2. Khán Giả Xem Live|Mô phỏng canvas (F5)', x: 230, y: 605, actor: 'spectator' },
+                    { id: '5-live-btn', label: '▶ XEM MÔ PHỎNG LÀN CHẠY', x: 50, y: 630, actor: 'spectator', w: 180, h: 40 },
+                    { id: '5-3', label: '5.3. Ghi Lỗi Vi Phạn|Chọn dropdown mã', x: 230, y: 495, actor: 'referee' },
+                    { id: '5-4', label: '5.4. Nộp Đơn Protest|Owner / Jockey', x: 230, y: 165, actor: 'owner' },
+                    { id: '5-5', label: '5.5. Giải Quyết Protest|Bác bỏ / Chấp thuận', x: 450, y: 495, actor: 'referee', type: 'checkpoint', errorId: 'protest_approved' },
+                    { id: '5-5-ERR', label: '5.5-ERR: Chấp Thuận|Place Behind / DISQ', x: 450, y: 525, actor: 'referee', type: 'error', errorId: 'protest_approved' },
+                    { id: '5-6', label: '5.6. Chốt Kết Quả|Sơ bộ Unofficial', x: 750, y: 495, actor: 'referee' }
+                ],
+                flowConnections: [
+                    { src: '5-1', dst: '5-2' },
+                    { src: '5-1', dst: '5-3' },
+                    { src: '5-2', dst: '5-6' },
+                    { src: '5-3', dst: '5-5' },
+                    { src: '5-4', dst: '5-5' },
+                    { src: '5-5', dst: '5-6', errorId: 'protest_approved' },
+                    { src: '5-5', dst: '5-5-ERR', isErrorBranch: true, errorId: 'protest_approved' },
+                    { src: '5-5-ERR', dst: '5-6', isErrorBranch: true, errorId: 'protest_approved' }
+                ]
             },
             6: {
                 title: "⑥ Công bố kết quả & Trả thưởng",
                 actions: {
-                    admin: ["Xem Biên bản thi đấu điện tử do Trọng tài nộp", "Bấm nút công bố kết quả chính thức, đổi trạng thái cuộc đua sang 'Official'", "Đánh dấu trạng thái thanh toán giải thưởng thủ công sau khi chuyển tiền mặt bên ngoài (ghi Audit Log)"],
-                    owner: ["Nhận thông báo kết quả cuộc đua & phân bổ tiền thưởng", "Xem BXH ngựa, lịch sử nhận tiền thưởng"],
-                    jockey: ["Nhận thông báo kết quả cuộc đua & tiền thưởng", "Xem BXH Jockey Standings và thu nhập cá nhân"],
-                    referee: ["Xem biên bản thi đấu điện tử đã lưu trữ (lưu trữ cố định, không thể sửa hay xóa sau khi Official)"],
-                    spectator: ["Nhận thông báo kết quả dự đoán (Thắng/Thua)", "Hệ thống tự động cộng điểm ảo/voucher vào ví Spectator", "Xem lịch sử dự đoán cá nhân và BXH"]
+                    admin: ["Phê duyệt kết quả Unofficial -> Official trong Database Transaction", "Cấu hình phân bổ Purse", "Ghi nhận trạng thái thanh toán thủ công ngoại tuyến"],
+                    doctor: ["Cân đo lại Jockey sau khi về đích (Weighing In) để kiểm soát gian lận tải trọng"],
+                    owner: ["Nhận phân bổ tiền thưởng Purse", "Xem BXH Ngựa"],
+                    jockey: ["Nhận thu nhập Jockey", "Xem BXH Jockey Standings"],
+                    referee: ["Xem biên bản lưu trữ cố định"],
+                    spectator: ["Nhận kết quả cược Win/Place (+200/+100 điểm ảo)"]
                 },
                 rules: [
-                    "<strong>Bảng xếp hạng (Module J):</strong> Cập nhật BXH Ngựa & Jockey hoàn toàn tự động dựa trên kết quả thi đấu. BXH hiển thị trên Web qua cơ chế Polling định kỳ tối thiểu 30 giây hoặc F5, tuyệt đối không dùng WebSockets.",
-                    "<strong>Thanh toán tiền thật (Payment Disbursement):</strong> Là Out-of-scope trong Phase 1. Giao dịch thực tế diễn ra bên ngoài. Admin chỉ ghi nhận trạng thái thanh toán (Đã/Chưa thanh toán) vào hệ thống để phục vụ đối chiếu và lưu vết kiểm toán (Audit Log)."
+                    "<strong>Nguyên tử ACID:</strong> Lỗi tại bất kỳ tác vụ nào trong chuỗi declare Official sẽ kích hoạt Rollback Transaction toàn cục.",
+                    "<strong>Doctor Weighing In:</strong> Doctor cân đo lại Jockey sau đua. Sai lệch vượt quá 0.5kg so với Weighing Out sẽ bị ghi nhận vi phạm.",
+                    "<strong>Leaderboard Polling:</strong> Bảng xếp hạng cập nhật tự động bằng Polling 30 giây thay vì WebSockets để đảm bảo tính gọn nhẹ."
                 ],
-                design: "Tập trung hóa toàn bộ logic cập nhật Leaderboard và đối chiếu dự đoán trong một transaction cơ sở dữ liệu duy nhất khi Admin nhấn nút 'Official' nhằm bảo đảm tính toàn vẹn dữ liệu.",
-                simState: {
-                    tournament: "OFFICIAL",
-                    gate: "Khóa cứng",
-                    coi: "Hợp lệ",
-                    jockey: "Hợp lệ"
-                },
+                design: "Bọc logic chốt kết quả trong database transaction. Xây dựng màn hình nhập cân nặng sau đua dành cho Doctor, liên kết đối chiếu với cân nặng trước đua.",
+                simState: { tournament: "OFFICIAL", gate: "Khóa cứng", coi: "Hợp lệ", jockey: "Hợp lệ" },
                 terminalLogs: [
-                    "[SYSTEM] Giai đoạn 6: Admin công bố kết quả và tiến hành trả thưởng.",
-                    "[DB] UPDATE Races SET Status='Official' WHERE Id='R-01'",
-                    "[LEADERBOARD-CALC] Bắt đầu gom điểm: Ngựa Thần Phong (H-09) về nhất nhận 10 điểm",
-                    "[SPECTATOR-DISBURSE] Tự động đối chiếu dự đoán. Cộng 200 điểm ảo và voucher giảm giá cho Spectator dự đoán đúng.",
-                    "[AUDIT-LOG] Admin Nguyen Quoc An cập nhật trạng thái thanh toán Purse cuộc đua R-01 sang 'Paid' (Thanh toán ngoại tuyến)."
+                    "[SYSTEM] Giai đoạn 6: Bắt đầu chuỗi declare Official và kiểm tra tải trọng sau đua...",
+                    "[WEIGHING-IN] Doctor cân Jockey sau đua: 53.8 kg (Sai lệch -0.2 kg: Hợp lệ).",
+                    "[DB] UPDATE RaceEntries SET PostRaceJockeyWeight=53.8 WHERE Id=45",
+                    "[SYSTEM] Tự động cập nhật Leaderboard, ví ảo Spectator và phân bổ Purse thành công!"
                 ],
-                simNoti: {
-                    role: "Spectator",
-                    text: "🔔 Chúc mừng! Dự đoán của bạn cho ngựa 'Thần Phong' đã chính xác. Hệ thống vừa cộng 200 Điểm ảo vào tài khoản!"
-                }
+                simNoti: { role: "Spectator", text: "🔔 Dự đoán chính xác! Nhận 200 điểm ảo thành công và bảng xếp hạng đã cập nhật." },
+                flowNodes: [
+                    { id: '6-1', label: '6.1. Declare Official|Transaction ACID', x: 50, y: 55, actor: 'admin', type: 'checkpoint', errorId: 'transaction_rollback' },
+                    { id: '6-1-ERR', label: '6.1-ERR: Lỗi Rollback|Rollback ACID', x: 50, y: 85, actor: 'admin', type: 'error', errorId: 'transaction_rollback' },
+                    { id: '6-2', label: '6.2. Khóa Biên Bản|Không thể sửa', x: 220, y: 55, actor: 'admin' },
+                    { id: '6-3', label: '6.3. Weighing In|Doctor cân sau đua', x: 390, y: 385, actor: 'doctor' },
+                    { id: '6-8', label: '6.8. Cập Nhật BXH|Đồng bộ Leaderboard', x: 560, y: 275, actor: 'jockey' },
+                    { id: '6-4', label: '6.4. Trả Thưởng Ví Ảo|Cộng điểm Spectator', x: 560, y: 605, actor: 'spectator' },
+                    { id: '6-5', label: '6.5. Phân Bổ Quỹ Purse|Purse Calculation', x: 560, y: 165, actor: 'owner' },
+                    { id: '6-6', label: '6.6. Thanh Toán Offline|Ghi Audit Log', x: 740, y: 55, actor: 'admin' },
+                    { id: '6-7', label: '6.7. Báo Cáo Thống Kê|Xuất PDF/CSV', x: 900, y: 55, actor: 'admin' }
+                ],
+                flowConnections: [
+                    { src: '6-1', dst: '6-2', errorId: 'transaction_rollback' },
+                    { src: '6-1', dst: '6-1-ERR', isErrorBranch: true, errorId: 'transaction_rollback' },
+                    { src: '6-2', dst: '6-3' },
+                    { src: '6-2', dst: '6-4' },
+                    { src: '6-2', dst: '6-5' },
+                    { src: '6-3', dst: '6-8' },
+                    { src: '6-5', dst: '6-6' },
+                    { src: '6-6', dst: '6-7' },
+                    { src: '6-8', dst: '6-7' },
+                    { src: '6-4', dst: '6-7' }
+                ]
             }
         };
-
-        /* ============================================================
+/* ============================================================
            INIT
            ============================================================ */
         window.onload = function () {
@@ -2123,25 +3332,27 @@
                 activePhaseBtn.style.background = 'linear-gradient(90deg, #D4AF37, #C8A24E)';
             }
 
-            // Populate Swimlane lists
+            renderBranchingFlow(phaseId);
             const roles = ['admin', 'owner', 'jockey', 'referee', 'spectator'];
             roles.forEach(role => {
                 const container = document.getElementById(`swim-${role}-actions`);
-                container.innerHTML = "";
-                const actions = data.actions[role];
+                if (container) {
+                    container.innerHTML = "";
+                    const actions = data.actions[role];
 
-                if (actions && actions.length > 0) {
-                    actions.forEach(action => {
-                        const card = document.createElement('div');
-                        card.className = `px-3 py-1.5 rounded-lg text-xs font-medium border text-slate-300 bg-slate-950 border-slate-800/80 hover:border-slate-700 transition-all`;
-                        card.innerHTML = action;
-                        container.appendChild(card);
-                    });
-                } else {
-                    const emptyCard = document.createElement('div');
-                    emptyCard.className = "text-xs text-slate-600 italic py-1.5 pl-2";
-                    emptyCard.innerText = "Không có hoạt động trong pha này";
-                    container.appendChild(emptyCard);
+                    if (actions && actions.length > 0) {
+                        actions.forEach(action => {
+                            const card = document.createElement('div');
+                            card.className = `px-3 py-1.5 rounded-lg text-xs font-medium border text-slate-300 bg-slate-950 border-slate-800/80 hover:border-slate-700 transition-all`;
+                            card.innerHTML = action;
+                            container.appendChild(card);
+                        });
+                    } else {
+                        const emptyCard = document.createElement('div');
+                        emptyCard.className = "text-xs text-slate-600 italic py-1.5 pl-2";
+                        emptyCard.innerText = "Không có hoạt động trong pha này";
+                        container.appendChild(emptyCard);
+                    }
                 }
             });
 
@@ -2159,18 +3370,6 @@
 
             // Populate Design recommendation
             document.getElementById('phase-design-recom').innerText = data.design;
-
-            // Synchronize Virtual State Card and Terminal Logs
-            if (data.simState) {
-                document.getElementById('sim-state-tournament').innerText = data.simState.tournament;
-                document.getElementById('sim-state-gate').innerText = data.simState.gate;
-                document.getElementById('sim-state-coi').innerText = data.simState.coi;
-                document.getElementById('sim-state-jockey').innerText = data.simState.jockey;
-
-                // Color overrides
-                document.getElementById('sim-state-tournament').className = data.simState.tournament === "LIVE" ? "text-rose-500 font-bold" : "text-blue-400 font-bold";
-                document.getElementById('sim-state-gate').className = data.simState.gate.includes("MỞ") ? "text-emerald-400 font-bold" : "text-slate-400";
-            }
 
             // Write logs to Simulated Terminal
             const terminal = document.getElementById('sim-terminal');
