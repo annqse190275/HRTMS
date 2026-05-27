@@ -2554,7 +2554,18 @@
                 const isErrorNode = n.type === 'error';
                 const isCheckpoint = n.type === 'checkpoint';
                 
-                if (isErrorNode && !GLOBAL_SIM_STATE.activeErrors.includes(n.errorId)) return;
+                if (isErrorNode) {
+                    const isSharedPha4Disq = n.id === '4-5-DISQ';
+                    const isAnyPha4ErrorActive = GLOBAL_SIM_STATE.activeErrors.includes('identity_mismatch') ||
+                                                 GLOBAL_SIM_STATE.activeErrors.includes('horse_health_unfit') ||
+                                                 GLOBAL_SIM_STATE.activeErrors.includes('jockey_independence_conflict');
+                    
+                    if (isSharedPha4Disq) {
+                        if (!isAnyPha4ErrorActive) return;
+                    } else if (!GLOBAL_SIM_STATE.activeErrors.includes(n.errorId)) {
+                        return;
+                    }
+                }
                 
                 let isDimmed = isNodeAffectedByError(n.id, phaseId);
                 if (n.errorId && !isErrorNode && !isCheckpoint && GLOBAL_SIM_STATE.activeErrors.includes(n.errorId)) {
