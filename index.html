@@ -1742,7 +1742,7 @@
                 actor: "Tất cả các Actors",
                 module: "Module A — Quản Lý Tài Khoản và Phân Quyền",
                 rules: "Tuân thủ OWASP Top 10 bảo mật xác thực phiên làm việc, mã hóa bcrypt mật khẩu, tự động ngắt kết nối Session Timeout.",
-                desc: "Các vai trò (Admin, Owner, Jockey, Referee, Spectator) thực hiện đăng ký tài khoản. Hệ thống tự động phân chia quyền hạn tương ứng dưới sự kiểm soát chặt chẽ của Admin, cấp JWT Token để phân quyền RBAC truy cập hệ thống."
+                desc: "Các vai trò (Admin, Owner, Jockey, Referee, Doctor, Spectator) thực hiện đăng ký tài khoản. Hệ thống tự động phân chia quyền hạn tương ứng dưới sự kiểm soát chặt chẽ của Admin, cấp JWT Token để phân quyền RBAC truy cập hệ thống."
             },
             '1-2': {
                 title: "1.2. Tạo Giải Đấu Đặc Thù",
@@ -1773,70 +1773,70 @@
                 desc: "Ban tổ chức bấm nút Công bố. Hệ thống tự động cập nhật trạng thái giải và gửi email/in-app notification cho tất cả các tác nhân. Khán giả bắt đầu nhìn thấy thông tin giải đấu hiển thị công khai trên giao diện."
             },
             '2-1': {
-                title: "2.1. Jockey Khai Hồ Sơ",
+                title: "2.1. Khai báo hồ sơ chứng chỉ Jockey",
                 actor: "Jockey",
-                module: "Module D — Quản Lý Nài ngựa (Jockey)",
+                module: "Module D — Quản Lý Nài Ngựa (Jockey)",
                 rules: "Bắt buộc khai báo chứng chỉ hành nghề hợp lệ khi tạo tài khoản.",
                 desc: "Jockey đăng ký tài khoản và khai báo thông tin chứng chỉ hành nghề, số năm kinh nghiệm đua ngựa thực tế lên hệ thống để gửi Admin duyệt."
             },
-            '2-1-MD': {
-                title: "2.1-MD. Doctor Duyệt Y Tế Jockey",
-                actor: "Doctor",
-                module: "Module D — Quản Lý Nài Ngựa (Jockey)",
-                rules: "Kiểm duyệt lý lịch bệnh án, giấy chứng nhận sức khỏe thể chất và kiểm định doping ban đầu.",
-                desc: "Bác sĩ kiểm tra hồ sơ y tế, xác định Jockey đủ thể chất thi đấu chuyên nghiệp và bấm phê duyệt để Jockey có thể tham gia ghép cặp."
-            },
             '2-2': {
-                title: "2.2. Khai Báo Ngựa",
+                title: "2.2. Kiểm duyệt & Phê duyệt hồ sơ Jockey",
+                actor: "Admin",
+                module: "Module D — Quản Lý Nài Ngựa (Jockey)",
+                rules: "Admin duyệt tính hợp lệ của hồ sơ Jockey.",
+                desc: "Admin kiểm duyệt hồ sơ Jockey. Jockey được cấp trạng thái Active nếu được duyệt."
+            },
+            '2-2-ERR': {
+                title: "2.2-ERR: Jockey Bị Từ Chối",
+                actor: "Admin & Hệ thống",
+                module: "Module D — Quản Lý Nài Ngựa (Jockey)",
+                rules: "Jockey không thể nhận lời mời ghép cặp nếu bị từ chối.",
+                desc: "Đơn bị từ chối chuyển trạng thái sang Rejected. Jockey cần cập nhật lại thông tin."
+            },
+            '2-3': {
+                title: "2.3. Khai Báo Thông Tin Ngựa Thi Đấu",
                 actor: "Owner",
                 module: "Module C — Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ",
                 rules: "Khai báo đầy đủ tên, giống ngựa, cân nặng, độ tuổi, huyết thống, đặc điểm nhận diện.",
-                desc: "Chủ ngựa (Horse Owner) khai báo hồ sơ ngựa đua và các thông số y tế cơ bản của ngựa lên hệ thống để gửi Admin duyệt."
-            },
-            '2-2-MD': {
-                title: "2.2-MD. Doctor Duyệt Y Tế Ngựa",
-                actor: "Doctor",
-                module: "Module C — Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ",
-                rules: "Kiểm duyệt hồ sơ tiêm phòng dịch (Vaccination Record) và ngày xét nghiệm doping âm tính gần nhất.",
-                desc: "Bác sĩ thú y xem xét các chỉ số sinh trắc học và lịch sử tiêm phòng của chú ngựa, bấm phê duyệt y tế để cho phép ghép cặp với Jockey."
-            },
-            '2-3': {
-                title: "2.3. Nộp Đơn Đăng Ký Ngựa",
-                actor: "Owner",
-                module: "Module C — Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ",
-                rules: "Chủ ngựa chọn chú ngựa đã được Doctor duyệt y tế sạch ở bước 2.2-MD để nộp đơn ứng tuyển.",
-                desc: "Chủ ngựa tiến hành nộp hồ sơ đăng ký của ngựa vào giải đấu đang mở cổng ứng tuyển để chuẩn bị kiểm duyệt."
+                desc: "Chủ ngựa (Horse Owner) khai báo hồ sơ ngựa đua và các thông số y tế cơ bản của ngựa lên hệ thống."
             },
             '2-4': {
-                title: "2.4. Admin Duyệt Đăng Ký Ngựa",
+                title: "2.4. Nộp Hồ Sơ Đăng Ký Tham Gia Giải",
+                actor: "Owner",
+                module: "Module C — Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ",
+                rules: "Chủ ngựa chọn ngựa để nộp đơn ứng tuyển.",
+                desc: "Chủ ngựa tiến hành nộp hồ sơ đăng ký của ngựa vào giải đấu đang mở cổng ứng tuyển để chuẩn bị kiểm duyệt."
+            },
+            '2-5': {
+                title: "2.5. Admin Duyệt Đăng Ký Giải Đấu",
                 actor: "Admin",
                 module: "Module C — Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ",
-                rules: "Kiểm duyệt tính hợp lệ của ngựa đối với AllowedBreed, cự ly và độ tuổi cho phép.",
+                rules: "Kiểm duyệt tính hợp lệ của ngựa đối với AllowedBreed. Bắt buộc nhập lý do nếu từ chối.",
                 desc: "Admin kiểm duyệt đơn đăng ký của chú ngựa và bấm chấp thuận phê duyệt nếu đạt yêu cầu, cho phép đi ghép cặp."
             },
-            '2-4-ERR': {
-                title: "2.4-ERR: Đơn Đăng Ký Bị Từ Chối",
+            '2-5-ERR': {
+                title: "2.5-ERR: Đơn Đăng Ký Bị Từ Chối",
                 actor: "Admin & Hệ thống",
                 module: "Module C — Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ",
                 rules: "<strong>Auto-reject:</strong> Tự động chặn duyệt nếu giống ngựa vi phạm AllowedBreed.<br><strong>Ràng buộc lý do:</strong> Admin bắt buộc nhập lý do từ chối tối thiểu 10 ký tự.",
                 desc: "Đơn bị từ chối chuyển trạng thái sang Rejected kèm lý do chi tiết gửi đến Owner, đồng thời giải phóng hồ sơ ngựa về Draft để Owner sửa đổi và nộp lại."
             },
-            '2-5': {
-                title: "2.5. Owner Mời Jockey Ghép Cặp",
+            '2-6': {
+                title: "2.6. Gửi Lời Mời & Ghép Cặp Đã Duyệt",
                 actor: "Owner & Jockey",
-                module: "Module D — Quản Lý Nài Ngựa (Jockey)",
-                rules: "Chủ ngựa gửi lời mời ghép cặp đến Jockey đã được duyệt y tế ở bước 2.1-MD. Jockey có quyền Chấp nhận (Accept) hoặc Từ chối (Decline).",
-                desc: "Sau khi đơn của ngựa được Admin duyệt, Owner gửi lời mời ghép cặp. Jockey nhận được thông báo, có quyền chấp nhận để chốt pairing hoặc từ chối."
+                module: "Module D / N",
+                rules: "Chỉ khi cả 2 hồ sơ đã duyệt. Owner gửi lời mời, Jockey có quyền Đồng ý (Accept) hoặc Từ chối (Decline).",
+                desc: "Owner gửi lời mời ghép cặp. Jockey nhận được thông báo, có quyền chấp nhận để chốt pairing hoặc từ chối."
             },
-            '2-5-ERR': {
-                title: "2.5-ERR: Jockey Từ Chối Lời Mời",
+            '2-6-ERR': {
+                title: "2.6-ERR: Jockey Từ Chối Lời Mời",
                 actor: "Jockey & Hệ thống",
-                module: "Module D — Quản Lý Nài Ngựa (Jockey) & Module N",
+                module: "Module D / N",
                 rules: "Jockey nhấn Decline từ chối lời mời. Hệ thống giải phóng đơn để Owner mời người khác.",
                 desc: "Jockey từ chối lời mời thuê. Hệ thống cập nhật trạng thái lời mời sang Declined, tự động gửi thông báo cho Owner và mở khóa để Owner tiếp tục tìm kiếm Jockey khả dụng khác."
             },
-            '2-6': {
-                title: "2.6. Hoàn Tất Đăng Ký & Ghép Cặp",
+            '2-7': {
+                title: "2.7. Nhận Kết Quả Chốt Cặp Thành Công",
                 actor: "Owner",
                 module: "Module N — Hệ Thống Thông Báo",
                 rules: "Nhận thông báo in-app và email về kết quả chốt cặp thành công.",
@@ -2018,89 +2018,92 @@
                 desc: "Trọng tài chính thực hiện ký biên bản và chốt kết quả sơ bộ, đưa cuộc đua sang trạng thái Unofficial chờ Admin phê duyệt."
             },
             '6-1': {
-                title: "6.1. Declare Official",
+                title: "6.1. Công bố kết quả chính thức",
                 actor: "Admin",
                 module: "Module J — Xác Nhận Kết Quả và Công Bố Chính Thức",
-                rules: "Admin bấm phê duyệt công bố chính thức. Hệ thống cập nhật thứ hạng và mở luồng chia thưởng.",
+                rules: "Admin phê duyệt biên bản thi đấu và công bố kết quả chính thức.",
                 desc: "Admin phê duyệt kết quả sơ bộ đã chốt, chuyển cuộc đua sang trạng thái Official chính thức."
             },
             '6-1-ERR': {
                 title: "6.1-ERR: Lỗi Rollback Toàn Cục",
                 actor: "Admin & Hệ thống",
                 module: "Module J — Xác Nhận Kết Quả và Công Bố Chính Thức",
-                rules: "<strong>Tính nguyên tử ACID:</strong> Phát hiện bất kỳ Exception nào ở Backend trong chuỗi 6 tác vụ declare Official (DB sập, lỗi ví, lỗi log) -> Kích hoạt `Rollback Transaction` lập tức.<br><strong>Giam Unofficial:</strong> Trả dữ liệu về nguyên vẹn trước khi bấm nút, giam cuộc đua ở Unofficial, cấm chia thưởng.<br><strong>Báo cảnh báo đỏ ACID:</strong> Hiển thị cảnh báo chớp đỏ chớp tắt trên UI và mở lại nút thao tác.",
-                desc: "Backend kích hoạt Rollback Transaction toàn cục khi có lỗi phát sinh để bảo toàn dữ liệu. SVG UI chớp đỏ rực báo lỗi ACID và cấm chia thưởng cho đến khi lỗi được khắc phục và Admin thực hiện lại."
+                rules: "<strong>Tính nguyên tử ACID:</strong> Lỗi database/Backend gây Transaction Rollback ACID.",
+                desc: "Hủy bỏ toàn bộ cập nhật, giam cuộc đua ở Unofficial, đóng băng trả thưởng và cập nhật BXH."
             },
             '6-2': {
-                title: "6.2. Khóa Biên Bản",
+                title: "6.2. Khóa cổng dữ liệu Biên bản thi đấu",
                 actor: "Hệ thống",
                 module: "Module H — Quản Lý Kết Quả",
-                rules: "Khóa cứng biên bản thi đấu vĩnh viễn, vô hiệu hóa hoàn toàn nút Sửa/Xóa dữ liệu.",
-                desc: "Hệ thống tự động thực hiện đóng băng và mã hóa khóa cứng biên bản thi đấu của cuộc đua."
+                rules: "Khóa cổng vĩnh viễn, disable nút Sửa/Xóa.",
+                desc: "Hệ thống tự động khóa cổng dữ liệu biên bản thi đấu điện tử ngay khi trạng thái chuyển sang Official."
             },
             '6-3': {
-                title: "6.3. Doctor Weighing In (Cân sau đua)",
-                actor: "Doctor",
-                module: "Module J — Xác Nhận Kết Quả và Công Bố Chính Thức",
-                rules: "Bác sĩ tiến hành cân đo lại Jockey ngay sau khi cán đích. Sai lệch không vượt quá 0.5kg so với Weighing Out.",
-                desc: "Doctor thực hiện kiểm tra cân nặng sau đua để ngăn chặn hành vi Jockey bỏ bớt tải trọng/chì trong lúc đua. Ghi nhận trọng lượng vào PostRaceJockeyWeight."
+                title: "6.3. Trả thưởng Ví ảo Khán giả",
+                actor: "Hệ thống",
+                module: "Module N — Đối Chiếu Dự Đoán và Trả Thưởng",
+                rules: "Cộng điểm cược Win (+200), Place (+100).",
+                desc: "Tự động đối chiếu cược dự đoán của khán giả và cộng điểm ảo."
             },
             '6-4': {
-                title: "6.4. Trả Thưởng Ví Ảo",
-                actor: "Hệ thống",
-                module: "Module M & Module N — Trả Thưởng Ví Ảo",
-                rules: "Tự động đối chiếu cược dự đoán. Cộng điểm ảo Win (+200 điểm) và Place (+100 điểm) trực tiếp vào ví cá nhân.",
-                desc: "Hệ thống đối chiếu kết quả Official với vé cược, tự động tính toán điểm thưởng và cộng trực tiếp điểm ảo vào ví cá nhân Spectator."
-            },
-            '6-5': {
-                title: "6.5. Phân Bổ Quỹ Purse",
-                actor: "Hệ thống",
-                module: "Module K — Tính Toán và Phân Bổ Tiền Thưởng",
-                rules: "Tính toán tiền thưởng lý thuyết thực tế theo quỹ Purse cấu hình và thứ hạng về đích.",
-                desc: "Hệ thống tự động tính toán số tiền thưởng phân phối lý thuyết cho các Chủ ngựa đoạt giải và lưu vết lịch sử."
-            },
-            '6-6': {
-                title: "6.6. Thanh Toán Offline & Audit Log",
-                actor: "Admin",
-                module: "Module K — Phân Bổ Tiền Thưởng",
-                rules: "<strong>Thanh toán ngoại tuyến:</strong> Các giao dịch tiền thật được BTC xử lý độc lập bên ngoài hệ thống. Admin cập nhật trạng thái thanh toán + ghi Audit Log bắt buộc.",
-                desc: "Admin theo dõi thanh toán tiền mặt bên ngoài, đánh dấu hoàn thành và ghi nhận Audit Log vết thanh toán lên hệ thống."
-            },
-            '6-7': {
-                title: "6.7. Báo Cáo Thống Kê",
-                actor: "Admin/Tác nhân",
-                module: "Module O — Báo Cáo và Xuất Dữ Liệu",
-                rules: "Cho phép kết xuất báo cáo định dạng CSV, PDF hoặc trực tiếp in.",
-                desc: "Ban tổ chức hoặc người dùng thực hiện xuất dữ liệu tổng hợp về giải đua, bảng xếp hạng và tiền thưởng ra báo cáo CSV/PDF."
-            },
-            '6-8': {
-                title: "6.8. Tự Động Cập Nhật Bảng Xếp Hạng",
+                title: "6.4. Cập nhật Bảng xếp hạng",
                 actor: "Hệ thống",
                 module: "Module L — Bảng Xếp Hạng Tích Lũy",
-                rules: "Bảng xếp hạng Standings được đồng bộ tự động định kỳ tối thiểu 30 giây bằng HTTP Polling.",
-                desc: "Hệ thống tự động cộng dồn điểm số của ngựa thi đấu và Jockey sau khi chốt cuộc đua để cập nhật trực tiếp lên Leaderboard công khai."
+                rules: "HTTP Polling tối thiểu 30 giây.",
+                desc: "Tự động cập nhật Bảng xếp hạng Ngựa và Jockey Standings."
+            },
+            '6-5': {
+                title: "6.5. Phân bổ Tiền thưởng Quỹ Purse",
+                actor: "Hệ thống",
+                module: "Module K — Tính Toán và Phân Bổ Tiền Thưởng",
+                rules: "Phân chia tiền thưởng lý thuyết.",
+                desc: "Tính toán và phân bổ tiền thưởng Quỹ Purse cho Chủ ngựa và Jockey đoạt giải."
+            },
+            '6-6': {
+                title: "6.6. Thực hiện chi trả ngoại tuyến",
+                actor: "Admin",
+                module: "Module K — Tính Toán và Phân Bổ Tiền Thưởng",
+                rules: "Giao dịch thực tế ngoài hệ thống.",
+                desc: "Thực hiện chi trả ngoại tuyến và lưu vết Audit Log."
+            },
+            '6-7': {
+                title: "6.7. Báo cáo thống kê và Kết xuất dữ liệu",
+                actor: "Admin/Tác nhân",
+                module: "Module P — Báo Cáo và Xuất Dữ Liệu",
+                rules: "Kết xuất báo cáo định dạng CSV/PDF.",
+                desc: "Báo cáo thống kê và Kết xuất dữ liệu tổng hợp."
             }
         };
 
         const ERROR_SUB_FLOWS = {
-            '2-4-ERR': {
-                triggerCheckpoint: '2-4',
+            '2-2-ERR': {
+                triggerCheckpoint: '2-2',
                 nodes: [
-                    { id: '2-4-A', label: 'A. Kiểm Giống Ngựa|Auto-reject', actor: 'admin', module: 'Module C', rules: 'Chỉ chấp nhận giống ngựa AllowedBreed (Thoroughbred, Arabian, Quarter Horse, Mixed).', desc: 'Hệ thống tự động so khớp Horse.Breed với AllowedBreed của giải đấu. Nếu vi phạm, tự động khóa nút phê duyệt của Admin.' },
-                    { id: '2-4-B', label: 'B. Nhập Lý Do|Tối thiểu 10 ký tự', actor: 'admin', module: 'Module C', rules: 'Trường lý do từ chối bắt buộc nhập và tối thiểu 10 ký tự.', desc: 'Admin click nút từ chối duyệt (Reject). Hệ thống kích hoạt hộp thoại bắt buộc nhập lý do từ chối có độ dài >=10 ký tự.' },
-                    { id: '2-4-C', label: 'C. Ghi Nhận DB|Status = Rejected', actor: 'admin', module: 'Module C', rules: 'Trạng thái đơn đổi sang Rejected, lưu trường ReasonOfRejection.', desc: 'Hệ thống thực hiện cập nhật CSDL của đơn đăng ký thi đấu của ngựa sang trạng thái Rejected.' },
-                    { id: '2-4-D', label: 'D. Gửi Thông Báo|Owner nhận đơn', actor: 'owner', module: 'Module N', rules: 'Gửi đồng thời email và in-app notification.', desc: 'Hệ thống tự động phát thông báo từ chối kèm lý do chi tiết cho Chủ ngựa (Owner) nắm thông tin.' },
-                    { id: '2-4-E', label: 'E. Giải Phóng Đơn|Reset về Draft', actor: 'owner', module: 'Module C', rules: 'Đơn đăng ký được reset về Draft để chỉnh sửa.', desc: 'Hệ thống tự động mở khóa đơn đăng ký, chuyển trạng thái về Draft để Owner có thể sửa đổi và nộp lại.' }
+                    { id: '2-2-A', label: 'A. Hộp Thoại Bắt Buộc|Nhập lý do', actor: 'admin', module: 'Module D', rules: 'Trường lý do từ chối không được để trống.', desc: 'Hệ thống hiển thị hộp thoại bắt buộc nhập lý do từ chối hồ sơ Jockey.' },
+                    { id: '2-2-B', label: 'B. Nhập Lý Do|Admin điền & xác nhận', actor: 'admin', module: 'Module D', rules: 'Admin nhập lý do từ chối hợp lệ (VD: Chứng chỉ hành nghề đã hết hạn).', desc: 'Admin nhập lý do từ chối và xác nhận hành động Reject.' },
+                    { id: '2-2-C', label: 'C. Ghi Nhận DB|Status = Rejected', actor: 'admin', module: 'Module D', rules: 'Trạng thái hồ sơ Jockey sang Rejected.', desc: 'Hệ thống cập nhật trạng thái hồ sơ Jockey sang Rejected trong database.' },
+                    { id: '2-2-D', label: 'D. Gửi Thông Báo|Jockey nhận tin', actor: 'jockey', module: 'Module N', rules: 'Gửi thông báo chứa lý do trực tiếp về hòm thư của Jockey.', desc: 'Hệ thống sinh sự kiện, gửi thông báo phản hồi kèm lý do chi tiết cho Jockey.' },
+                    { id: '2-2-E', label: 'E. Reset Hồ Sơ|Về Draft', actor: 'jockey', module: 'Module D', rules: 'Jockey có quyền chỉnh sửa lại hồ sơ để nộp lại.', desc: 'Jockey nhận thông báo và trạng thái hồ sơ được reset về Draft để chỉnh sửa nộp lại.' }
                 ]
             },
             '2-5-ERR': {
                 triggerCheckpoint: '2-5',
                 nodes: [
-                    { id: '2-5-A', label: 'A. Nhận Lời Mời|Jockey nhận thông báo', actor: 'jockey', module: 'Module D', rules: 'Hệ thống gửi thông báo mời ghép cặp từ Owner đến Jockey.', desc: 'Chủ ngựa sau khi được duyệt hồ sơ ngựa sẽ gửi lời mời ghép cặp đến Jockey đã y tế sạch.' },
-                    { id: '2-5-B', label: 'B. Jockey Từ Chối|Nhấn nút Decline', actor: 'jockey', module: 'Module D', rules: 'Jockey có quyền tự do từ chối do trùng lịch hoặc thỏa thuận không đạt.', desc: 'Jockey mở hộp thoại lời mời và quyết định nhấn nút từ chối (Decline).' },
-                    { id: '2-5-C', label: 'C. Ghi Nhận Lời Mời|Status = Declined', actor: 'jockey', module: 'Module D', rules: 'Bản ghi Pairing hoặc Lời mời chuyển trạng thái sang Declined.', desc: 'Hệ thống cập nhật trạng thái bản ghi lời mời thành Declined trong CSDL.' },
-                    { id: '2-5-D', label: 'D. Gửi Thông Báo|Chủ ngựa nhận tin', actor: 'owner', module: 'Module N', rules: 'Gửi email và in-app thông báo lời mời bị từ chối.', desc: 'Hệ thống tự động phát thông báo về hòm thư của Owner: *Jockey Nguyễn Văn A đã từ chối lời mời của bạn*.' },
-                    { id: '2-5-E', label: 'E. Giải Phóng Đơn|Mở khóa mời người khác', actor: 'owner', module: 'Module D', rules: 'Mở khóa trạng thái ghép đôi của ngựa để Owner có thể chọn Jockey khác.', desc: 'Hệ thống tự động giải phóng trạng thái đơn, cho phép Owner quay lại tìm kiếm danh sách Jockey khả dụng khác.' }
+                    { id: '2-5-A', label: 'A. Kiểm Giống Ngựa|Auto-reject', actor: 'admin', module: 'Module C', rules: 'Chỉ chấp nhận giống ngựa AllowedBreed (Thoroughbred, Arabian, Quarter Horse, Mixed).', desc: 'Hệ thống tự động so khớp Horse.Breed với AllowedBreed của giải đấu. Nếu vi phạm, tự động khóa nút phê duyệt của Admin.' },
+                    { id: '2-5-B', label: 'B. Nhập Lý Do|Tối thiểu 10 ký tự', actor: 'admin', module: 'Module C', rules: 'Trường lý do từ chối bắt buộc nhập và tối thiểu 10 ký tự.', desc: 'Admin click nút từ chối duyệt (Reject). Hệ thống kích hoạt hộp thoại bắt buộc nhập lý do từ chối có độ dài >=10 ký tự.' },
+                    { id: '2-5-C', label: 'C. Ghi Nhận DB|Status = Rejected', actor: 'admin', module: 'Module C', rules: 'Trạng thái đơn đổi sang Rejected, lưu trường ReasonOfRejection.', desc: 'Hệ thống thực hiện cập nhật CSDL của đơn đăng ký thi đấu của ngựa sang trạng thái Rejected.' },
+                    { id: '2-5-D', label: 'D. Gửi Thông Báo|Owner nhận đơn', actor: 'owner', module: 'Module N', rules: 'Gửi đồng thời email và in-app notification.', desc: 'Hệ thống tự động phát thông báo từ chối kèm lý do chi tiết cho Chủ ngựa (Owner) nắm thông tin.' },
+                    { id: '2-5-E', label: 'E. Giải Phóng Đơn|Reset về Draft', actor: 'owner', module: 'Module C', rules: 'Đơn đăng ký được reset về Draft để chỉnh sửa.', desc: 'Hệ thống tự động mở khóa đơn đăng ký, chuyển trạng thái về Draft để Owner có thể sửa đổi và nộp lại.' }
+                ]
+            },
+            '2-6-ERR': {
+                triggerCheckpoint: '2-6',
+                nodes: [
+                    { id: '2-6-A', label: 'A. Nhận Lời Mời|Jockey nhận thông báo', actor: 'jockey', module: 'Module D', rules: 'Hệ thống gửi thông báo mời ghép cặp từ Owner đến Jockey.', desc: 'Chủ ngựa sau khi được duyệt hồ sơ ngựa sẽ gửi lời mời ghép cặp đến Jockey đã y tế sạch.' },
+                    { id: '2-6-B', label: 'B. Jockey Từ Chối|Nhấn nút Decline', actor: 'jockey', module: 'Module D', rules: 'Jockey có quyền tự do từ chối do trùng lịch hoặc thỏa thuận không đạt.', desc: 'Jockey mở hộp thoại lời mời và quyết định nhấn nút từ chối (Decline).' },
+                    { id: '2-6-C', label: 'C. Ghi Nhận Lời Mời|Status = Declined', actor: 'jockey', module: 'Module D', rules: 'Bản ghi Pairing hoặc Lời mời chuyển trạng thái sang Declined.', desc: 'Hệ thống cập nhật trạng thái bản ghi lời mời thành Declined trong CSDL.' },
+                    { id: '2-6-D', label: 'D. Gửi Thông Báo|Chủ ngựa nhận tin', actor: 'owner', module: 'Module N', rules: 'Gửi email và in-app thông báo lời mời bị từ chối.', desc: 'Hệ thống tự động phát thông báo về hòm thư của Owner: *Jockey Nguyễn Văn A đã từ chối lời mời của bạn*.' },
+                    { id: '2-6-E', label: 'E. Giải Phóng Đơn|Mở khóa mời người khác', actor: 'owner', module: 'Module D', rules: 'Mở khóa trạng thái ghép đôi của ngựa để Owner có thể chọn Jockey khác.', desc: 'Hệ thống tự động giải phóng trạng thái đơn, cho phép Owner quay lại tìm kiếm danh sách Jockey khả dụng khác.' }
                 ]
             },
             '3-3-ERR': {
@@ -2274,6 +2277,7 @@
                     let errName = errId;
                     if (errId === 'horse_reg_rejected') errName = 'Từ chối duyệt hồ sơ đăng ký ngựa thi đấu';
                     else if (errId === 'jockey_invite_rejected') errName = 'Jockey từ chối lời mời ghép cặp của Owner';
+                    else if (errId === 'jockey_reg_rejected') errName = 'Từ chối duyệt hồ sơ Jockey';
                     else if (errId === 'owner_missed_confirmation') errName = 'Chủ ngựa rút lui đột xuất / Quá hạn xác nhận 24h';
                     else if (errId === 'coi_conflict_detected') errName = 'Phát hiện Xung đột lợi ích Trọng tài (COI Check)';
                     else if (errId === 'identity_mismatch') errName = 'Sai lệch danh tính ngựa kiểm paddock';
@@ -2360,7 +2364,7 @@
         function isNodeAffectedByError(nodeId, phaseId) {
             const errs = GLOBAL_SIM_STATE.activeErrors;
             // Phase 2 error cascades
-            if ((errs.includes('horse_reg_rejected') || errs.includes('jockey_invite_rejected')) && phaseId >= 3) return true;
+            if ((errs.includes('horse_reg_rejected') || errs.includes('jockey_invite_rejected') || errs.includes('jockey_reg_rejected')) && phaseId >= 3) return true;
             // Phase 3 error cascades
             if (errs.includes('owner_missed_confirmation') && phaseId >= 4 && !nodeId.includes('err')) return true;
             if (errs.includes('coi_conflict_detected') && phaseId === 5 && nodeId === '5-1') return true; // Cấm Live start
@@ -2838,7 +2842,7 @@
         };
 
         const IN_SCOPE_MODULES = [
-            { id: 'A', title: 'Quản Lý Tài Khoản và Phân Quyền', icon: 'shield-check', desc: 'Horse Owner, Jockey, Race Referee, Spectator tự đăng ký. Admin quản lý tài khoản theo role. Xác thực username/password. Phân quyền RBAC. Tuân thủ OWASP Top 10 và ISO 27001.' },
+            { id: 'A', title: 'Quản Lý Tài Khoản và Phân Quyền', icon: 'shield-check', desc: 'Horse Owner, Jockey, Race Referee, Doctor, Spectator tự đăng ký. Admin quản lý tài khoản theo role. Xác thực username/password. Phân quyền RBAC. Tuân thủ OWASP Top 10 và ISO 27001.' },
             { id: 'B', title: 'Quản Lý Giải Đấu', icon: 'trophy', desc: 'Admin tạo giải (tên, thời gian, quy mô, loại hình đua). Cấu hình cấu trúc vòng đua (vòng loại → bán kết → chung kết). Quản lý và cập nhật thông tin giải sau khi tạo.' },
             { id: 'C', title: 'Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ', icon: 'file-plus-2', desc: 'Horse Owner đăng ký ngựa (tên, tuổi, giống, VaccinationRecordRef, DopingTestDate, DopingTestResult). Admin duyệt/từ chối. Auto-reject nếu giống ngựa sai AllowedBreed. Từ chối bắt buộc nhập lý do tối thiểu 10 ký tự (F1: không duyệt Jockey ở đây, F3: y tế ghi thủ công).' },
             { id: 'D', title: 'Quản Lý Nài ngựa (Jockey)', icon: 'user-plus', desc: 'Jockey đăng ký tài khoản (chứng chỉ, kinh nghiệm). Horse Owner tìm kiếm, gửi lời mời ghép cặp. Jockey chấp nhận/từ chối. Hệ thống tự động chặn ghép cặp nếu kinh nghiệm Jockey (ExperienceYears) dưới mức MinJockeyExperienceYears của giải.' },
@@ -3079,49 +3083,48 @@
                 title: "② Đăng ký tham gia",
                 actions: {
                     admin: ["Kiểm duyệt đơn đăng ký của ngựa dựa trên AllowedBreed", "Từ chối và bắt buộc nhập lý do tối thiểu 10 ký tự"],
-                    doctor: ["Duyệt y tế & doping ban đầu của Jockey (2.1-MD)", "Duyệt y tế & tiêm phòng ban đầu của Ngựa (2.2-MD)"],
-                    owner: ["Khai báo hồ sơ ngựa (Tên, giống, cân nặng)", "Nộp hồ sơ ngựa ứng tuyển vào giải đấu sau khi duyệt y tế", "Gửi lời mời ghép cặp đến Jockey đã được duyệt y tế và nhận kết quả chốt cặp"],
+                    doctor: [],
+                    owner: ["Khai báo hồ sơ ngựa (Tên, giống, cân nặng)", "Nộp hồ sơ ngựa ứng tuyển vào giải đấu", "Gửi lời mời ghép cặp đến Jockey và nhận kết quả chốt cặp"],
                     jockey: ["Khai báo chứng chỉ hành nghề khi tạo tài khoản", "Xác nhận hoặc từ chối từng lời mời thuê từ phía các Chủ ngựa"],
                     referee: [],
                     spectator: []
                 },
                 rules: [
-                    "<strong>Quy trình Option A (Đăng ký độc lập ➔ Ghép cặp sau):</strong> Jockey và Ngựa phải được Doctor phê duyệt y tế độc lập. Sau đó, Owner đăng ký Ngựa vào giải đấu. Admin duyệt đơn đăng ký của Ngựa. Chỉ khi cả hai hồ sơ đã được duyệt toàn bộ, Owner mới có quyền gửi lời mời ghép cặp cho Jockey. Jockey có quyền Chấp nhận hoặc Từ chối lời mời.",
+                    "<strong>Quy trình Option A (Đăng ký độc lập ➔ Ghép cặp sau):</strong> Owner đăng ký Ngựa vào giải đấu. Admin duyệt đơn đăng ký của Ngựa. Chỉ khi cả hai hồ sơ đã được duyệt toàn bộ, Owner mới có quyền gửi lời mời ghép cặp cho Jockey. Jockey có quyền Chấp nhận hoặc Từ chối lời mời.",
                     "<strong>Ràng buộc lịch sử y tế (Medical History Log):</strong> Khi đăng ký giải đấu mới, hệ thống tự động kiểm tra bảng MedicalRecords. Nếu có vi phạm doping hoặc chấn thương chưa phục hồi -> tự động chặn đứng đăng ký."
                 ],
                 design: "Thiết kế bảng `MedicalRecords` lưu vết lịch sử y tế. Các hồ sơ bị từ chối chuyển trạng thái về `Draft` để chỉnh sửa, lý do từ chối gửi vào hệ thống notification.",
                 simState: { tournament: "Đăng ký", gate: "Đóng", coi: "Chưa kiểm tra", jockey: "Chưa kiểm tra" },
                 terminalLogs: [
                     "[SYSTEM] Giai đoạn 2: Cổng đăng ký mở dành cho Horse Owner và Jockey.",
-                    "[DOCTOR-VET] Kiểm tra hồ sơ tiêm phòng và doping của ngựa 'Thần Phong'...",
-                    "[DB] SELECT COUNT(1) FROM MedicalRecords WHERE SubjectId=12 AND Status='Suspended' -> 0 (OK)",
-                    "[SYSTEM] Doctor đã duyệt y tế thành công cho Jockey và Ngựa. Đã được Admin phê duyệt đơn, mở khóa mời Jockey."
+                    "[SYSTEM] Đã được Admin phê duyệt đơn, mở khóa mời Jockey."
                 ],
-                simNoti: { role: "Horse Owner", text: "🔔 Hồ sơ đã được duyệt y tế và Admin thông qua, sẵn sàng gửi lời mời ghép cặp cho Jockey!" },
+                simNoti: { role: "Horse Owner", text: "🔔 Hồ sơ đã được Admin thông qua, sẵn sàng gửi lời mời ghép cặp cho Jockey!" },
                 flowNodes: [
                     { id: '2-1', label: '2.1. Jockey Khai Hồ Sơ|Chứng chỉ hành nghề', x: 50, y: 275, actor: 'jockey' },
-                    { id: '2-1-MD', label: '2.1-MD. Doctor Duyệt Jockey|Duyệt sức khỏe/doping', x: 200, y: 385, actor: 'doctor' },
-                    { id: '2-2', label: '2.2. Khai Báo Ngựa|Tên & Giống', x: 50, y: 165, actor: 'owner' },
-                    { id: '2-2-MD', label: '2.2-MD. Doctor Duyệt Ngựa|Kiểm tra tiêm phòng', x: 400, y: 385, actor: 'doctor' },
-                    { id: '2-3', label: '2.3. Nộp Đơn Đăng Ký|Gửi Hồ Sơ Ngựa Lên', x: 600, y: 165, actor: 'owner' },
-                    { id: '2-4', label: '2.4. Admin Duyệt Đăng Ký|Duyệt AllowedBreed', x: 780, y: 55, actor: 'admin', type: 'checkpoint', errorId: 'horse_reg_rejected' },
-                    { id: '2-4-ERR', label: '2.4-ERR: Đơn Bị Từ Chối|Lý do >=10 kí tự', x: 780, y: 165, actor: 'owner', type: 'error', errorId: 'horse_reg_rejected' },
-                    { id: '2-5', label: '2.5. Owner Mời Jockey|Gửi lời mời ghép đôi', x: 960, y: 165, actor: 'owner', type: 'checkpoint', errorId: 'jockey_invite_rejected' },
-                    { id: '2-5-ERR', label: '2.5-ERR: Jockey Từ Chối|Mở khóa ghép cặp khác', x: 960, y: 275, actor: 'jockey', type: 'error', errorId: 'jockey_invite_rejected' },
-                    { id: '2-6', label: '2.6. Nhận Kết Quả Duyệt|Approved & Chốt Cặp', x: 1140, y: 165, actor: 'owner' }
+                    { id: '2-2', label: '2.2. Admin Duyệt Jockey|Cấp Active', x: 250, y: 55, actor: 'admin', type: 'checkpoint', errorId: 'jockey_reg_rejected' },
+                    { id: '2-2-ERR', label: '2.2-ERR: Bị Từ Chối|Yêu cầu cập nhật', x: 250, y: 275, actor: 'jockey', type: 'error', errorId: 'jockey_reg_rejected' },
+                    { id: '2-3', label: '2.3. Khai Báo Ngựa|Tên & Giống', x: 50, y: 165, actor: 'owner' },
+                    { id: '2-4', label: '2.4. Nộp Đơn Đăng Ký|Gửi Hồ Sơ', x: 250, y: 165, actor: 'owner' },
+                    { id: '2-5', label: '2.5. Admin Duyệt Đăng Ký|Duyệt AllowedBreed', x: 450, y: 55, actor: 'admin', type: 'checkpoint', errorId: 'horse_reg_rejected' },
+                    { id: '2-5-ERR', label: '2.5-ERR: Đơn Bị Từ Chối|Lý do >=10 kí tự', x: 450, y: 165, actor: 'owner', type: 'error', errorId: 'horse_reg_rejected' },
+                    { id: '2-6', label: '2.6. Owner Mời Jockey|Gửi lời mời ghép đôi', x: 700, y: 165, actor: 'owner', type: 'checkpoint', errorId: 'jockey_invite_rejected' },
+                    { id: '2-6-ERR', label: '2.6-ERR: Jockey Từ Chối|Mở khóa ghép cặp khác', x: 700, y: 275, actor: 'jockey', type: 'error', errorId: 'jockey_invite_rejected' },
+                    { id: '2-7', label: '2.7. Nhận Kết Quả Duyệt|Approved & Chốt Cặp', x: 950, y: 165, actor: 'owner' }
                 ],
                 flowConnections: [
-                    { src: '2-1', dst: '2-1-MD' },
-                    { src: '2-2', dst: '2-2-MD' },
-                    { src: '2-2-MD', dst: '2-3' },
+                    { src: '2-1', dst: '2-2' },
+                    { src: '2-2', dst: '2-6', errorId: 'jockey_reg_rejected' },
+                    { src: '2-2', dst: '2-2-ERR', isErrorBranch: true, errorId: 'jockey_reg_rejected' },
+                    { src: '2-2-ERR', dst: '2-1', isErrorBranch: true, errorId: 'jockey_reg_rejected' },
                     { src: '2-3', dst: '2-4' },
-                    { src: '2-4', dst: '2-5', errorId: 'horse_reg_rejected' },
-                    { src: '2-4', dst: '2-4-ERR', isErrorBranch: true, errorId: 'horse_reg_rejected' },
-                    { src: '2-4-ERR', dst: '2-3', isErrorBranch: true, errorId: 'horse_reg_rejected' },
-                    { src: '2-5', dst: '2-6', errorId: 'jockey_invite_rejected' },
-                    { src: '2-5', dst: '2-5-ERR', isErrorBranch: true, errorId: 'jockey_invite_rejected' },
-                    { src: '2-5-ERR', dst: '2-5', isErrorBranch: true, errorId: 'jockey_invite_rejected' },
-                    { src: '2-1-MD', dst: '2-5' }
+                    { src: '2-4', dst: '2-5' },
+                    { src: '2-5', dst: '2-6', errorId: 'horse_reg_rejected' },
+                    { src: '2-5', dst: '2-5-ERR', isErrorBranch: true, errorId: 'horse_reg_rejected' },
+                    { src: '2-5-ERR', dst: '2-4', isErrorBranch: true, errorId: 'horse_reg_rejected' },
+                    { src: '2-6', dst: '2-7', errorId: 'jockey_invite_rejected' },
+                    { src: '2-6', dst: '2-6-ERR', isErrorBranch: true, errorId: 'jockey_invite_rejected' },
+                    { src: '2-6-ERR', dst: '2-6', isErrorBranch: true, errorId: 'jockey_invite_rejected' }
                 ]
             },
             3: {
@@ -3161,12 +3164,12 @@
                     { src: '3-1', dst: '3-2' },
                     { src: '3-2', dst: '3-3' },
                     { src: '3-2', dst: '3-5' },
-                    { src: '3-2', dst: '3-7' },
                     { src: '3-3', dst: '3-4', errorId: 'owner_missed_confirmation' },
                     { src: '3-3', dst: '3-3-ERR', isErrorBranch: true, errorId: 'owner_missed_confirmation' },
                     { src: '3-5', dst: '3-6', errorId: 'coi_conflict_detected' },
                     { src: '3-5', dst: '3-5-ERR', isErrorBranch: true, errorId: 'coi_conflict_detected' },
                     { src: '3-4', dst: '3-6' },
+                    { src: '3-6', dst: '3-7' },
                     { src: '3-7', dst: '3-8' }
                 ]
             },
@@ -3261,7 +3264,7 @@
                 title: "⑥ Công bố kết quả & Trả thưởng",
                 actions: {
                     admin: ["Phê duyệt kết quả Unofficial -> Official trong Database Transaction", "Cấu hình phân bổ Purse", "Ghi nhận trạng thái thanh toán thủ công ngoại tuyến"],
-                    doctor: ["Cân đo lại Jockey sau khi về đích (Weighing In) để kiểm soát gian lận tải trọng"],
+                    doctor: [],
                     owner: ["Nhận phân bổ tiền thưởng Purse", "Xem BXH Ngựa"],
                     jockey: ["Nhận thu nhập Jockey", "Xem BXH Jockey Standings"],
                     referee: ["Xem biên bản lưu trữ cố định"],
@@ -3269,40 +3272,33 @@
                 },
                 rules: [
                     "<strong>Nguyên tử ACID:</strong> Lỗi tại bất kỳ tác vụ nào trong chuỗi declare Official sẽ kích hoạt Rollback Transaction toàn cục.",
-                    "<strong>Doctor Weighing In:</strong> Doctor cân đo lại Jockey sau đua. Sai lệch vượt quá 0.5kg so với Weighing Out sẽ bị ghi nhận vi phạm.",
                     "<strong>Leaderboard Polling:</strong> Bảng xếp hạng cập nhật tự động bằng Polling 30 giây thay vì WebSockets để đảm bảo tính gọn nhẹ."
                 ],
-                design: "Bọc logic chốt kết quả trong database transaction. Xây dựng màn hình nhập cân nặng sau đua dành cho Doctor, liên kết đối chiếu với cân nặng trước đua.",
+                design: "Bọc logic chốt kết quả trong database transaction. Xây dựng màn hình thống kê và xuất báo cáo kết quả chính thức.",
                 simState: { tournament: "OFFICIAL", gate: "Khóa cứng", coi: "Hợp lệ", jockey: "Hợp lệ" },
                 terminalLogs: [
-                    "[SYSTEM] Giai đoạn 6: Bắt đầu chuỗi declare Official và kiểm tra tải trọng sau đua...",
-                    "[WEIGHING-IN] Doctor cân Jockey sau đua: 53.8 kg (Sai lệch -0.2 kg: Hợp lệ).",
-                    "[DB] UPDATE RaceEntries SET PostRaceJockeyWeight=53.8 WHERE Id=45",
+                    "[SYSTEM] Giai đoạn 6: Bắt đầu chuỗi declare Official...",
                     "[SYSTEM] Tự động cập nhật Leaderboard, ví ảo Spectator và phân bổ Purse thành công!"
                 ],
                 simNoti: { role: "Spectator", text: "🔔 Dự đoán chính xác! Nhận 200 điểm ảo thành công và bảng xếp hạng đã cập nhật." },
                 flowNodes: [
-                    { id: '6-1', label: '6.1. Declare Official|Transaction ACID', x: 50, y: 55, actor: 'admin', type: 'checkpoint', errorId: 'transaction_rollback' },
-                    { id: '6-1-ERR', label: '6.1-ERR: Lỗi Rollback|Rollback ACID', x: 50, y: 85, actor: 'admin', type: 'error', errorId: 'transaction_rollback' },
-                    { id: '6-2', label: '6.2. Khóa Biên Bản|Không thể sửa', x: 220, y: 55, actor: 'admin' },
-                    { id: '6-3', label: '6.3. Weighing In|Doctor cân sau đua', x: 390, y: 385, actor: 'doctor' },
-                    { id: '6-8', label: '6.8. Cập Nhật BXH|Đồng bộ Leaderboard', x: 560, y: 275, actor: 'jockey' },
-                    { id: '6-4', label: '6.4. Trả Thưởng Ví Ảo|Cộng điểm Spectator', x: 560, y: 605, actor: 'spectator' },
-                    { id: '6-5', label: '6.5. Phân Bổ Quỹ Purse|Purse Calculation', x: 560, y: 165, actor: 'owner' },
-                    { id: '6-6', label: '6.6. Thanh Toán Offline|Ghi Audit Log', x: 740, y: 55, actor: 'admin' },
-                    { id: '6-7', label: '6.7. Báo Cáo Thống Kê|Xuất PDF/CSV', x: 900, y: 55, actor: 'admin' }
+                    { id: '6-1', label: '6.1. Declare Official|Transaction ACID', x: 30, y: 55, actor: 'admin', type: 'checkpoint', errorId: 'transaction_rollback' },
+                    { id: '6-1-ERR', label: '6.1-ERR: Lỗi Rollback|Rollback ACID', x: 30, y: 85, actor: 'admin', type: 'error', errorId: 'transaction_rollback' },
+                    { id: '6-2', label: '6.2. Khóa Biên Bản|Không thể sửa', x: 190, y: 55, actor: 'admin' },
+                    { id: '6-3', label: '6.3. Trả Thưởng Ví Ảo|Cộng điểm Spectator', x: 350, y: 605, actor: 'spectator' },
+                    { id: '6-4', label: '6.4. Cập Nhật BXH|Đồng bộ Leaderboard', x: 510, y: 275, actor: 'jockey' },
+                    { id: '6-5', label: '6.5. Phân Bổ Quỹ Purse|Purse Calculation', x: 670, y: 165, actor: 'owner' },
+                    { id: '6-6', label: '6.6. Thanh Toán Offline|Ghi Audit Log', x: 830, y: 55, actor: 'admin' },
+                    { id: '6-7', label: '6.7. Báo Cáo Thống Kê|Xuất PDF/CSV', x: 990, y: 55, actor: 'admin' }
                 ],
                 flowConnections: [
                     { src: '6-1', dst: '6-2', errorId: 'transaction_rollback' },
                     { src: '6-1', dst: '6-1-ERR', isErrorBranch: true, errorId: 'transaction_rollback' },
                     { src: '6-2', dst: '6-3' },
-                    { src: '6-2', dst: '6-4' },
-                    { src: '6-2', dst: '6-5' },
-                    { src: '6-3', dst: '6-8' },
+                    { src: '6-3', dst: '6-4' },
+                    { src: '6-4', dst: '6-5' },
                     { src: '6-5', dst: '6-6' },
-                    { src: '6-6', dst: '6-7' },
-                    { src: '6-8', dst: '6-7' },
-                    { src: '6-4', dst: '6-7' }
+                    { src: '6-6', dst: '6-7' }
                 ]
             }
         };
@@ -3314,7 +3310,6 @@
             renderScopeModules();
             resetSelectedActor();
             selectPhase(1);
-            calculateFormScore();
         };
 
         /* ============================================================
