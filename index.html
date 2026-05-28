@@ -319,6 +319,22 @@
                 transform: translate(0)
             }
         }
+
+        /* Sidebar Toggle Styles */
+        .sidebar-collapsed aside {
+            width: 5rem !important; /* w-20 */
+        }
+        .sidebar-collapsed aside .nav-text, 
+        .sidebar-collapsed aside p, 
+        .sidebar-collapsed aside h1,
+        .sidebar-collapsed aside .phase-tag {
+            display: none !important;
+        }
+        .sidebar-collapsed aside .tab-btn {
+            justify-content: center !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
     </style>
 </head>
 
@@ -328,13 +344,16 @@
     <canvas id="bg-canvas" class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-60"></canvas>
 
     <!-- App Wrapper -->
-    <div class="flex h-screen overflow-hidden">
+    <div id="app-wrapper" class="flex h-screen overflow-hidden">
 
         <!-- Sidebar Navigation -->
-        <aside class="w-80 flex flex-col flex-shrink-0 z-20 border-r border-[#C8A24E]/20"
+        <aside class="w-80 flex flex-col flex-shrink-0 z-20 border-r border-[#C8A24E]/20 transition-all duration-300 ease-in-out"
             style="background: linear-gradient(180deg, #0D3B2E 0%, #080C14 100%);">
             <!-- Header/Logo Section -->
             <div class="p-6 border-b border-[#C8A24E]/15 relative overflow-hidden">
+                <button id="sidebar-toggle-btn" onclick="toggleSidebar()" class="absolute top-6 right-4 p-1.5 rounded-lg bg-slate-950/40 border border-[#C8A24E]/20 hover:border-[#C8A24E]/40 text-[#FAF3E0] hover:bg-[#1A5E3F]/30 transition-all z-30">
+                    <i data-lucide="panel-left-close" id="sidebar-toggle-icon" class="w-4 h-4"></i>
+                </button>
                 <div class="absolute inset-0 starting-gate-stripe opacity-[0.06]"></div>
                 <div class="flex items-center gap-3 relative z-10">
                     <div class="p-2.5 rounded-xl shadow-lg"
@@ -343,13 +362,13 @@
                     </div>
                     <div>
                         <h1
-                            class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-[#D4AF37] to-[#FAF3E0] bg-clip-text text-transparent">
+                            class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-[#D4AF37] to-[#FAF3E0] bg-clip-text text-transparent nav-text">
                             HRTMS</h1>
-                        <p class="text-[10px] text-[#C8A24E]/80 font-medium tracking-widest uppercase">Horse Racing ·
+                        <p class="text-[10px] text-[#C8A24E]/80 font-medium tracking-widest uppercase nav-text">Horse Racing ·
                             SU26SWP03</p>
                     </div>
                 </div>
-                <div class="mt-4 rounded-xl p-3 border border-[#1A5E3F]/60 relative z-10"
+                <div class="mt-4 rounded-xl p-3 border border-[#1A5E3F]/60 relative z-10 phase-tag"
                     style="background: rgba(8,12,20,0.6);">
                     <div class="flex items-center justify-between text-xs">
                         <span class="text-[#FAF3E0]/60 font-medium flex items-center gap-1">
@@ -364,7 +383,7 @@
 
             <!-- Navigation Links -->
             <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto">
-                <p class="px-3 text-[10px] font-bold text-[#C8A24E]/50 uppercase tracking-widest mb-2">Thuyết Trình
+                <p class="px-3 text-[10px] font-bold text-[#C8A24E]/50 uppercase tracking-widest mb-2 nav-text">Thuyết Trình
                     Nghiệp Vụ</p>
 
                 <button onclick="switchTab('overview')" id="btn-overview"
@@ -372,48 +391,48 @@
                     style="background: linear-gradient(90deg, #D4AF37, #C8A24E);">
                     <span class="flex items-center gap-3">
                         <i data-lucide="layout-dashboard" class="w-4.5 h-4.5"></i>
-                        <span>Tóm tắt dự án & Scope</span>
+                        <span class="nav-text">Tóm tắt dự án & Scope</span>
                     </span>
-                    <i data-lucide="chevron-right" class="w-4 h-4 opacity-70"></i>
+                    <i data-lucide="chevron-right" class="w-4 h-4 opacity-70 nav-text"></i>
                 </button>
 
                 <button onclick="switchTab('context')" id="btn-context"
                     class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all-300 text-[#FAF3E0]/50 hover:text-[#FAF3E0] hover:bg-[#1A5E3F]/30">
                     <span class="flex items-center gap-3">
                         <i data-lucide="network" class="w-4.5 h-4.5"></i>
-                        <span>Sơ đồ ngữ cảnh (Context)</span>
+                        <span class="nav-text">Sơ đồ ngữ cảnh (Context)</span>
                     </span>
-                    <i data-lucide="chevron-right" class="w-4 h-4 opacity-40"></i>
+                    <i data-lucide="chevron-right" class="w-4 h-4 opacity-40 nav-text"></i>
                 </button>
 
                 <button onclick="switchTab('swimlane')" id="btn-swimlane"
                     class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all-300 text-[#FAF3E0]/50 hover:text-[#FAF3E0] hover:bg-[#1A5E3F]/30">
                     <span class="flex items-center gap-3">
                         <i data-lucide="route" class="w-4.5 h-4.5"></i>
-                        <span>Sơ đồ Swimlane (6 Pha)</span>
+                        <span class="nav-text">Sơ đồ Swimlane (6 Pha)</span>
                     </span>
-                    <i data-lucide="chevron-right" class="w-4 h-4 opacity-40"></i>
+                    <i data-lucide="chevron-right" class="w-4 h-4 opacity-40 nav-text"></i>
                 </button>
 
                 <button onclick="switchTab('actors')" id="btn-actors"
                     class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-all-300 text-[#FAF3E0]/50 hover:text-[#FAF3E0] hover:bg-[#1A5E3F]/30">
                     <span class="flex items-center gap-3">
                         <i data-lucide="users" class="w-4.5 h-4.5"></i>
-                        <span>Chi tiết Actors & Mô phỏng</span>
+                        <span class="nav-text">Chi tiết Actors & Mô phỏng</span>
                     </span>
-                    <i data-lucide="chevron-right" class="w-4 h-4 opacity-40"></i>
+                    <i data-lucide="chevron-right" class="w-4 h-4 opacity-40 nav-text"></i>
                 </button>
             </nav>
 
             <!-- Footer Section -->
-            <div class="p-4 border-t border-[#C8A24E]/15 text-xs text-center text-[#FAF3E0]/40">
+            <div class="p-4 border-t border-[#C8A24E]/15 text-xs text-center text-[#FAF3E0]/40 nav-text">
                 <p class="font-medium text-[#C8A24E]/70">Hội đồng bảo vệ đồ án</p>
                 <p class="mt-0.5">Học kỳ Summer 2026</p>
             </div>
         </aside>
 
         <!-- Main Content Viewport -->
-        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto race-track-bg">
+        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto race-track-bg transition-all duration-300 ease-in-out">
             <!-- Top App Bar -->
             <header
                 class="h-16 border-b border-[#C8A24E]/20 backdrop-blur px-6 flex items-center justify-between sticky top-0 z-30"
@@ -1002,7 +1021,7 @@
     </div>
     <div class="w-full overflow-x-auto scrollbar-thin">
         <div class="relative min-w-[1000px] h-[660px]" id="svg-container">
-            <svg id="branching-flow-svg" class="w-full h-full absolute inset-0 z-10">
+            <svg id="branching-flow-svg" class="w-full h-full absolute inset-0 z-10" width="100%" viewBox="0 0 1000 660">
         <defs>
             <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
                 <feGaussianBlur stdDeviation="3" result="blur" />
@@ -3839,6 +3858,24 @@
             if (originalOnload) originalOnload();
             initThreeJSBackground();
         };
+        function toggleSidebar() {
+            const wrapper = document.getElementById('app-wrapper');
+            wrapper.classList.toggle('sidebar-collapsed');
+            
+            const iconElement = document.getElementById('sidebar-toggle-icon');
+            if (wrapper.classList.contains('sidebar-collapsed')) {
+                iconElement.setAttribute('data-lucide', 'panel-left');
+            } else {
+                iconElement.setAttribute('data-lucide', 'panel-left-close');
+            }
+            lucide.createIcons();
+
+            setTimeout(() => {
+                if (typeof renderBranchingFlow === 'function') {
+                    renderBranchingFlow(typeof GLOBAL_SIM_STATE !== 'undefined' ? (GLOBAL_SIM_STATE.currentPhaseId || 1) : 1);
+                }
+            }, 310);
+        }
     </script>
 </body>
 
