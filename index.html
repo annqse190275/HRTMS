@@ -335,6 +335,22 @@
             padding-left: 0 !important;
             padding-right: 0 !important;
         }
+
+        /* Responsive expansion for Swimlane detailed actions assignment when sidebar is collapsed */
+        @media (min-width: 1024px) {
+            .sidebar-collapsed #swim-left-col {
+                width: 75% !important;
+            }
+            .sidebar-collapsed #swim-right-col {
+                width: 25% !important;
+            }
+            /* Increase zoom of visualizer frame when sidebar is collapsed to observe nodes much better */
+            .sidebar-collapsed #swimlane-visualizer-frame {
+                zoom: 0.95 !important;
+                -moz-transform: scale(0.95) !important;
+                -moz-transform-origin: 0 0 !important;
+            }
+        }
     </style>
 </head>
 
@@ -960,9 +976,9 @@
                 <!-- INTERACTIVE PHASE WORKFLOW VIEW (Subtab 1) -->
                 <div id="swim-interactive-container" class="flex flex-col gap-6 w-full">
                     <!-- Workflow Swimlane visualizer + Business Sandbox Simulator split layout -->
-                    <div class="grid grid-cols-12 gap-6 items-start w-full">
+                    <div class="flex flex-col lg:flex-row gap-6 items-start w-full">
                         <!-- Left: Swimlanes per Actor -->
-                        <div class="col-span-12 lg:col-span-7 flex flex-col gap-4">
+                        <div id="swim-left-col" class="w-full lg:w-[58.33%] flex flex-col gap-4 transition-all duration-300 ease-in-out">
                             <!-- Phases Horizontal Timeline (6 stages) -->
                             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
                                 <div class="grid grid-cols-3 md:grid-cols-6 gap-2">
@@ -1091,7 +1107,7 @@
                         </div>
 
                         <!-- Right: Business Sandbox Simulator Terminal Panel -->
-                        <div class="col-span-12 lg:col-span-5 flex flex-col gap-4 h-[720px] overflow-y-auto">
+                        <div id="swim-right-col" class="w-full lg:w-[41.67%] flex flex-col gap-4 h-[720px] overflow-y-auto transition-all duration-300 ease-in-out">
                             <!-- GLOBAL SIMULATION STATE wrapper with absolute overlay panel inside -->
                             <div id="sim-state-wrapper" class="relative">
                                 
@@ -1309,13 +1325,13 @@
                                     <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
                                             class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
-                                            Tạo giải đấu (tên, quy mô, loại hình)</div>
+                                            [1.2] Khởi tạo giải đấu đặc thù</div>
                                         <div
                                             class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
-                                            Lập cấu trúc các vòng đua</div>
+                                            [1.3] Xây dựng cấu trúc vòng đua</div>
                                         <div
                                             class="p-2 bg-blue-500/10 border border-blue-500/20 text-blue-300 rounded-lg">
-                                            Cấu hình Quỹ tiền thưởng (Purse)</div>
+                                            [1.4] Cấu hình Quỹ tiền thưởng Purse</div>
                                     </td>
                                     <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
                                     <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
@@ -1435,12 +1451,14 @@
                                     <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
                                     <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
                                     <td class="p-3 border-r border-slate-800/40 space-y-2">
-                                        <div
-                                            class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
-                                            Cân Jockey trước đua Weighing Out (4.1-MD)</div>
-                                        <div
-                                            class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
-                                            Khám y tế Paddock lâm sàng (4.3)</div>
+                                        <div class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            [4.1-MD] Cân Jockey trước đua</div>
+                                        <div class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            [4.2] Xác minh danh tính ngựa Paddock</div>
+                                        <div class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            [4.3] Khám y tế Paddock trực tiếp</div>
+                                        <div class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            [4.4] Chạy Jockey Independence Check</div>
                                     </td>
                                     <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
@@ -1476,7 +1494,10 @@
                                             class="p-2 bg-amber-500/10 border border-amber-500/20 text-amber-300 rounded-lg">
                                             Nộp đơn khiếu nại Protest (5.4)</div>
                                     </td>
-                                    <td class="p-3 border-r border-slate-800/40 text-slate-500 italic">Nằm ngoài giai đoạn</td>
+                                    <td class="p-3 border-r border-slate-800/40 space-y-2">
+                                        <div class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
+                                            [5.1-WO] Cân Jockey sau đua</div>
+                                    </td>
                                     <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
                                             class="p-2 bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded-lg">
@@ -1525,9 +1546,8 @@
                                             Nhận thu nhập & Standings (6.8)</div>
                                     </td>
                                     <td class="p-3 border-r border-slate-800/40 space-y-2">
-                                        <div
-                                            class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg">
-                                            Cân Jockey sau cuộc đua Weighing In (6.3)</div>
+                                        <div class="p-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded-lg opacity-40 italic text-[10px]">
+                                            (Không có hành động Doctor tại Pha 6)</div>
                                     </td>
                                     <td class="p-3 border-r border-slate-800/40 space-y-2">
                                         <div
@@ -1645,7 +1665,7 @@
                                     <span class="px-2 py-0.5 bg-slate-900 text-amber-300 rounded text-[9px] font-medium border border-amber-500/15">Module A: Đăng ký & Phân quyền Nài ngựa</span>
                                     <span class="px-2 py-0.5 bg-slate-900 text-amber-300 rounded text-[9px] font-medium border border-amber-500/15">Module D: Khai chứng chỉ & Xử lý lời mời thuê từ Owner</span>
                                     <span class="px-2 py-0.5 bg-slate-900 text-amber-300 rounded text-[9px] font-medium border border-amber-500/15">Module E: Tra cứu lịch thi đấu</span>
-                                    <span class="px-2 py-0.5 bg-slate-900 text-amber-300 rounded text-[9px] font-medium border border-amber-500/15">Module G: Jockey Independence Check (Tự động check ruột thịt)</span>
+                                    <span class="px-2 py-0.5 bg-slate-900 text-amber-300 rounded text-[9px] font-medium border border-amber-500/15">Module D: Khai báo quan hệ gia đình (phục vụ Independence Check tại Pha 4)</span>
                                     <span class="px-2 py-0.5 bg-slate-900 text-amber-300 rounded text-[9px] font-medium border border-amber-500/15">Module I: Nộp đơn khiếu nại Protest</span>
                                     <span class="px-2 py-0.5 bg-slate-900 text-amber-300 rounded text-[9px] font-medium border border-amber-500/15">Module K: Nhận Trích thưởng (10% khi về Nhất, 5% Nhì-Tư)</span>
                                     <span class="px-2 py-0.5 bg-slate-900 text-amber-300 rounded text-[9px] font-medium border border-amber-500/15">Module L: Xem xếp hạng Jockey Standings thời gian thực (Polling 30s)</span>
@@ -1671,10 +1691,11 @@
                                 <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Các Modules nghiệp vụ (IEEE SRS):</span>
                                 <div class="flex flex-wrap gap-1.5 font-sans">
                                     <span class="px-2 py-0.5 bg-slate-900 text-cyan-300 rounded text-[9px] font-medium border border-cyan-500/15">Module A: Đăng ký & Phân quyền Bác sĩ</span>
-                                    <span class="px-2 py-0.5 bg-slate-900 text-cyan-300 rounded text-[9px] font-medium border border-cyan-500/15">Module C: Duyệt y tế Jockey (2.1-MD) & Duyệt y tế Ngựa (2.2-MD)</span>
+                                    <span class="px-2 py-0.5 bg-slate-900 text-cyan-300 rounded text-[9px] font-medium border border-cyan-500/15">Module G: Pre-Race Weigh-In — Cân Jockey trước đua (Node 4.1-MD)</span>
+                                    <span class="px-2 py-0.5 bg-slate-900 text-cyan-300 rounded text-[9px] font-medium border border-cyan-500/15">Module H: Post-Race Weigh-Out — Cân Jockey sau đua (Node 5.1-WO)</span>
                                     <span class="px-2 py-0.5 bg-slate-900 text-cyan-300 rounded text-[9px] font-medium border border-cyan-500/15">Module G: Khám lâm sàng Paddock (Lameness check, đốm màu)</span>
-                                    <span class="px-2 py-0.5 bg-slate-900 text-cyan-300 rounded text-[9px] font-medium border border-cyan-500/15">Module G: Cân handicap trước giờ chạy Weighing Out</span>
-                                    <span class="px-2 py-0.5 bg-slate-900 text-cyan-300 rounded text-[9px] font-medium border border-cyan-500/15">Module J: Cân đối chiếu sau giờ về đích Weighing In (+/- 0.5kg)</span>
+                                    <span class="px-2 py-0.5 bg-slate-900 text-cyan-300 rounded text-[9px] font-medium border border-cyan-500/15">Module G: Xác minh danh tính & Khám lâm sàng Paddock (Node 4.2, 4.3)</span>
+                                    <span class="px-2 py-0.5 bg-slate-900 text-cyan-300 rounded text-[9px] font-medium border border-cyan-500/15">Module H: Kích hoạt Jockey Independence Check tại Paddock (Node 4.4)</span>
                                 </div>
                             </div>
                         </div>
@@ -1697,7 +1718,6 @@
                                 <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Các Modules nghiệp vụ (IEEE SRS):</span>
                                 <div class="flex flex-wrap gap-1.5 font-sans">
                                     <span class="px-2 py-0.5 bg-slate-900 text-purple-300 rounded text-[9px] font-medium border border-purple-500/15">Module A: Đăng ký & Phân quyền Trọng tài</span>
-                                    <span class="px-2 py-0.5 bg-slate-900 text-purple-300 rounded text-[9px] font-medium border border-purple-500/15">Module G: Xác minh danh tính ngựa tại Paddock</span>
                                     <span class="px-2 py-0.5 bg-slate-900 text-purple-300 rounded text-[9px] font-medium border border-purple-500/15">Module G: Xử lý loại ngựa khẩn cấp Disqualified</span>
                                     <span class="px-2 py-0.5 bg-slate-900 text-purple-300 rounded text-[9px] font-medium border border-purple-500/15">Module H: Bấm lệnh LIVE Start (Auto-lock Prediction Gate)</span>
                                     <span class="px-2 py-0.5 bg-slate-900 text-purple-300 rounded text-[9px] font-medium border border-purple-500/15">Module H: Ghi nhận vi phạm trên sân (Dropdown chuẩn 7 mã vi phạm)</span>
@@ -1767,8 +1787,8 @@
                 title: "1.2. Tạo Giải Đấu Đặc Thù",
                 actor: "Admin",
                 module: "Module B — Quản Lý Giải Đấu",
-                rules: "Ngày bắt đầu phải lớn hơn ngày hiện tại ít nhất 10 ngày. Giống ngựa AllowedBreed (multi-select) bắt buộc không được để trống.",
-                desc: "Admin khởi tạo giải đấu với các thông số: Tên giải, ngày chạy, giống ngựa hợp lệ (Thoroughbred, Arabian, Quarter Horse, Mixed), loại mặt đường (Turf, Dirt, Synthetic), cự ly đua (RaceDistance), hạng mục thi đấu (Classic, Maiden) và số năm kinh nghiệm tối thiểu của Jockey."
+                rules: "Ngày bắt đầu phải lớn hơn ngày hiện tại ít nhất 10 ngày. AllowedBreed bắt buộc chọn đúng 1 giống ngựa duy nhất (single-select). Mỗi giải đấu chỉ cho phép đúng 1 giống tham gia — hệ thống tự động từ chối toàn bộ hồ sơ ngựa có Breed khác với AllowedBreed.",
+                desc: "Admin khởi tạo giải đấu với các thông số: Tên giải, ngày chạy, 1 giống ngựa duy nhất được phép (single-select: Thoroughbred hoặc Arabian hoặc Quarter Horse hoặc Mixed), loại mặt đường (Turf, Dirt, Synthetic), cự ly đua (RaceDistance), hạng mục thi đấu (Open, Classic, Maiden) và số năm kinh nghiệm tối thiểu của Jockey."
             },
             '1-3': {
                 title: "1.3. Lập Sơ Đồ Vòng Đua",
@@ -1795,8 +1815,8 @@
                 title: "2.1. Khai báo hồ sơ chứng chỉ Jockey",
                 actor: "Jockey",
                 module: "Module D — Quản Lý Nài Ngựa (Jockey)",
-                rules: "Bắt buộc khai báo chứng chỉ hành nghề hợp lệ khi tạo tài khoản.",
-                desc: "Jockey đăng ký tài khoản và khai báo thông tin chứng chỉ hành nghề, số năm kinh nghiệm đua ngựa thực tế lên hệ thống để gửi Admin duyệt."
+                rules: "Bắt buộc khai báo: (1) Chứng chỉ hành nghề, số năm kinh nghiệm, thông tin liên lạc. (2) Thông tin y tế tự khai báo: cân nặng hiện tại (kg), nhóm máu BloodType (tùy chọn), tình trạng sức khỏe (Good/Fair/Under Treatment). (3) Khai báo quan hệ gia đình ruột thịt liên quan ngành đua ngựa — bắt buộc, phục vụ Jockey Independence Check tại Pha 4.",
+                desc: "Jockey đăng ký tài khoản và tự khai báo đầy đủ 3 nhóm thông tin: hành nghề (chứng chỉ, kinh nghiệm), y tế (cân nặng sơ bộ, sức khỏe tổng quát) và quan hệ gia đình (vợ/chồng, cha/mẹ, anh/chị/em ruột có liên quan đến ngành đua ngựa). Dữ liệu quan hệ gia đình là đầu vào trực tiếp cho hệ thống kiểm tra Independence Check tại Node 4.4."
             },
             '2-2': {
                 title: "2.2. Kiểm duyệt & Phê duyệt hồ sơ Jockey",
@@ -1816,8 +1836,8 @@
                 title: "2.3. Khai Báo Thông Tin Ngựa Thi Đấu",
                 actor: "Owner",
                 module: "Module C — Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ",
-                rules: "Khai báo đầy đủ tên, giống ngựa, cân nặng, độ tuổi, huyết thống, đặc điểm nhận diện.",
-                desc: "Chủ ngựa (Horse Owner) khai báo hồ sơ ngựa đua và các thông số y tế cơ bản của ngựa lên hệ thống."
+                rules: "Khai báo 2 nhóm: (1) Hành chính: tên ngựa, BirthYear, giới tính, màu sắc, huyết thống, trọng lượng, đặc điểm nhận dạng nổi bật. (2) Y tế tự khai báo: Breed (1 giống duy nhất), VaccinationRecordRef (mã biên bản tiêm phòng), DopingTestDate, DopingTestResult (Clean/Pending/Failed). Hệ thống tự động Auto-reject nếu DopingTestResult = Failed hoặc Breed khác AllowedBreed. Doctor không tham gia bước này.",
+                desc: "Chủ ngựa tự khai báo đầy đủ hồ sơ ngựa trên hệ thống dựa trên giấy tờ thực tế, bao gồm thông tin hành chính và các trường y tế (giống ngựa, biên bản tiêm phòng, ngày và kết quả kiểm tra doping). Doctor không tham gia bước khai báo này — xác minh y tế thực tế được Doctor thực hiện trực tiếp tại Paddock trong Pha 4."
             },
             '2-4': {
                 title: "2.4. Nộp Hồ Sơ Đăng Ký Tham Gia Giải",
@@ -1830,7 +1850,7 @@
                 title: "2.5. Admin Duyệt Đăng Ký Giải Đấu",
                 actor: "Admin",
                 module: "Module C — Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ",
-                rules: "Kiểm duyệt tính hợp lệ của ngựa đối với AllowedBreed. Bắt buộc nhập lý do nếu từ chối.",
+                rules: "Hệ thống tự động đối chiếu Horse.Breed với AllowedBreed duy nhất của giải (single-value). Nếu không khớp → Auto-reject tức thì, chặn nút Approve. Nếu DopingTestResult = Failed → Auto-reject tức thì. Khi Admin từ chối thủ công: bắt buộc nhập lý do tối thiểu 10 ký tự.",
                 desc: "Admin kiểm duyệt đơn đăng ký của chú ngựa và bấm chấp thuận phê duyệt nếu đạt yêu cầu, cho phép đi ghép cặp."
             },
             '2-5-ERR': {
@@ -1939,32 +1959,53 @@
                 desc: "Hệ thống tự động ngắt tính năng nhận cược từ khán giả khi đến giờ quy định, cấm hoàn toàn mọi thay đổi kèo cược."
             },
             '4-1-MD': {
-                title: "4.1-MD. Cân Jockey Trước Đua (Weighing Out)",
+                title: "4.1-MD. Pre-Race Weigh-In — Cân Jockey Trước Đua",
                 actor: "Doctor",
                 module: "Module G — Kiểm Tra Trước Thi Đấu (Pre-race Preparation)",
-                rules: "Ghi nhận trọng lượng ban đầu của Jockey và trang bị bảo hộ tại phòng cân trước giờ chạy.",
-                desc: "Bác sĩ tiến hành cân đo Jockey để bảo đảm Jockey đáp ứng đúng tiêu chuẩn Handicap tải trọng được quy định cho cuộc đua."
+                rules: "Doctor đo cân nặng Jockey (kg, 2 chữ số thập phân), ghi vào PreRaceJockeyWeight. Hệ thống so sánh với cân nặng tự khai báo ở Node 2.1 — nếu chênh lệch vượt ngưỡng cấu hình (ví dụ: ±2kg) → hệ thống hiển thị cảnh báo Flag cho Doctor và Referee. Đây là điều kiện bắt buộc (Required) trước khi cuộc đua chuyển sang LIVE.",
+                desc: "Doctor thực hiện cân chính thức Jockey tại Paddock trước đua (Pre-Race Weigh-In). Kết quả ghi vào RaceEntries.PreRaceJockeyWeight và được so sánh với cân nặng tự khai báo trước đó của Jockey để phát hiện chênh lệch bất thường."
             },
             '4-2': {
                 title: "4.2. Khớp Danh Tính Ngựa (Doctor)",
                 actor: "Doctor",
                 module: "Module G — Kiểm Tra Trước Thi Đấu (Pre-race Preparation)",
-                rules: "Đối chiếu vết sẹo, màu lông, đốm trắng ở trán, và quét chip điện tử thực tế của ngựa tại khu vực paddock.",
-                desc: "Bác sĩ thú y kiểm tra thực tế các dấu hiệu nhận dạng sinh học của ngựa để đảm bảo ngựa khớp hoàn toàn với hồ sơ đăng ký ban đầu."
+                rules: "Doctor đối chiếu thực tế: tên ngựa, IdentifyingMarks (đặc điểm nhận dạng nổi bật), màu sắc, giới tính so với hồ sơ Owner khai báo ở Node 2.3. Kết quả: Matched (isIdentified = true → tiếp tục Node 4.3) hoặc Mismatch (isIdentified = false → kích hoạt Node 4.5-DISQ).",
+                desc: "Doctor xác minh danh tính ngựa trực tiếp tại Paddock bằng cách đối chiếu các đặc điểm sinh học thực tế của ngựa với hồ sơ đã khai báo. Đây là bước gate-keeping đầu tiên trong chuỗi kiểm tra Paddock Pha 4."
             },
             '4-3': {
                 title: "4.3. Thú Y Paddock (Doctor)",
                 actor: "Doctor",
                 module: "Module G — Kiểm Tra Trước Thi Đấu (Pre-race Preparation)",
-                rules: "<strong>F3 - Khám thú y paddock:</strong> Thăm khám lâm sàng dáng đi (kiểm tra tật khập khiễng) và lấy mẫu thử doping nhanh.",
-                desc: "Bác sĩ thú y trực tiếp thăm khám y khoa toàn diện cho ngựa tại paddock để xác định ngựa đủ sức khỏe và không có doping."
+                rules: "<strong>F3 - Khám thú y paddock:</strong> Doctor chọn kết quả Fit hoặc Unfit. Nếu Unfit: bắt buộc nhập lý do chi tiết (NOT NULL, tối thiểu 20 ký tự). Có thể ghi thêm ghi chú quan sát bổ sung (tùy chọn). Timestamp tự động ghi nhận. Kết quả Unfit → kích hoạt Node 4.5-DISQ.",
+                desc: "Doctor thực hiện khám lâm sàng toàn diện cho ngựa tại Paddock và nhập kết quả vào hệ thống. Nếu kết luận Unfit, Doctor bắt buộc nhập lý do chi tiết tối thiểu 20 ký tự. Kết quả này là gate-keeping thứ hai trong chuỗi Pha 4 — ngựa chỉ được tiếp tục nếu Doctor xác nhận Fit."
             },
             '4-4': {
-                title: "4.4. Độc Lập Nài Ngựa",
-                actor: "Admin",
+                title: "4.4. Jockey Independence Check",
+                actor: "Doctor / Referee (kích hoạt) → Hệ thống (thực thi)",
                 module: "Module G — Kiểm Tra Trước Thi Đấu",
-                rules: "Jockey không được có quan hệ gia đình trực hệ với các Chủ ngựa đối thủ trong cùng cuộc đua đó.",
-                desc: "Hệ thống tự động chạy thuật toán đối chiếu dữ liệu nhân thân để bảo đảm tính độc lập khách quan của Jockey."
+                rules: "Doctor hoặc Referee tại Paddock kích hoạt lệnh kiểm tra. Hệ thống tự động đối chiếu dữ liệu quan hệ gia đình Jockey đã khai báo ở Node 2.1 với danh sách Owner có ngựa trong cùng cuộc đua. Kết quả Pass (isJockeyIndependent = true) hoặc Fail (hiển thị rõ tên Jockey, tên Owner và loại quan hệ vi phạm → kích hoạt Node 4.5-DISQ).",
+                desc: "Doctor hoặc Referee kích hoạt kiểm tra tính độc lập Jockey tại Paddock. Hệ thống tự động đối chiếu dữ liệu quan hệ gia đình ruột thịt (vợ/chồng, cha/mẹ, anh/chị/em) của Jockey với danh sách Horse Owner đối thủ trong cùng lượt đua. Đây là gate-keeping thứ ba trong chuỗi Pha 4."
+            },
+            '4-2-ERR': {
+                title: "4.2-ERR: Sai lệch danh tính",
+                actor: "Doctor",
+                module: "Module G — Kiểm Tra Trước Thi Đấu (Pre-race Preparation)",
+                rules: "Doctor phát hiện sẹo nhận diện hoặc đốm màu ngựa sai lệch lý lịch → Chọn Mismatch.",
+                desc: "Hệ thống phát hiện sai lệch danh tính, bẻ luồng sang truất quyền khẩn cấp."
+            },
+            '4-3-ERR': {
+                title: "4.3-ERR: Bác sĩ kết luận Unfit",
+                actor: "Doctor",
+                module: "Module G — Kiểm Tra Trước Thi Đấu (Pre-race Preparation)",
+                rules: "Doctor khám y tế kết luận ngựa mệt mỏi, chấn thương hoặc có dấu hiệu doping → Chọn Unfit (Cờ isHealthCertified = false).",
+                desc: "Hệ thống phát hiện ngựa Unfit, bẻ luồng sang truất quyền khẩn cấp."
+            },
+            '4-4-ERR': {
+                title: "4.4-ERR: Vi phạm quan hệ",
+                actor: "Hệ thống",
+                module: "Module G — Kiểm Tra Trước Thi Đấu (Pre-race Preparation)",
+                rules: "Hệ thống phát hiện Jockey điều khiển có quan hệ ruột thịt trực hệ với Chủ ngựa đối thủ → Tự động chặn (Cờ isJockeyIndependent = false).",
+                desc: "Hệ thống phát hiện Jockey vi phạm tính độc lập trước giờ chạy, bẻ luồng sang truất quyền khẩn cấp."
             },
             '4-5-DISQ': {
                 title: "4.5-DISQ: TRUẤT QUYỀN KHẨN CẤP",
@@ -1974,11 +2015,25 @@
                 desc: "Ngựa vi phạm y tế/nhận dạng/độc lập bị bẻ luồng sang Truất quyền khẩn cấp, loại khỏi cuộc đua. Hệ thống phát 3 thông báo khẩn cấp đồng thời và thực hiện hoàn điểm ảo cược của Spectator tự động."
             },
             '4-5': {
-                title: "4.5. Xác Nhận Chạy (Referee)",
-                actor: "Referee",
+                title: "4.5. Xác Nhận Danh Sách Chạy Chính Thức",
+                actor: "Hệ thống",
                 module: "Module G — Kiểm Tra Trước Thi Đấu",
                 rules: "Chốt danh sách ngựa đua chính thức đủ điều kiện xuất phát.",
                 desc: "Trọng tài chốt danh sách chạy chính thức, ký biên bản điện tử và cho phép di chuyển ra vạch xuất phát."
+            },
+            '5-1-WO': {
+                title: "5.1-WO. Post-Race Weigh-Out|Cân Jockey sau đua",
+                actor: "Doctor",
+                module: "Module H — Theo Dõi Diễn Biến Cuộc Đua và Xử Lý Vi Phạm",
+                rules: "Sau khi ngựa cán đích, trước khi chốt kết quả sơ bộ. Cân nặng ghi vào RaceEntries.PostRaceJockeyWeight. So sánh với PreRaceJockeyWeight. Nếu chênh lệch vượt ngưỡng cấu hình → hệ thống gắn cờ cảnh báo (Flag) cho Referee.",
+                desc: "Doctor thực hiện cân Jockey sau đua (Post-Race Weigh-Out), ghi kết quả vào hệ thống. Nếu chênh lệch quá lớn so với cân trước đua, Referee sẽ xem xét xử lý vi phạm."
+            },
+            '5-1-WO-ERR': {
+                title: "5.1-WO-ERR: Cân vượt ngưỡng",
+                actor: "System & Doctor",
+                module: "Module H — Theo Dõi Diễn Biến Cuộc Đua và Xử Lý Vi Phạm",
+                rules: "Trọng lượng PostRaceJockeyWeight chênh lệch so với PreRaceJockeyWeight lớn hơn biên độ cho phép (vd: ±1.5kg). Cờ vi phạm 'weight_flagged' bật lên.",
+                desc: "Hệ thống phát hiện tải trọng của Jockey sau đua không hợp lệ (có thể do gian lận trút bỏ tạ). Hệ thống rẽ nhánh luồng, chuyển báo cáo vi phạm thẳng tới Trọng tài (Node 5.3) để đưa ra phán quyết tước quyền thi đấu hoặc phạt."
             },
             '5-1': {
                 title: "5.1. Bấm LIVE Start",
@@ -2108,7 +2163,7 @@
             '2-5-ERR': {
                 triggerCheckpoint: '2-5',
                 nodes: [
-                    { id: '2-5-A', label: 'A. Kiểm Giống Ngựa|Auto-reject', actor: 'admin', module: 'Module C', rules: 'Chỉ chấp nhận giống ngựa AllowedBreed (Thoroughbred, Arabian, Quarter Horse, Mixed).', desc: 'Hệ thống tự động so khớp Horse.Breed với AllowedBreed của giải đấu. Nếu vi phạm, tự động khóa nút phê duyệt của Admin.' },
+                    { id: '2-5-A', label: 'A. Kiểm Giống Ngựa|Auto-reject', actor: 'admin', module: 'Module C', rules: 'Hệ thống tự động so khớp Horse.Breed với AllowedBreed duy nhất của giải (single-value). Nếu không khớp → Auto-reject tức thì. Nếu DopingTestResult = Failed → Auto-reject tức thì. Admin không thể override các trường hợp Auto-reject.', desc: 'Hệ thống tự động kiểm tra 2 điều kiện: (1) Horse.Breed phải khớp chính xác với AllowedBreed duy nhất của giải; (2) DopingTestResult không được là Failed. Vi phạm bất kỳ điều kiện nào → tự động khóa nút Approve và hiển thị lý do cụ thể.' },
                     { id: '2-5-B', label: 'B. Nhập Lý Do|Tối thiểu 10 ký tự', actor: 'admin', module: 'Module C', rules: 'Trường lý do từ chối bắt buộc nhập và tối thiểu 10 ký tự.', desc: 'Admin click nút từ chối duyệt (Reject). Hệ thống kích hoạt hộp thoại bắt buộc nhập lý do từ chối có độ dài >=10 ký tự.' },
                     { id: '2-5-C', label: 'C. Ghi Nhận DB|Status = Rejected', actor: 'admin', module: 'Module C', rules: 'Trạng thái đơn đổi sang Rejected, lưu trường ReasonOfRejection.', desc: 'Hệ thống thực hiện cập nhật CSDL của đơn đăng ký thi đấu của ngựa sang trạng thái Rejected.' },
                     { id: '2-5-D', label: 'D. Gửi Thông Báo|Owner nhận đơn', actor: 'owner', module: 'Module N', rules: 'Gửi đồng thời email và in-app notification.', desc: 'Hệ thống tự động phát thông báo từ chối kèm lý do chi tiết cho Chủ ngựa (Owner) nắm thông tin.' },
@@ -2147,9 +2202,9 @@
             '4-5-DISQ': {
                 triggerCheckpoint: '4-2',
                 nodes: [
-                    { id: '4-5-A', label: 'A. Paddock Vi Phạm|Referee Phát Hiện', actor: 'referee', module: 'Module G', rules: 'Bất kỳ 1 thuộc tính paddock nào bị vi phạm (danh tính lệch, y tế Unfit, nài mất độc lập).', desc: 'Trọng tài phát hiện sẹo/màu ngựa sai lệch, bác sĩ thú y chốt ngựa Unfit trên giấy, hoặc Jockey vi phạm quan hệ trực hệ đối thủ.' },
+                    { id: '4-5-A', label: 'A. Paddock Vi Phạm|Doctor / Referee Phát Hiện', actor: 'doctor', module: 'Module G', rules: 'Bất kỳ 1 thuộc tính paddock nào bị vi phạm (danh tính lệch, y tế Unfit, nài mất độc lập).', desc: 'Doctor phát hiện đặc điểm nhận dạng ngựa sai lệch (Node 4.2), Doctor kết luận ngựa Unfit (Node 4.3), hoặc hệ thống do Doctor/Referee kích hoạt phát hiện Jockey vi phạm quan hệ ruột thịt đối thủ (Node 4.4).' },
                     { id: '4-5-B', label: 'B. Truất Quyền|RaceEntry = Disqualified', actor: 'admin', module: 'Module G', rules: 'Loại bỏ hoàn toàn ngựa vi phạm khỏi danh sách chạy chính thức.', desc: 'Hệ thống lập tức bẻ luồng sang Truất quyền khẩn cấp, cập nhật CSDL trạng thái thi đấu của cặp thành Disqualified.' },
-                    { id: '4-5-C', label: 'C. Phát 3 Thông Báo|Owner - Jockey - Admin', actor: 'referee', module: 'Module N', rules: 'Gửi đồng thời thông báo in-app và email đến 3 tác nhân liên đới.', desc: 'Hệ thống tự động kích hoạt gửi 3 thông báo khẩn cấp đồng thời cho Chủ ngựa, Jockey và Admin để nắm bắt danh sách chạy mới.' },
+                    { id: '4-5-C', label: 'C. Phát 3 Thông Báo|Owner - Jockey - Admin', actor: 'system', module: 'Module N', rules: 'Gửi đồng thời thông báo in-app và email đến 3 tác nhân liên đới.', desc: 'Hệ thống tự động kích hoạt gửi 3 thông báo khẩn cấp đồng thời cho Chủ ngựa, Jockey và Admin để nắm bắt danh sách chạy mới.' },
                     { id: '4-5-D', label: 'D. Hoàn Điểm Cược|Refund Virtual Points', actor: 'spectator', module: 'Module M', rules: 'Hoàn trả 100% số điểm cược ảo cho khán giả cược ngựa bị loại.', desc: 'Hệ thống tự động rà soát Spectator đã đặt cược vào chú ngựa bị loại, thực hiện hoàn trả toàn bộ số điểm ảo đã cược về ví cá nhân.' }
                 ]
             },
@@ -2544,8 +2599,8 @@
                 
                 // If a sub-flow is expanded, dim all paths that do not belong to the error trigger path
                 if (activeExpandedNodeId) {
-                    const activeTrigger = subFlow.triggerCheckpoint;
-                    const isTriggerPath = (conn.src === activeTrigger && conn.dst === activeExpandedNodeId) || 
+                    const activeTrigger = subFlow ? subFlow.triggerCheckpoint : null;
+                    const isTriggerPath = (activeTrigger && conn.src === activeTrigger && conn.dst === activeExpandedNodeId) || 
                                           (conn.errorId && activeExpandedNodeId.includes(conn.errorId) && isErrorBranch);
                     if (!isTriggerPath) {
                         isDimmed = true;
@@ -2862,13 +2917,13 @@
 
         const IN_SCOPE_MODULES = [
             { id: 'A', title: 'Quản Lý Tài Khoản và Phân Quyền', icon: 'shield-check', desc: 'Horse Owner, Jockey, Race Referee, Doctor, Spectator tự đăng ký. Admin quản lý tài khoản theo role. Xác thực username/password. Phân quyền RBAC. Tuân thủ OWASP Top 10 và ISO 27001.' },
-            { id: 'B', title: 'Quản Lý Giải Đấu', icon: 'trophy', desc: 'Admin tạo giải (tên, thời gian, quy mô, loại hình đua). Cấu hình cấu trúc vòng đua (vòng loại → bán kết → chung kết). Quản lý và cập nhật thông tin giải sau khi tạo.' },
-            { id: 'C', title: 'Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ', icon: 'file-plus-2', desc: 'Horse Owner đăng ký ngựa (tên, tuổi, giống, VaccinationRecordRef, DopingTestDate, DopingTestResult). Admin duyệt/từ chối. Auto-reject nếu giống ngựa sai AllowedBreed. Từ chối bắt buộc nhập lý do tối thiểu 10 ký tự (F1: không duyệt Jockey ở đây, F3: y tế ghi thủ công).' },
+            { id: 'B', title: 'Quản Lý Giải Đấu', icon: 'trophy', desc: 'Admin tạo giải (tên, thời gian, quy mô, loại hình đua). AllowedBreed bắt buộc chọn đúng 1 giống (single-select). Cấu hình cấu trúc vòng đua (vòng loại → bán kết → chung kết). Quản lý và cập nhật thông tin giải sau khi tạo.' },
+            { id: 'C', title: 'Đăng Ký Ngựa Thi Đấu và Duyệt Hồ Sơ', icon: 'file-plus-2', desc: 'Horse Owner đăng ký ngựa (tên, tuổi, giống, VaccinationRecordRef, DopingTestDate, DopingTestResult). Admin duyệt/từ chối. Auto-reject nếu giống ngựa sai AllowedBreed. AllowedBreed bắt buộc chọn đúng 1 giống (single-select). Từ chối bắt buộc nhập lý do tối thiểu 10 ký tự (F1: không duyệt Jockey ở đây, F3: y tế ghi thủ công).' },
             { id: 'D', title: 'Quản Lý Nài ngựa (Jockey)', icon: 'user-plus', desc: 'Jockey đăng ký tài khoản (chứng chỉ, kinh nghiệm). Horse Owner tìm kiếm, gửi lời mời ghép cặp. Jockey chấp nhận/từ chối. Hệ thống tự động chặn ghép cặp nếu kinh nghiệm Jockey (ExperienceYears) dưới mức MinJockeyExperienceYears của giải.' },
             { id: 'E', title: 'Lập Lịch Thi Đấu, Bốc Thăm và Sắp Xếp Cuộc Đua', icon: 'calendar-days', desc: 'Admin phân bổ ngựa đã duyệt, bốc thăm Post Position ngẫu nhiên công khai. Lịch chốt chặng (Confirmation Cut-off Time 24h trước đua). Nếu quá hạn hoặc rút lui, chuyển thành Cancelled, giải phóng cổng xuất phát Vacant, gửi alert khẩn cấp cho Admin và ghi Audit Log.' },
             { id: 'F', title: 'Phân Công Trọng Tài và Referee COI Check', icon: 'user-cog', desc: 'Admin phân công Lead + Assistant Referees. Referee COI Check: không có quan hệ gia đình trực hệ với Horse Owner có ngựa tham gia cuộc đua đó. Thông báo phân công. Lưu lịch sử ≥5 ngày trước đua.' },
-            { id: 'G', title: 'Kiểm Tra Trước Thi Đấu (Pre-race Preparation)', icon: 'stethoscope', desc: 'Trước giờ đua (Paddock), Doctor khám y tế ghi nhận Certified/Unfit. Hệ thống chạy Jockey Independence Check chặn Jockey có quan hệ gia đình với Owner đối thủ. Loại ngựa khẩn cấp Disqualified bẻ luồng sang 4.5-DISQ, phát 3 thông báo đồng thời và hoàn cược Spectator (Prediction Refund).' },
-            { id: 'H', title: 'Theo Dõi Diễn Biến Cuộc Đua và Xử Lý Vi Phạm', icon: 'eye', desc: 'Trạng thái cuộc đua: Upcoming → Live → Unofficial → Official. Tự động khóa cổng dự đoán khi Live. Màn hình Spectator hiển thị Live Simulation Animation ngẫu nhiên bằng Canvas/SVG Client-side sử dụng setInterval 100ms (không WebSockets/GPS). Dropdown chứa ít nhất 7 mã vi phạm.' },
+            { id: 'G', title: 'Kiểm Tra Trước Thi Đấu (Pre-race Preparation)', icon: 'stethoscope', desc: 'Trước giờ đua (Paddock), Doctor cân Jockey (Pre-Race Weigh-In) và khám y tế ghi nhận Certified/Unfit. Hệ thống chạy Jockey Independence Check chặn Jockey có quan hệ gia đình với Owner đối thủ. Loại ngựa khẩn cấp Disqualified bẻ luồng sang 4.5-DISQ, phát 3 thông báo đồng thời và hoàn cược Spectator (Prediction Refund).' },
+            { id: 'H', title: 'Theo Dõi Diễn Biến Cuộc Đua và Xử Lý Vi Phạm', icon: 'eye', desc: 'Trạng thái cuộc đua: Upcoming → Live → Unofficial → Official. Tự động khóa cổng dự đoán khi Live. Doctor cân Jockey sau đua (Post-Race Weigh-Out). Màn hình Spectator hiển thị Live Simulation Animation ngẫu nhiên bằng Canvas/SVG Client-side sử dụng setInterval 100ms (không WebSockets/GPS). Dropdown chứa ít nhất 7 mã vi phạm.' },
             { id: 'I', title: 'Xử Lý Vi Phạm và Khiếu Nại (Protest Handling)', icon: 'scale', desc: 'Referee tiếp nhận đơn khiếu nại Protest từ Owner/Jockey sau khi đua kết thúc sơ bộ nhưng trước khi công bố chính thức. Referee phán quyết hình phạt (Disqualified, PlaceBehind, Warning, Scratch) gửi thông báo closed-loop cho cả hai bên.' },
             { id: 'J', title: 'Quản Lý Kết Quả và Công Bố Chính Thức (Admin)', icon: 'award', desc: 'Admin declare Official trong 1 Database Transaction nguyên tử gồm 6 tác vụ (chuyển trạng thái, khóa biên bản, cập nhật BXH ngựa và nài ngựa, đối chiếu trả thưởng Spectator, ghi Audit Log). Lỗi bất kỳ tác vụ nào sẽ Rollback toàn cục ACID.' },
             { id: 'K', title: 'Tính Toán và Phân Bổ Tiền Thưởng', icon: 'coins', desc: 'Admin cấu hình quỹ Purse. Tự động tính toán phân bổ thưởng lý thuyết: Thứ hạng ngựa (Nhất 50-60%, Nhì 20-25%, Ba 10-12%, Tư-Năm 3-8%); Phân bổ nội bộ (Jockey 10% khi Nhất, 5% khi Nhì-Tư hoặc phí cố định; Owner 80-90% còn lại). Ghi Audit Log.' },
@@ -2978,8 +3033,8 @@
                 inputs: [
                     { key: "Y tế Jockey", val: "Kiểm tra y tế và tình trạng doping của Jockey" },
                     { key: "Y tế Ngựa", val: "Kiểm tra sức khỏe, tiêm phòng và doping của Ngựa" },
-                    { key: "Cân trước đua", val: "Cân đo trọng lượng Jockey trước giờ chạy (Weighing Out)" },
-                    { key: "Cân sau đua", val: "Cân đo trọng lượng Jockey sau khi về đích (Weighing In)" }
+                    { key: "Cân trước đua", val: "Cân đo trọng lượng Jockey trước giờ chạy (Pre-Race Weigh-In)" },
+                    { key: "Cân sau đua", val: "Cân đo trọng lượng Jockey sau khi về đích (Post-Race Weigh-Out)" }
                 ],
                 outputs: [
                     { key: "Biên bản Jockey", val: "Xác nhận y tế Jockey (Đạt / Không đạt)" },
@@ -3196,14 +3251,14 @@
                 title: "④ Trước giờ đua (Pre-race)",
                 actions: {
                     admin: [],
-                    doctor: ["Kiểm tra cân nặng ban đầu Jockey (Weighing Out)", "Xác minh nhận dạng thực địa đốm màu ngựa tại Paddock", "Thực hiện khám lâm sàng sức khỏe & lấy mẫu nhanh doping ngựa tại Paddock"],
+                    doctor: ["Pre-Race Weigh-In — Kiểm tra cân nặng ban đầu Jockey", "Xác minh nhận dạng thực địa đốm màu ngựa tại Paddock", "Thực hiện khám lâm sàng sức khỏe & lấy mẫu nhanh doping ngựa tại Paddock"],
                     owner: [],
                     jockey: [],
                     referee: [],
                     spectator: ["Xem lại dự đoán (Cổng dự đoán ở trạng thái Locked)"]
                 },
                 rules: [
-                    "<strong>Jockey Weighing Out:</strong> Jockey phải thực hiện cân tải trọng Handicap trước giờ chạy để đảm bảo công bằng tải trọng.",
+                    "<strong>Pre-Race Weigh-In:</strong> Jockey phải thực hiện cân tải trọng Handicap trước giờ chạy để đảm bảo công bằng tải trọng.",
                     "<strong>Khám y tế Paddock (Doctor):</strong> Bác sĩ thú y trực tiếp thăm khám dáng đi lâm sàng (lameness check) và đối chiếu nhận dạng đốm màu ngựa.",
                     "<strong>Hệ thống Jockey Independence:</strong> Hệ thống tự động kiểm tra quan hệ thân nhân trực hệ giữa Jockey và Chủ ngựa đối thủ.",
                     "<strong>Hoàn điểm cược (Refund):</strong> Khi có vi phạm y tế/nhận dạng/độc lập, hệ thống loại ngựa khẩn cấp (Disqualified) và tự động hoàn lại điểm ảo dự đoán cho Spectator."
@@ -3212,17 +3267,20 @@
                 simState: { tournament: "Xác Minh", gate: "Khóa (Locked)", coi: "Hợp lệ", jockey: "Đã kiểm tra (Hợp lệ)" },
                 terminalLogs: [
                     "[SYSTEM] Giai đoạn 4: Doctor tiến hành kiểm tra cân nặng và thú y paddock...",
-                    "[WEIGHING-OUT] Jockey Nguyễn Văn A đạt cân nặng quy định: 54.0 kg.",
+                    "[PRE-RACE WEIGH-IN] Jockey Nguyễn Văn A đạt cân nặng quy định: 54.0 kg.",
                     "[DB] UPDATE RaceEntries SET PreRaceJockeyWeight=54.0 WHERE Id=45",
                     "[DOCTOR-VET] Khám thú y paddock ngựa 'Thần Phong' đạt chuẩn sức khỏe."
                 ],
                 simNoti: { role: "Spectator", text: "🔔 Bác sĩ đã xác nhận y tế và tải trọng, danh sách đua chính thức đã được chốt." },
                 flowNodes: [
-                    { id: '4-1', label: '4.1. Khóa Cổng Dự Đoán|Khóa tự động', x: 50, y: 605, actor: 'spectator' },
-                    { id: '4-1-MD', label: '4.1-MD. Weighing Out|Cân Jockey trước đua', x: 200, y: 385, actor: 'doctor' },
+                    { id: '4-1', label: '4.1. Khóa Cửa Cược|System', x: 50, y: 165, actor: 'admin' },
+                    { id: '4-1-MD', label: '4.1-MD. Pre-Race Weigh-In|Cân Jockey trước đua', x: 200, y: 385, actor: 'doctor' },
                     { id: '4-2', label: '4.2. Khớp Danh Tính|Paddock check', x: 400, y: 385, actor: 'doctor', type: 'checkpoint', errorId: 'identity_mismatch' },
+                    { id: '4-2-ERR', label: '4.2-ERR: Sai lệch danh tính', x: 400, y: 495, actor: 'doctor', type: 'error', errorId: 'identity_mismatch' },
                     { id: '4-3', label: '4.3. Thú Y Paddock|Khám y tế (F3)', x: 600, y: 385, actor: 'doctor', type: 'checkpoint', errorId: 'horse_health_unfit' },
-                    { id: '4-4', label: '4.4. Độc Lập Nài Ngựa|Check quan hệ', x: 800, y: 55, actor: 'admin', type: 'checkpoint', errorId: 'jockey_independence_conflict' },
+                    { id: '4-3-ERR', label: '4.3-ERR: Bác sĩ kết luận Unfit', x: 600, y: 495, actor: 'doctor', type: 'error', errorId: 'horse_health_unfit' },
+                    { id: '4-4', label: '4.4. Jockey Independence Check|Check quan hệ', x: 800, y: 55, actor: 'doctor', type: 'checkpoint', errorId: 'jockey_independence_conflict' },
+                    { id: '4-4-ERR', label: '4.4-ERR: Vi phạm quan hệ', x: 800, y: 165, actor: 'doctor', type: 'error', errorId: 'jockey_independence_conflict' },
                     { id: '4-5-DISQ', label: '4.5-DISQ: TRUẤT QUYỀN KHẨN CẤP|Gửi 3 thông báo & Hoàn điểm cược', x: 600, y: 275, actor: 'jockey', type: 'error', errorId: 'identity_mismatch', w: 200 },
                     { id: '4-5', label: '4.5. Xác Nhận Chạy|Chốt danh sách', x: 980, y: 495, actor: 'referee' }
                 ],
@@ -3231,9 +3289,12 @@
                     { src: '4-2', dst: '4-3', errorId: 'identity_mismatch' },
                     { src: '4-3', dst: '4-4', errorId: 'horse_health_unfit' },
                     { src: '4-4', dst: '4-5', errorId: 'jockey_independence_conflict' },
-                    { src: '4-2', dst: '4-5-DISQ', isErrorBranch: true, errorId: 'identity_mismatch' },
-                    { src: '4-3', dst: '4-5-DISQ', isErrorBranch: true, errorId: 'horse_health_unfit' },
-                    { src: '4-4', dst: '4-5-DISQ', isErrorBranch: true, errorId: 'jockey_independence_conflict' },
+                    { src: '4-2', dst: '4-2-ERR', isErrorBranch: true, errorId: 'identity_mismatch' },
+                    { src: '4-2-ERR', dst: '4-5-DISQ', isErrorBranch: true, errorId: 'identity_mismatch' },
+                    { src: '4-3', dst: '4-3-ERR', isErrorBranch: true, errorId: 'horse_health_unfit' },
+                    { src: '4-3-ERR', dst: '4-5-DISQ', isErrorBranch: true, errorId: 'horse_health_unfit' },
+                    { src: '4-4', dst: '4-4-ERR', isErrorBranch: true, errorId: 'jockey_independence_conflict' },
+                    { src: '4-4-ERR', dst: '4-5-DISQ', isErrorBranch: true, errorId: 'jockey_independence_conflict' },
                     { src: '4-1', dst: '4-5' }
                 ]
             },
@@ -3241,6 +3302,7 @@
                 title: "⑤ Diễn biến cuộc đua (Live)",
                 actions: {
                     admin: [],
+                    doctor: ["Cân Jockey sau cuộc đua (Post-Race Weigh-Out)"],
                     owner: ["Nộp đơn khiếu nại Protest"],
                     jockey: ["Nộp đơn khiếu nại Protest"],
                     referee: ["Bấm lệnh LIVE Start", "Ghi nhận lỗi vi phạm trên sân bằng dropdown mã vi phạm", "Tiếp nhận và xử lý khiếu nại Protest", "Xác nhận kết quả sơ bộ và chốt biên bản"],
@@ -3260,6 +3322,8 @@
                 simNoti: { role: "Jockey", text: "🔔 Trọng tài đã ghi nhận lỗi vi phạm chèn ép (E-02) trong cuộc đua." },
                 flowNodes: [
                     { id: '5-1', label: '5.1. Bấm LIVE Start|Trạng thái LIVE', x: 50, y: 495, actor: 'referee' },
+                    { id: '5-1-WO', label: '5.1-WO. Post-Race Weigh-Out|Cân Jockey sau đua', x: 450, y: 385, actor: 'doctor', type: 'checkpoint', errorId: 'weight_flagged' },
+                    { id: '5-1-WO-ERR', label: '5.1-WO-ERR: Cân vượt ngưỡng|Nối tới 5.3', x: 450, y: 415, actor: 'doctor', type: 'error', errorId: 'weight_flagged' },
                     { id: '5-2', label: '5.2. Khán Giả Xem Live|Mô phỏng canvas (F5)', x: 230, y: 605, actor: 'spectator' },
                     { id: '5-live-btn', label: '▶ XEM MÔ PHỎNG LÀN CHẠY', x: 50, y: 630, actor: 'spectator', w: 180, h: 40 },
                     { id: '5-3', label: '5.3. Ghi Lỗi Vi Phạn|Chọn dropdown mã', x: 230, y: 495, actor: 'referee' },
@@ -3269,10 +3333,15 @@
                     { id: '5-6', label: '5.6. Chốt Kết Quả|Sơ bộ Unofficial', x: 750, y: 495, actor: 'referee' }
                 ],
                 flowConnections: [
+                    { src: '5-1', dst: '5-1-WO' },
+                    { src: '5-1-WO', dst: '5-6', errorId: 'weight_flagged' },
+                    { src: '5-1-WO', dst: '5-1-WO-ERR', isErrorBranch: true, errorId: 'weight_flagged' },
+                    { src: '5-1-WO-ERR', dst: '5-3', isErrorBranch: true, errorId: 'weight_flagged' },
                     { src: '5-1', dst: '5-2' },
                     { src: '5-1', dst: '5-3' },
                     { src: '5-2', dst: '5-6' },
                     { src: '5-3', dst: '5-5' },
+                    { src: '5-3', dst: '5-6' },
                     { src: '5-4', dst: '5-5' },
                     { src: '5-5', dst: '5-6', errorId: 'protest_approved' },
                     { src: '5-5', dst: '5-5-ERR', isErrorBranch: true, errorId: 'protest_approved' },
@@ -3698,7 +3767,7 @@
                 { text: "Pha 2: Admin kiểm duyệt hồ sơ ngựa thi đấu và cấp phép trạng thái thành công...", phase: 2 },
                 { text: "Pha 3: Admin bốc thăm Post Position ngẫu nhiên và kiểm tra Conflict-of-interest...", phase: 3 },
                 { text: "Pha 3: Hệ thống mở Prediction Gate cho Spectator tham gia dự đoán Win/Place...", phase: 3 },
-                { text: "Pha 4: Trọng tài check-in tại sân, tiến hành Jockey Independence Check...", phase: 4 },
+                { text: "Pha 4: Doctor cân Jockey (Weigh-In), khám Paddock Fit/Unfit, kích hoạt Independence Check...", phase: 4 },
                 { text: "Pha 5: Trọng tài chuyển sang 'Live' & Khóa cổng cược của Spectator tự động...", phase: 5 },
                 { text: "Pha 5: Trọng tài bắt lỗi vi phạm và tiếp nhận đơn khiếu nại (Protest)...", phase: 5 },
                 { text: "Pha 6: Admin công bố Official, cập nhật Leaderboards & phân phối điểm thưởng...", phase: 6 }
